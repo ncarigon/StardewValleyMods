@@ -1,0 +1,8 @@
+﻿{
+	"Name": "Moonshine",
+	"Description": "Lots of burn and very little flavor. Drink in moderation.",
+	"Category": "ArtisanGoods",
+	"Edibility": 50,
+	"EdibleIsDrink": true,
+	"Price": 1344,
+}

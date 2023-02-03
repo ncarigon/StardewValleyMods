@@ -1,0 +1,8 @@
+﻿{
+	"Name": "Whiskey",
+	"Description": "Smooth and malty with a subtle oak finish. Drink in moderation.",
+	"Category": "ArtisanGoods",
+	"Edibility": 50,
+	"EdibleIsDrink": true,
+	"Price": 5040,
+}

@@ -1,0 +1,26 @@
+{
+	"Name": "Still",
+	"Description": "Turns wines and juices into liquors.",
+	"Price": 0,
+	"ProvidesLight": false,
+	"ReserveNextIndex": false,
+	"Recipe": {
+		"ResultCount": 1,
+		"Ingredients": [
+			{
+			"Object": "Copper Bar",
+			"Count": 10,
+			},
+			{
+			"Object": "Iron Bar",
+			"Count": 5,
+			},
+			{
+			"Object": "Iridium Bar",
+			"Count": 1,
+			},
+		],
+		"IsDefault": false,
+		"CanPurchase": false
+	},
+}

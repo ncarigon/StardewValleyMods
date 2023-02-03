@@ -1,0 +1,8 @@
+﻿{
+	"Name": "Vodka",
+	"Description": "Pure and clean with very little flavor. Drink in moderation.",
+	"Category": "ArtisanGoods",
+	"Edibility": 50,
+	"EdibleIsDrink": true,
+	"Price": 1440,
+}

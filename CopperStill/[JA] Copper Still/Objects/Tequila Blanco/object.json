@@ -1,0 +1,8 @@
+﻿{
+	"Name": "Tequila Blanco",
+	"Description": "Earthy, semi-sweet, and distinctly agave flavored. Drink in moderation.",
+	"Category": "ArtisanGoods",
+	"Edibility": 50,
+	"EdibleIsDrink": true,
+	"Price": 1012,
+}

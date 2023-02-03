@@ -1,0 +1,12 @@
+{
+	"Name": "[PFM] Copper Still",
+	"Author": "NCarigon",
+	"Version": "1.0.0",
+	"Description": "Machine content for Copper Still.",
+	"UniqueID": "NCarigon.CopperStillPFM",
+	"UpdateKeys": [ "nexus:15333" ],
+	"MinimumApiVersion": "3.13.0",
+	"ContentPackFor": {
+		"UniqueID": "DIGUS.ProducerFrameworkMod"
+	}
+}

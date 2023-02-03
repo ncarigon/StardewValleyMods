@@ -1,0 +1,8 @@
+﻿{
+	"Name": "Brandy",
+	"Description": "Aromatic, fresh, and fruity with a semi-sweet finish. Drink in moderation.",
+	"Category": "ArtisanGoods",
+	"Edibility": 50,
+	"EdibleIsDrink": true,
+	"Price": 1620,
+}

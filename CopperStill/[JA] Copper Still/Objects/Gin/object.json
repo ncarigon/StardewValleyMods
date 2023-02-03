@@ -1,0 +1,8 @@
+﻿{
+	"Name": "Gin",
+	"Description": "Bright and botanical with a dry finish. Drink in moderation.",
+	"Category": "ArtisanGoods",
+	"Edibility": 50,
+	"EdibleIsDrink": true,
+	"Price": 2880,
+}

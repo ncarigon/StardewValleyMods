@@ -1,0 +1,8 @@
+﻿{
+	"Name": "Tequila Añejo",
+	"Description": "Warm and complex with notes of vanilla, raisins, and honey. Drink in moderation.",
+	"Category": "ArtisanGoods",
+	"Edibility": 50,
+	"EdibleIsDrink": true,
+	"Price": 3036,
+}
