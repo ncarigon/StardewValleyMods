@@ -6,9 +6,9 @@ using SObject = StardewValley.Object;
 
 namespace GardenPotAutomate {
     /// <summary>
-    /// A general recipe for planting seeds
+    /// A general recipe for applying ferilizer
     /// </summary>
-    internal class SeedRecipe : IRecipe {
+    internal class FertilizerRecipe : IRecipe {
         public Func<Item, bool> Input { get; }
         public int InputCount { get; } = 1;
         public Func<Item, Item> Output { get; } = _ => new SObject();
@@ -18,7 +18,7 @@ namespace GardenPotAutomate {
         private readonly GameLocation Location;
         private readonly ModConfig Config;
 
-        public SeedRecipe(IndoorPot indoorPot, GameLocation location, ModConfig config) {
+        public FertilizerRecipe(IndoorPot indoorPot, GameLocation location, ModConfig config) {
             this.IndoorPot = indoorPot;
             this.Config = config;
             this.Location = location;
@@ -35,10 +35,10 @@ namespace GardenPotAutomate {
             return
                 // are we enabled?
                 config.Enabled
-                // can we plant seeds?
-                && config.PlantSeeds
-                // is it a seed?
-                && (item?.Category.Equals(SObject.SeedsCategory) ?? false)
+                // can we apply fertilizer?
+                && config.ApplyFertilizers
+                // is it a fertilizer?
+                && (item?.Category.Equals(SObject.fertilizerCategory) ?? false)
                 // actually try to place the item
                 && (indoorPot?.performObjectDropInAction(item, false, new Farmer() { currentLocation = location }) ?? false);
         }

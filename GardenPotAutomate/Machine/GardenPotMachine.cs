@@ -11,13 +11,12 @@ using SObject = StardewValley.Object;
 
 namespace GardenPotAutomate {
     /// <summary>
-    /// An automation machine to handle planting and harvesting a garden pot.
+    /// An automation machine to handle planting, harvesting, and watering a garden pot.
     /// </summary>
     internal class GardenPotMachine : IMachine {
         private readonly IndoorPot Machine;
         private readonly Stack<HarvestTracker> ItemDrops;
-        private readonly IRecipe[] Recipes;
-        private readonly SeedRecipe SeedRecipe;
+        private readonly IRecipe[][] Recipes;
         private readonly ModConfig Config;
 
         public GameLocation Location { get; }
@@ -30,8 +29,11 @@ namespace GardenPotAutomate {
             Location = location;
             TileArea = new Rectangle((int)indoorPotTile.X, (int)indoorPotTile.Y, 1, 1);
             ItemDrops = new Stack<HarvestTracker>();
-            SeedRecipe = new SeedRecipe(indoorPot, location, config);
-            Recipes = new[] { this.SeedRecipe };
+            Recipes = new IRecipe[][] {
+                new[]{ new SeedRecipe(indoorPot, location, config) },
+                new[]{ new FertilizerRecipe(indoorPot, location, config) },
+                new[]{ new WateringCanRecipe(indoorPot, location, config) }
+            };
         }
 
         public ITrackedStack? GetOutput() {
@@ -40,10 +42,9 @@ namespace GardenPotAutomate {
 
             var drops = ItemDrops;
             if (!drops.Any()) {
-
                 var items = this.Harvest();
                 foreach (var item in items) {
-                    drops.Push(new HarvestTracker((SObject)item, drops.Count == 0));
+                    drops.Push(new HarvestTracker(item, drops.Count == 0));
                 }
             }
 
@@ -53,39 +54,74 @@ namespace GardenPotAutomate {
         }
 
         public MachineState GetState() {
+            // ignore bushes
             if (Machine.bush.Value is not null)
                 return MachineState.Disabled;
 
+            // forage crop is ready
             if (Machine.heldObject.Value is not null)
                 return MachineState.Done;
 
             var dirt = Machine.hoeDirt.Value;
 
+            // normal crop is ready
             if (dirt?.readyForHarvest() ?? false)
                 return MachineState.Done;
 
+            // check if dead crop and clear
             if (dirt?.crop?.dead.Value ?? false)
                 dirt.destroyCrop(dirt.currentTileLocation, false, Location);
 
-            if (dirt?.crop is null || (dirt?.fertilizer?.Value ?? 0) == 0)
+            if (// no crop, ready to plant
+                dirt?.crop is null
+                // no fertilizer, ready to fertilize
+                || (dirt?.fertilizer?.Value ?? 0) == 0
+                // not watered, ready to water
+                || (dirt?.state?.Value ?? 0) != 1
+            ) {
                 return MachineState.Empty;
+            }
 
+            // must to growing
             return MachineState.Processing;
         }
 
         public bool SetInput(IStorage input) {
-            if (!this.Config.Enabled || !(this.Config.PlantSeeds || this.Config.ApplyFertilizers))
+            if (!this.Config.Enabled || !(this.Config.PlantSeeds || this.Config.ApplyFertilizers || this.Config.UseWateringCan))
                 return false;
 
-            if (input.TryGetIngredient(Recipes, out IConsumable? consumable, out _)) {
+            var dirt = Machine.hoeDirt?.Value;
+
+            if (dirt?.crop is null
+                && input.TryGetIngredient(Recipes[0], out IConsumable? consumable, out IRecipe? recipe)
+                && recipe is SeedRecipe
+            ) {
                 var seed = consumable.Take();
                 if (seed is not null) {
                     seed.Stack--;
-                    return true;
+                    // don't return true here since other items may be needed
                 }
             }
+            if ((dirt?.fertilizer?.Value ?? 0) == 0
+                && input.TryGetIngredient(Recipes[1], out consumable, out recipe)
+                && recipe is SeedRecipe
+            ) {
+                var seed = consumable.Take();
+                if (seed is not null) {
+                    seed.Stack--;
+                    // don't return true here since other items may be needed
+                }
+            }
+            if ((dirt?.state?.Value ?? 0) != 1
+                && input.TryGetIngredient(Recipes[2], out _, out recipe)
+                && recipe is WateringCanRecipe
+            ) {
+                // water level reduction is handled in recipe
+                // don't return true here since other items may be needed
+            }
 
-            return false;
+            // stop processing if all checks fail
+            return !(dirt?.crop is null && (dirt?.fertilizer?.Value ?? 0) == 0 && (dirt?.state?.Value ?? 0) != 1);
         }
 
         private void OnOutputReduced(Item item) {

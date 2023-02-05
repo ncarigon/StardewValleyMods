@@ -7,6 +7,7 @@ namespace GardenPotAutomate {
         public bool HarvestCrops { get; set; } = true;
         public bool PlantSeeds { get; set; } = true;
         public bool ApplyFertilizers { get; set; } = true;
+        public bool UseWateringCan { get; set; } = true;
         public bool ApplyProfessions { get; set; } = true;
         public bool GainExperience { get; set; } = true;
 
@@ -55,6 +56,13 @@ namespace GardenPotAutomate {
                     tooltip: () => "Attempt to apply fertilizers to garden pots.",
                     getValue: () => config.ApplyFertilizers,
                     setValue: value => config.ApplyFertilizers = value
+                );
+                configMenu.AddBoolOption(
+                    mod: manifest,
+                    name: () => "Use Watering Can",
+                    tooltip: () => "Attempt to use watering cans to water garden pots.",
+                    getValue: () => config.UseWateringCan,
+                    setValue: value => config.UseWateringCan = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
