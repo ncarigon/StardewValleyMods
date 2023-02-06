@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "[CCM ]Copper Still",
 	"Author": "NCarigon",
-	"Version": "1.0.0",
+	"Version": "1.0.1",
 	"Description": "Cask content for Copper Still.",
 	"UniqueID": "NCarigon.CopperStillCCM",
 	"UpdateKeys": [ "nexus:15333" ],
