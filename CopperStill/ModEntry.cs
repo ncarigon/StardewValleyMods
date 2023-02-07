@@ -5,6 +5,8 @@ namespace CopperStill {
         public override void Entry(IModHelper helper) {
             ModPatches.AdjustPricing.Register(helper);
             ModPatches.JuniperBerry.Register(helper);
+            ModPatches.ModifyBundle.Register(helper);
+            ModPatches.TipsyBuff.Register(helper);
         }
     }
 }
