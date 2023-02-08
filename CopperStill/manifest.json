@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Copper Still",
     "Author": "NCarigon",
-    "Version": "1.0.2",
+    "Version": "1.0.3",
     "Description": "Adds more endgame variety to processing crops.",
     "UniqueID": "NCarigon.CopperStill",
     "UpdateKeys": [ "nexus:15333" ],

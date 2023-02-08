@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "[MFM] Copper Still",
 	"Author": "NCarigon",
-	"Version": "1.0.2",
+    "Version": "1.0.3",
 	"Description": "Mail content for Copper Still.",
 	"UniqueID": "NCarigon.CopperStillMFM",
 	"MinimumApiVersion": "3.8.0",

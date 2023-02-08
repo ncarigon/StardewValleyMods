@@ -22,25 +22,14 @@
         "Sounds": ["Ship"],
     }, {
         "ProducerName": "Still",
-        "InputIdentifier": "Juice",
-        "RequiredInputStack": 4,
+        "InputIdentifier": "Sake",
+        "InputStack": 4,
         "FuelIdentifier": "Coal",
         "MinutesUntilReady": 1600,
-        "OutputIdentifier": "Vodka",
-        "OutputName": "{inputName} Vodka",
-        "KeepInputParentIndex": true,
+        "OutputIdentifier": "Soju",
         "KeepInputQuality": true,
         "InputPriceBased": true,
-        "OutputPriceMultiplier": 12,
-        "AdditionalOutputs": [{
-                "OutputIdentifier": "Moonshine",
-                "RequiredInputParentIdentifier": ["Corn"],
-                "KeepInputQuality": true,
-                "InputPriceBased": true,
-                "OutputPriceMultiplier": 15,
-                "OutputProbability": 1,
-            }
-        ],
+        "OutputPriceMultiplier": 4.5,
         "Sounds": ["Ship"],
     }, {
         "ProducerName": "Still",
@@ -72,12 +61,33 @@
         "ProducerName": "Keg",
         "InputIdentifier": "Tequila Blanco",
         "MinutesUntilReady": 10000,
-        "OutputIdentifier": "Tequila Añejo",
+        "OutputIdentifier": "Tequila Anejo",
+        "OutputName": "Tequila Añejo",
         "InputPriceBased": true,
         "OutputPriceMultiplier": 3,
         "KeepInputQuality": true,
         "Sounds": ["Ship", "bubbles"],
         "PlacingAnimation": "Bubbles",
         "PlacingAnimationColorName": "Brown"
-    },
+    }, {
+        "ProducerName": "Keg",
+        "InputIdentifier": "White Rum",
+        "MinutesUntilReady": 10000,
+        "OutputIdentifier": "Dark Rum",
+        "InputPriceBased": true,
+        "OutputPriceMultiplier": 3,
+        "KeepInputQuality": true,
+        "Sounds": ["Ship", "bubbles"],
+        "PlacingAnimation": "Bubbles",
+        "PlacingAnimationColorName": "Brown"
+    }, {
+        "ProducerName": "Keg",
+        "InputIdentifier": "Unmilled Rice",
+        "MinutesUntilReady": 2250,
+        "OutputIdentifier": "Sake",
+        "OutputName": "Saké",
+        "Sounds": ["Ship", "bubbles"],
+        "PlacingAnimation": "Bubbles",
+        "PlacingAnimationColorName": "Brown"
+    }
 ]

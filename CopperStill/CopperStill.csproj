@@ -37,6 +37,9 @@
 	  <None Update="manifest.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="DynamicProducerRules.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="[CCM] Copper Still\CaskData.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
@@ -70,22 +73,52 @@
 	  <None Update="[JA] Copper Still\Objects\Juniper Berry\object.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="[JA] Copper Still\Objects\Dark Rum\object.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[JA] Copper Still\Objects\Dark Rum\object.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[JA] Copper Still\Objects\Soju\object.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[JA] Copper Still\Objects\Soju\object.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[JA] Copper Still\Objects\White Rum\object.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[JA] Copper Still\Objects\White Rum\object.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="[JA] Copper Still\Objects\Moonshine\object.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="[JA] Copper Still\Objects\Moonshine\object.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="[JA] Copper Still\Objects\Tequila Añejo\object.json">
+	  <None Update="[JA] Copper Still\Objects\Shochu\object.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="[JA] Copper Still\Objects\Tequila Añejo\object.png">
+	  <None Update="[JA] Copper Still\Objects\Shochu\object.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[JA] Copper Still\Objects\Tequila Anejo\object.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[JA] Copper Still\Objects\Tequila Anejo\object.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="[JA] Copper Still\Objects\Tequila Blanco\object.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="[JA] Copper Still\Objects\Tequila Blanco\object.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[JA] Copper Still\Objects\Sake\object.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[JA] Copper Still\Objects\Sake\object.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="[JA] Copper Still\Objects\Vodka\object.json">
