@@ -11,11 +11,11 @@ namespace CopperStill.ModPatches {
             var harmony = new Harmony(helper.ModContent.ModID);
             harmony.Patch(
                 original: AccessTools.Method(typeof(BuffsDisplay), "tryToAddDrinkBuff"),
-                prefix: new HarmonyMethod(typeof(TipsyBuff), nameof(TryToAddDrinkBuff))
+                prefix: new HarmonyMethod(typeof(TipsyBuff), nameof(Prefix_TryToAddDrinkBuff))
             );
         }
 
-        private static bool TryToAddDrinkBuff(BuffsDisplay __instance, Buff b) {
+        private static bool Prefix_TryToAddDrinkBuff(BuffsDisplay __instance, Buff b) {
             if (b.source.Contains("Brandy") || b.source.Contains("Vodka") || b.source.Contains("Gin")
                 || b.source.Contains("Tequila") || b.source.Contains("Moonshine") || b.source.Contains("Whiskey")
             ) {

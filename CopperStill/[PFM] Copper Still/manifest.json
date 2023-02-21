@@ -1,7 +1,7 @@
 {
 	"Name": "[PFM] Copper Still",
 	"Author": "NCarigon",
-    "Version": "1.0.3",
+    "Version": "1.0.5",
 	"Description": "Machine content for Copper Still.",
 	"UniqueID": "NCarigon.CopperStillPFM",
 	"UpdateKeys": [ "nexus:15333" ],

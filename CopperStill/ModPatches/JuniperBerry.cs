@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using HarmonyLib;
 using StardewModdingAPI;
@@ -19,15 +20,26 @@ namespace CopperStill.ModPatches {
             var harmony = new Harmony(helper.ModContent.ModID);
             harmony.Patch(
                 original: AccessTools.Method(typeof(Bush), "inBloom"),
-                postfix: new HarmonyMethod(typeof(JuniperBerry), nameof(InBloom))
+                postfix: new HarmonyMethod(typeof(JuniperBerry), nameof(Postfix_InBloom))
             );
             harmony.Patch(
                 original: AccessTools.Method(typeof(Bush), "shake"),
-                prefix: new HarmonyMethod(typeof(JuniperBerry), nameof(Shake))
+                prefix: new HarmonyMethod(typeof(JuniperBerry), nameof(Prefix_Shake))
             );
+
+            try {
+                harmony.Patch(
+                    original: AccessTools.Method("DeluxeGrabberRedux.MapGrabber:TryAddItems", new Type[] { typeof(IEnumerable<Item>) }),
+                    prefix: new HarmonyMethod(typeof(JuniperBerry), nameof(Prefix_TryAddItems))
+                );
+            } catch { }
         }
 
-        private static void InBloom(Bush __instance, ref bool __result, string season, int dayOfMonth) {
+        private static bool IsJuniperBerrySeason(string season, int dayOfMonth) {
+            return season.Equals("fall") && dayOfMonth > 20 && dayOfMonth < 25;
+        }
+
+        private static void Postfix_InBloom(Bush __instance, ref bool __result, string season, int dayOfMonth) {
             // make bushes bloom in late fall
             try {
                 if (!__result && // not already in bloom
@@ -37,17 +49,17 @@ namespace CopperStill.ModPatches {
                     if (__instance.overrideSeason.Value != -1) {
                         season = Utility.getSeasonNameFromNumber(__instance.overrideSeason.Value);
                     }
-                    if (season.Equals("fall") && dayOfMonth > 20 && dayOfMonth < 25) // is juniper berry season
+                    if (IsJuniperBerrySeason(season, dayOfMonth))
                         __result = true;
                 }
             } catch { }
         }
 
-        private static bool Shake(Bush __instance, ref float ___maxShake, ref bool ___shakeLeft, Vector2 tileLocation, bool doEvenIfStillShaking) {
+        private static bool Prefix_Shake(Bush __instance, ref float ___maxShake, ref bool ___shakeLeft, Vector2 tileLocation, bool doEvenIfStillShaking) {
             try {
                 var season = Game1.GetSeasonForLocation(__instance.currentLocation);
                 var inBloom = false;
-                InBloom(__instance, ref inBloom, season, Game1.dayOfMonth);
+                Postfix_InBloom(__instance, ref inBloom, season, Game1.dayOfMonth);
                 if (!inBloom)
                     return true; // not juniper berry season, run normal logic
 
@@ -69,6 +81,29 @@ namespace CopperStill.ModPatches {
                 return false; // juniper berry handled, if applicable
             } catch { }
             return true; // default to normal logic
+        }
+
+        private static bool Prefix_TryAddItems(object __instance, ref IEnumerable<Item> items) {
+            try {
+                var t = __instance.GetType();
+                if (t.ToString().Contains("BerryBushGrabber")) {
+                    var l = (GameLocation)(__instance.GetType().GetProperty("Location")?.GetValue(__instance) ?? Game1.player.currentLocation);
+                    if (IsJuniperBerrySeason(Game1.GetSeasonForLocation(l), Game1.dayOfMonth)) {
+                        var list = new List<Item>();
+                        foreach (var item in items) {
+                            if (item.ParentSheetIndex == 410) {
+                                list.Add(new SObject(ItemId, item.Stack) {
+                                    Quality = ((SObject)item).Quality
+                                });
+                            } else {
+                                list.Add(item);
+                            }
+                        }
+                        items = list;
+                    }
+                }
+            } catch { }
+            return true;
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Automate;
@@ -37,7 +38,7 @@ namespace GardenPotAutomate {
         }
 
         public ITrackedStack? GetOutput() {
-            if (!this.Config.Enabled || !this.Config.HarvestCrops)
+            if (!this.Config.Enabled || !(this.Config.HarvestCrops || this.Config.HarvestFlowers))
                 return null;
 
             var drops = ItemDrops;
@@ -104,7 +105,7 @@ namespace GardenPotAutomate {
             }
             if ((dirt?.fertilizer?.Value ?? 0) == 0
                 && input.TryGetIngredient(Recipes[1], out consumable, out recipe)
-                && recipe is SeedRecipe
+                && recipe is FertilizerRecipe
             ) {
                 var seed = consumable.Take();
                 if (seed is not null) {
@@ -153,6 +154,13 @@ namespace GardenPotAutomate {
             if (held is null && (crop is null || crop.dead.Value))
                 return Array.Empty<SObject>();
 
+            if (!Config.HarvestFlowers
+                && ((held is not null && held.Category == SObject.flowersCategory)
+                || (crop is not null && new SObject(crop!.indexOfHarvest.Value, 1).Category == SObject.flowersCategory)
+            )) {
+                return Array.Empty<SObject>();
+            }
+
             var xTile = (int)soil!.currentTileLocation.X;
             var yTile = (int)soil!.currentTileLocation.Y;
 
@@ -165,6 +173,7 @@ namespace GardenPotAutomate {
             // Added logic to handle wild seed crops since they are a "heldObject"
             if (held is not null) {
                 SObject? @object = held;
+
                 if (@object.Stack == 0)
                     @object.Stack = 1;
                 int howMuch = 3;

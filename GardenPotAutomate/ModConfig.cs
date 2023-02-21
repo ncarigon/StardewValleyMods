@@ -5,6 +5,7 @@ namespace GardenPotAutomate {
     internal class ModConfig {
         public bool Enabled { get; set; } = true;
         public bool HarvestCrops { get; set; } = true;
+        public bool HarvestFlowers { get; set; } = true;
         public bool PlantSeeds { get; set; } = true;
         public bool ApplyFertilizers { get; set; } = true;
         public bool UseWateringCan { get; set; } = true;
@@ -42,6 +43,13 @@ namespace GardenPotAutomate {
                     tooltip: () => "Attempt to harvest mature crops from garden pots.",
                     getValue: () => config.HarvestCrops,
                     setValue: value => config.HarvestCrops = value
+                );
+                configMenu.AddBoolOption(
+                    mod: manifest,
+                    name: () => "Harvest Flowers",
+                    tooltip: () => "Attempt to harvest mature flowers from garden pots.",
+                    getValue: () => config.HarvestFlowers,
+                    setValue: value => config.HarvestFlowers = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
