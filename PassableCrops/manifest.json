@@ -1,10 +1,10 @@
 ﻿{
     "Name": "Passable Crops",
     "Author": "NCarigon",
-    "Version": "1.0.1",
-    "Description": "Allows farmers to pass through all crops.",
+    "Version": "1.1.2",
+    "Description": "Allows farmers to pass through all crops and related objects.",
     "UniqueID": "NCarigon.PassableCrops",
     "EntryDll": "PassableCrops.dll",
-    "MinimumApiVersion": "3.16.0",
+    "MinimumApiVersion": "4.0.0",
     "UpdateKeys": [ "nexus:15223" ]
 }

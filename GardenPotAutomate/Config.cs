@@ -2,7 +2,7 @@ using System;
 using StardewModdingAPI;
 
 namespace GardenPotAutomate {
-    internal class ModConfig {
+    internal class Config {
         public bool Enabled { get; set; } = true;
         public bool HarvestCrops { get; set; } = true;
         public bool HarvestFlowers { get; set; } = true;
@@ -15,8 +15,8 @@ namespace GardenPotAutomate {
         public delegate void ModifyDelegate();
         internal ModifyDelegate OnModify = null!;
 
-        public static ModConfig Register(IModHelper helper) {
-            var config = helper.ReadConfig<ModConfig>();
+        public static Config Register(IModHelper helper) {
+            var config = helper.ReadConfig<Config>();
 
             helper.Events.GameLoop.GameLaunched += (s, e) => {
                 var configMenu = helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
@@ -26,7 +26,7 @@ namespace GardenPotAutomate {
                 var manifest = helper.ModRegistry.Get(helper.ModContent.ModID)!.Manifest;
                 configMenu.Register(
                     mod: manifest,
-                    reset: () => config = new ModConfig(),
+                    reset: () => config = new Config(),
                     save: () => helper.WriteConfig(config)
                 );
 
