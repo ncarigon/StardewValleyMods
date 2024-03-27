@@ -10,8 +10,7 @@ using SObject = StardewValley.Object;
 
 namespace PassableCrops.Patches {
     internal static class Objects {
-        private static string
-            KeyDataShake = null!;
+        private static string KeyDataShake = null!;
 
         private static ModEntry? Mod;
 
@@ -28,7 +27,15 @@ namespace PassableCrops.Patches {
             harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), "draw", new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
                 prefix: new HarmonyMethod(typeof(Objects), nameof(Prefix_Object_draw)),
-                transpiler: new HarmonyMethod(typeof(Objects), nameof(Transpile_Object_Draw))
+                postfix: new HarmonyMethod(typeof(Objects), nameof(Postfix_Object_draw))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SpriteBatch), "Draw", new Type[] { typeof(Texture2D), typeof(Rectangle), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(SpriteEffects), typeof(float) }),
+                prefix: new HarmonyMethod(typeof(Objects), nameof(Prefix_SpriteBatch_Draw1))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SpriteBatch), "Draw", new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(Vector2), typeof(SpriteEffects), typeof(float) }),
+                prefix: new HarmonyMethod(typeof(Objects), nameof(Prefix_SpriteBatch_Draw2))
             );
         }
 
@@ -98,33 +105,22 @@ namespace PassableCrops.Patches {
                 }
             } catch { }
         }
-
-        private static IEnumerable<CodeInstruction> Transpile_Object_Draw(IEnumerable<CodeInstruction> instructions) {
-            foreach (var instruction in instructions) {
-                if (instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == AccessTools.Method(typeof(SpriteBatch), "Draw", new Type[] {
-                    typeof(Texture2D), typeof(Rectangle), typeof(Rectangle?), typeof(Color),
-                    typeof(float), typeof(Vector2), typeof(SpriteEffects), typeof(float) })
-                   ) {
-                    yield return new CodeInstruction(OpCodes.Ldarg_0); // add object instance to end of arguments list
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Objects), nameof(Draw1)));
-                } else if (instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == AccessTools.Method(typeof(SpriteBatch), "Draw", new Type[] {
-                    typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color),
-                    typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) })
-                ) {
-                    yield return new CodeInstruction(OpCodes.Ldarg_0); // add object instance to end of arguments list
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Objects), nameof(Draw2)));
-                } else {
-                    yield return instruction;
-                }
-            }
+        
+        private struct TempShakeData {
+            public ObjType ObjType;
+            public float MaxShake, ShakeRotation;
+            public bool ShakeLeft;
         }
+
+        private static TempShakeData LastShakeData;
 
         private static void Prefix_Object_draw(
             SObject __instance
         ) {
             try {
-                if (!(Mod?.Config?.UseCustomDrawing ?? false) || !AnyPassable())
+                if (!(Mod?.Config?.UseCustomDrawing ?? false) || !AnyPassable()) {
                     return;
+                }
                 var ot = GetObjType(__instance);
                 if (ot != ObjType.None
                     && __instance!.modData.TryGetValue(KeyDataShake, out var data)
@@ -158,9 +154,17 @@ namespace PassableCrops.Patches {
 
                         // update tracking values
                         __instance.modData[KeyDataShake] = $"{maxShake};{shakeRotation};{shakeLeft}";
+                        LastShakeData.ObjType = ot;
+                        LastShakeData.MaxShake = maxShake;
+                        LastShakeData.ShakeRotation = shakeRotation;
+                        LastShakeData.ShakeLeft = shakeLeft;
                     }
                 }
             } catch { }
+        }
+
+        private static void Postfix_Object_draw() {
+            LastShakeData.ObjType = ObjType.None;
         }
 
         private static void MoveRotation(ref Rectangle destinationRectangle, ref Vector2 origin, Vector2 move) {
@@ -173,53 +177,40 @@ namespace PassableCrops.Patches {
             origin += move;
         }
 
-        private static void Draw1(SpriteBatch spriteBatch, Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth, SObject obj) {
-            if ((Mod?.Config?.UseCustomDrawing ?? false) && AnyPassable()) {
-                var ot = GetObjType(obj);
-                if (ot != ObjType.None
-                    && rotation == 0f
-                    //&& obj!.modData.TryGetValue(KeyShakeRotation, out var data)
-                    && obj!.modData.TryGetValue(KeyDataShake, out var data)
-                    && float.TryParse(((data ?? "") + ";").Split(';')[1], out var r)
-                ) {
-                    rotation = r;
-                    switch (ot) {
-                        case ObjType.Scarecrow:
-                            // move rotation point to bottom of post
-                            MoveRotation(ref destinationRectangle, ref origin, new Vector2(8f, 30f));
-                            break;
-                    }
+
+        private static void Prefix_SpriteBatch_Draw1(
+            ref Rectangle destinationRectangle, ref float rotation, ref Vector2 origin
+        ) {
+            if (LastShakeData.ObjType != ObjType.None) {
+                rotation = LastShakeData.ShakeRotation;
+                switch (LastShakeData.ObjType) {
+                    case ObjType.Scarecrow:
+                        // move rotation point to bottom of post
+                        MoveRotation(ref destinationRectangle, ref origin, new Vector2(8f, 30f));
+                        break;
                 }
             }
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, rotation, origin, effects, layerDepth);
         }
 
-        private static void Draw2(SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth, SObject obj) {
-            if ((Mod?.Config?.UseCustomDrawing ?? false) && AnyPassable()) {
-                var ot = GetObjType(obj);
-                if (ot != ObjType.None
-                    && rotation == 0f
-                    //&& obj!.modData.TryGetValue(KeyShakeRotation, out var data)
-                    && obj!.modData.TryGetValue(KeyDataShake, out var data)
-                    && float.TryParse(((data ?? "") + ";").Split(';')[1], out var r)
-                ) {
-                    rotation = r;
-                    switch (ot) {
-                        case ObjType.Weed:
-                            layerDepth += 24 / 10000f;
-                            MoveRotation(ref position, ref origin, new Vector2(0f, 8f));
-                            break;
-                        case ObjType.Sprinkler:
-                            layerDepth += 36 / 10000f;
-                            break;
-                        case ObjType.Forage:
-                            layerDepth += 36 / 10000f;
-                            MoveRotation(ref position, ref origin, new Vector2(0f, 8f));
-                            break;
-                    }
+        private static void Prefix_SpriteBatch_Draw2(
+            ref Vector2 position, ref float rotation, ref Vector2 origin, ref float layerDepth
+        ) {
+            if (LastShakeData.ObjType != ObjType.None) {
+                rotation = LastShakeData.ShakeRotation;
+                switch (LastShakeData.ObjType) {
+                    case ObjType.Weed:
+                        layerDepth += 24 / 10000f;
+                        MoveRotation(ref position, ref origin, new Vector2(0f, 8f));
+                        break;
+                    case ObjType.Sprinkler:
+                        layerDepth += 36 / 10000f;
+                        break;
+                    case ObjType.Forage:
+                        layerDepth += 36 / 10000f;
+                        MoveRotation(ref position, ref origin, new Vector2(0f, 8f));
+                        break;
                 }
             }
-            spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
         }
     }
 }
