@@ -6,7 +6,6 @@ using StardewValley;
 using SObject = StardewValley.Object;
 using StardewValley.Extensions;
 using StardewValley.Monsters;
-using StardewValley.TerrainFeatures;
 
 namespace PassableCrops.Patches {
     internal static class Objects {
@@ -67,10 +66,10 @@ namespace PassableCrops.Patches {
         }
 
         private static ObjType GetObjType(SObject o) {
-            if ((Mod?.Config?.PassableScarecrows ?? false) && (o?.IsScarecrow() ?? false))
-                return ObjType.Scarecrow;
             if ((Mod?.Config?.PassableSprinklers ?? false) && (o?.IsSprinkler() ?? false))
                 return ObjType.Sprinkler;
+            if ((Mod?.Config?.PassableScarecrows ?? false) && (o?.IsScarecrow() ?? false))
+                return ObjType.Scarecrow;
             if ((Mod?.Config?.PassableForage ?? false) && (o?.isForage() ?? false) && (o?.Category != -9) && (o?.ParentSheetIndex != 590))
                 return ObjType.Forage;
             if ((Mod?.Config?.PassableWeeds ?? false)
