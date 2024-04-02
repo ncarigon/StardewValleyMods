@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using StardewModdingAPI;
+using Microsoft.Xna.Framework;
+using System.Text.RegularExpressions;
 
 namespace BushBloomMod {
     internal class Schedule {
@@ -19,7 +21,7 @@ namespace BushBloomMod {
             Config = config;
         }
 
-        private static string MakeId(ContentEntry entry, string shakeOff = null) => $"{shakeOff ?? entry.ShakeOff};{Helpers.GetDayOfYear(entry.StartSeason, entry.StartDay)};{Helpers.GetDayOfYear(entry.EndSeason, entry.EndDay)};{entry.StartYear};{entry.EndYear};{entry.Chance};{string.Join(",", entry.Locations ?? Array.Empty<string>())};{string.Join(",", entry.ExcludeLocations ?? Array.Empty<string>())};{string.Join(",", entry.Weather ?? Array.Empty<string>())};{string.Join(",", entry.ExcludeWeather ?? Array.Empty<string>())};{string.Join(",", entry.DestroyWeather ?? Array.Empty<string>())};{entry.Texture}";
+        private static string MakeId(ContentEntry entry, string shakeOff = null) => $"{shakeOff ?? entry.ShakeOff};{Helpers.GetDayOfYear(entry.StartSeason, entry.StartDay)};{Helpers.GetDayOfYear(entry.EndSeason, entry.EndDay)};{entry.StartYear};{entry.EndYear};{entry.Chance};{string.Join(",", entry.Locations ?? Array.Empty<string>())};{string.Join(",", entry.ExcludeLocations ?? Array.Empty<string>())};{string.Join(",", entry.Weather ?? Array.Empty<string>())};{string.Join(",", entry.ExcludeWeather ?? Array.Empty<string>())};{string.Join(",", entry.DestroyWeather ?? Array.Empty<string>())};{string.Join(",", entry.Tiles ?? Array.Empty<Vector2>())};{entry.Texture}";
 
         private bool IsDefault;
 
@@ -29,6 +31,10 @@ namespace BushBloomMod {
 
         public Texture2D Texture { get; private set; }
 
+        private string ContentDirectory;
+
+        private static string GetShortDir(string dir) => Regex.Replace(dir ?? "", @"^.+[\\\/]Mods[\\\/]", "");
+
         // need to validate this later is startup to ensure other mod content has loaded and can be found
         private string _shakeOffId;
         public string ShakeOffId {
@@ -36,7 +42,7 @@ namespace BushBloomMod {
                 if (this._shakeOffId == null) {
                     this._shakeOffId = Helpers.GetItemIdFromName(this.Entry.ShakeOff);
                     if (this._shakeOffId == null) {
-                        Monitor.Log($"Invalid shakeoff item: {MakeId(this.Entry)}", LogLevel.Error);
+                        Monitor.Log($"Error in content pack: {GetShortDir(this.ContentDirectory)}; Invalid shakeoff item: {MakeId(this.Entry)}", LogLevel.Warn);
                         this._shakeOffId = "";
                         this.Entry.Enabled = false;
                     }
@@ -58,13 +64,13 @@ namespace BushBloomMod {
             try {
                 AddEntries(Helper.DirectoryPath, Helper.Data.ReadJsonFile<ContentEntry[]>("content.json"));
             } catch {
-                Monitor.Log($"Unable to load content pack: {Path.Combine(Helper.DirectoryPath, "content.json")}. Review that file for syntax errors.", LogLevel.Error);
+                Monitor.Log($"Unable to load content pack: {GetShortDir(Helper.DirectoryPath)}. Review that file for syntax errors.", LogLevel.Error);
             }
             foreach (var pack in Helper.ContentPacks.GetOwned()) {
                 try {
                     AddEntries(pack.DirectoryPath, pack.ReadJsonFile<ContentEntry[]>("content.json"));
                 } catch {
-                    Monitor.Log($"Unable to load content pack: {Path.Combine(pack.DirectoryPath, "content.json")}. Review that file for syntax errors.", LogLevel.Error);
+                    Monitor.Log($"Unable to load content pack: {GetShortDir(pack.DirectoryPath)}. Review that file for syntax errors.", LogLevel.Error);
                 }
             }
         }
@@ -78,7 +84,8 @@ namespace BushBloomMod {
                 entry.Chance ??= 0.2;
                 var sched = new Schedule() {
                     IsDefault = isDefault,
-                    Entry = entry
+                    Entry = entry,
+                    ContentDirectory = contentDirectory
                 };
                 if (entry.Texture is not null) {
                     entry.Texture = string.Join(Path.DirectorySeparatorChar, entry.Texture.Split('/', '\\'));
@@ -86,25 +93,30 @@ namespace BushBloomMod {
                     try {
                         sched.Texture = Texture2D.FromFile(Game1.graphics.GraphicsDevice, fullPath);
                     } catch {
-                        Monitor.Log($"Failed to load texture: {MakeId(entry)}", LogLevel.Error);
+                        Monitor.Log($"Error in content pack: {GetShortDir(contentDirectory)}; Failed to load texture: {MakeId(entry)}", LogLevel.Error);
                         continue;
                     }
                 }
                 if (!entry.IsValid()) {
-                    Monitor.Log($"Invalid bloom schedule: {MakeId(entry)}", LogLevel.Error);
+                    Monitor.Log($"Error in content pack: {GetShortDir(contentDirectory)}; Invalid bloom schedule: {MakeId(entry)}", LogLevel.Error);
                     continue;
                 }
-                //Monitor.Log($"Valid bloom schedule: {MakeId(entry)}", LogLevel.Error);
                 Entries.Add(sched);
             }
         }
 
-        public static IEnumerable<Schedule> GetAllCandidates(int year, int doy, bool ignoreWeather, bool allowExisting, GameLocation location = null) =>
-            Entries.Where(e => e.IsEnabled() && e.Entry.CanBloomToday(year, doy, ignoreWeather, allowExisting, location));
+        public static IEnumerable<Schedule> GetAllCandidates(int year, int doy, bool ignoreWeather, bool allowExisting, GameLocation location = null, Vector2? tile = null) {
+            var candidates = Entries.Where(e => e.IsEnabled() && e.Entry.CanBloomToday(year, doy, ignoreWeather, allowExisting, location, tile));
+            return candidates.Any(e => e.Entry.Chance > 1f)
+                ? candidates.Where(e => e.Entry.Chance > 1f)
+                : candidates;
+        }
 
         private const string KeyBushDay = "bush-day", KeyBushSchedule = "bush-schedule";
 
         public static void SetSchedule(Bush bush, string id) => bush.modData[$"{Helper.ModContent.ModID}/{KeyBushSchedule}"] = id;
+        
+        public static bool TryGetExistingSchedule(Bush bush, out Schedule schedule) => (schedule = GetExistingSchedule(bush)) is not null;
 
         public static Schedule GetExistingSchedule(Bush bush) {
             if (bush.IsAbleToBloom()
@@ -129,10 +141,10 @@ namespace BushBloomMod {
                 && bush.modData.TryGetValue($"{Helper.ModContent.ModID}/{KeyBushSchedule}", out value) && value is not null && value != "-1"
             ) {
                 // check for valid schedules
-                entry = GetAllCandidates(Game1.year, doy, false, true, bush.Location).FirstOrDefault(e => e.IsEnabled() && string.Compare(e.Id, value) == 0);
+                entry = GetAllCandidates(Game1.year, doy, false, true, bush.Location, bush.Tile).FirstOrDefault(e => e.IsEnabled() && string.Compare(e.Id, value) == 0);
             }
             if (entry == null) { // found no existing valid schedule
-                var candidates = GetAllCandidates(Game1.year, doy, false, false, bush.Location);
+                var candidates = GetAllCandidates(Game1.year, doy, false, false, bush.Location, bush.Tile);
                 // check if bush is not blooming already, or is from an active schedule and use same
                 if (bush.tileSheetOffset.Value == 0
                     || !bush.modData.TryGetValue($"{Helper.ModContent.ModID}/{KeyBushSchedule}", out value) || value is null

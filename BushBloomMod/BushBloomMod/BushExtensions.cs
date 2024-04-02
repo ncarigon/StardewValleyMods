@@ -12,7 +12,7 @@ namespace BushBloomMod {
 
         public static bool IsBloomingToday(this Bush bush) => Schedule.GetSchedule(bush) is not null;
 
-        public static bool HasBloomedToday(this Bush bush) => Schedule.GetExistingSchedule(bush) is not null;
+        public static bool HasBloomedToday(this Bush bush) => Schedule.TryGetExistingSchedule(bush, out _);
 
         public static string GetShakeOffId(this Bush bush) => Schedule.GetExistingSchedule(bush)?.ShakeOffId;
     }

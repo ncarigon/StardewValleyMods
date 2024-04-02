@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using HarmonyLib;
@@ -11,10 +10,12 @@ using StardewValley.TerrainFeatures;
 
 namespace BushBloomMod.Patches {
     internal static class Bushes {
+        private static IModHelper Helper;
         public static IMonitor Monitor;
         private static Config Config;
 
         public static void Register(IModHelper helper, IMonitor monitor, Config config) {
+            Helper = helper;
             Monitor = monitor;
             Config = config;
             var harmony = new Harmony(helper.ModContent.ModID);
@@ -46,17 +47,15 @@ namespace BushBloomMod.Patches {
             );
         }
 
-        // track custom texures associated with each bush
-        private static readonly Dictionary<Bush, Texture2D> CustomTextures = new();
-
         // our custom winter berry
         private static readonly Texture2D WinterBerryBush;
 
         static Bushes() {
+            var path = Path.Combine("assets", "winter.png");
             try {
-                WinterBerryBush = Texture2D.FromFile(Game1.graphics.GraphicsDevice, Path.Combine(new FileInfo(Assembly.GetAssembly(typeof(Bushes)).Location).Directory.FullName, "assets", "winter.png"));
+                WinterBerryBush = Texture2D.FromFile(Game1.graphics.GraphicsDevice, Path.Combine(new FileInfo(Assembly.GetAssembly(typeof(Bushes)).Location).Directory.FullName, path));
             } catch {
-                Monitor.Log($"Failed to load texture: {Path.Combine("assets", "winter.png")}", LogLevel.Error);
+                Monitor.Log($"Failed to load texture: {path}", LogLevel.Error);
             }
         }
 
@@ -121,10 +120,14 @@ namespace BushBloomMod.Patches {
             }
         }
 
+        private static readonly string KeyBushTexture = "bush-texture";
+
         private static void Postfix_Bush_setUpSourceRect(
             Bush __instance
         ) {
             if (__instance.IsAbleToBloom()) {
+                // setting this here seems to catch cases where stale schedule data still exists from removed content packs
+                __instance.tileSheetOffset.Value = __instance.HasBloomedToday() ? 1 : 0;
                 var season = ((!__instance.IsSheltered()) ? __instance.Location.GetSeason() : Season.Spring);
                 var sheetOffset = __instance.tileSheetOffset.Value;
                 if (__instance.tileSheetOffset.Value == 1) {
@@ -136,7 +139,7 @@ namespace BushBloomMod.Patches {
                     if (t != null) {
                         sheetOffset = 0;
                     }
-                    CustomTextures[__instance] = t;
+                    __instance.modData[$"{Helper.ModContent.ModID}/{KeyBushTexture}"] = t is not null ? "true" : "false";
                 }
                 // switch summer texture to spring, if configured
                 if (season == Season.Summer && Config.UseSpringBushForSummer) {
@@ -154,9 +157,12 @@ namespace BushBloomMod.Patches {
         ) {
             if (__instance.IsAbleToBloom()) {
                 // if blooming and using a custom texture
-                if (__instance.tileSheetOffset.Value == 1 && CustomTextures.TryGetValue(__instance, out var texture) && texture != null) {
+                if (__instance.tileSheetOffset.Value == 1
+                    && Schedule.TryGetExistingSchedule(__instance, out var schedule)
+                    && __instance.modData[$"{Helper.ModContent.ModID}/{KeyBushTexture}"] == "true"
+                ) {
                     spriteBatch.Draw(
-                        texture: texture,
+                        texture: schedule.Texture ?? WinterBerryBush,
                         position: Game1.GlobalToLocal(Game1.viewport, new Vector2(__instance.Tile.X * 64f + 64, (__instance.Tile.Y + 1f) * 64f - 64 + ___yDrawOffset)),
                         sourceRectangle: new(0, 0, 32, 48),
                         color: Color.White,

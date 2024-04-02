@@ -24,8 +24,7 @@ namespace BushBloomMod {
                 if (item.Exists()) {
                     return item.QualifiedItemId[3..];
                 }
-                return Game1.objectData.Where(d => string.Compare(d.Value.Name, name, true) == 0).Select(d => d.Key).FirstOrDefault()
-                    ?? Game1.bigCraftableData.Where(d => string.Compare(d.Value.Name, name, true) == 0).Select(d => d.Key).FirstOrDefault();
+                return Game1.objectData.Where(d => string.Compare(d.Value.Name, name, true) == 0).Select(d => d.Key).FirstOrDefault();
 
             }
             return null;

@@ -1,4 +1,7 @@
-﻿using StardewModdingAPI;
+﻿using Microsoft.Xna.Framework;
+using StardewModdingAPI;
+using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace PassableCrops {
     internal class ModEntry : Mod {
@@ -11,6 +14,12 @@ namespace PassableCrops {
             Patches.Bushes.Register(this);
             Patches.Trees.Register(this);
             Patches.FruitTrees.Register(this);
+        }
+
+        public void PlayRustleSound(Vector2 tile, GameLocation location) {
+            if ((Config?.ShakeWhenPassing ?? false) && (Config?.PlaySoundWhenPassing ?? false) && Utility.isOnScreen(new Point((int)tile.X, (int)tile.Y), 2, location)) {
+                Grass.PlayGrassSound();
+            }
         }
     }
 }

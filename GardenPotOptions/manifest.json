@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Garden Pot Options",
+    "Author": "NCarigon",
+    "Version": "1.0.0",
+    "Description": "Enables additional options for how garden pots work.",
+    "UniqueID": "NCarigon.GardenPotOptions",
+    "EntryDll": "GardenPotOptions.dll",
+    "MinimumApiVersion": "4.0.0",
+    "UpdateKeys": [ "nexus:21608" ]
+}

@@ -29,7 +29,10 @@
 		// Optional; Default is built-in texture if missing
 		"Texture": "assets/berry.png",
 
-		// Optional; Default is 0.2 if missing; Value must be between 0.0 and 1.0, inclusive
+		// Optional; Default is 0.2 if missing; Values between 0.0 and 1.0 (inclusive)
+		//           determine the overall probability. A value greater than 1.0 will
+		//           guarantee that item will bloom, regardless of any existing bloom
+		//           or other possible schedules unless they are also greater than 1.0.
 		"Chance": 0.2,
 
 		// Optional; Default is all locations if missing or empty
@@ -42,9 +45,17 @@
 		"Weather": [ "Rain", "GreenRain", "Sun", "Wind" ],
 
 		// Optional: Default is no weather if missing or empty
-		"ExcludeWeather": [ "Storm", "Festival" ],
+		"ExcludeWeather": [ "Storm", "Festival", "Wedding" ],
 
 		// Optional: Default is no weather if missing or empty
-		"DestroyWeather": [ "Snow" ]
+		"DestroyWeather": [ "Snow" ],
+
+		// Optional: Restrict blooming to only bushes with the given tile locations.
+		//           Most effective when combined with a specific "Locations" setting
+		//           in order to bloom a *very* specific set of bushes.
+		"Tiles": [
+			{ "X": 10, "Y": 20 },
+			{ "X": 23, "Y": 32 }
+		]
 	}
 ]
