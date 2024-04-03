@@ -17,6 +17,14 @@ namespace GardenPotOptions {
                 prefix: new HarmonyMethod(typeof(Patches), nameof(Prefix_Pickaxe_DoFunction))
             );
             harmony.Patch(
+                original: AccessTools.Method(typeof(Axe), "DoFunction"),
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Prefix_Axe_DoFunction))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Hoe), "DoFunction"),
+                prefix: new HarmonyMethod(typeof(Patches), nameof(Prefix_Hoe_DoFunction))
+            );
+            harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), "placementAction"),
                 postfix: new HarmonyMethod(typeof(Patches), nameof(Postfix_Object_placementAction))
             );
@@ -45,7 +53,7 @@ namespace GardenPotOptions {
             || pot.hoeDirt.Value?.fertilizer.Value is not null
             || pot.heldObject.Value is not null);
 
-        private static void Prefix_Pickaxe_DoFunction(GameLocation location, int x, int y, Farmer who) {
+        private static void Prefix_Tool_DoFunction(GameLocation location, int x, int y, Farmer who) {
             if (Config?.KeepContents ?? false) {
                 var tile = new Vector2(x / 64, y / 64);
                 if (location.Objects.TryGetValue(tile, out var obj)
@@ -55,6 +63,24 @@ namespace GardenPotOptions {
                     pot!.performRemoveAction();
                     location.Objects.Remove(tile);
                 }
+            }
+        }
+
+        private static void Prefix_Pickaxe_DoFunction(GameLocation location, int x, int y, Farmer who) {
+            if ((Config?.KeepContents ?? false) && "Pickaxe" == Config?.SafeTool) {
+                Prefix_Tool_DoFunction(location, x, y, who);
+            }
+        }
+
+        private static void Prefix_Axe_DoFunction(GameLocation location, int x, int y, Farmer who) {
+            if ((Config?.KeepContents ?? false) && "Axe" == Config?.SafeTool) {
+                Prefix_Tool_DoFunction(location, x, y, who);
+            }
+        }
+
+        private static void Prefix_Hoe_DoFunction(GameLocation location, int x, int y, Farmer who) {
+            if ((Config?.KeepContents ?? false) && "Hoe" == Config?.SafeTool) {
+                Prefix_Tool_DoFunction(location, x, y, who);
             }
         }
 

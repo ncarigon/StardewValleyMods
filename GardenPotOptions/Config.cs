@@ -1,10 +1,12 @@
 using StardewModdingAPI;
+using StardewValley;
 
 namespace GardenPotOptions {
     public class Config {
         public bool KeepContents { get; set; } = true;
         public bool EnableSprinklers { get; set; } = true;
         public bool AllowAncientSeeds { get; set; } = false;
+        public string SafeTool { get; set; } = "Pickaxe";
 
         internal static Config Register(IModHelper helper) {
             var config = helper.ReadConfig<Config>();
@@ -25,6 +27,15 @@ namespace GardenPotOptions {
                     tooltip: () => "Prevents garden pot contents from being destroyed when picked up.",
                     getValue: () => config.KeepContents,
                     setValue: value => config.KeepContents = value
+                );
+                configMenu.AddTextOption(
+                    mod: manifest,
+                    name: () => "Safe Tool",
+                    tooltip: () => "Select which tool can pick up garden pots without breaking them.",
+                    getValue: () => config.SafeTool,
+                    setValue: value => config.SafeTool = value,
+                    allowedValues: new string[] { "Pickaxe", "Axe", "Hoe" },
+                    formatAllowedValue: (v) => ItemRegistry.GetMetadata($"(T){v}").CreateItem().DisplayName
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
@@ -49,5 +60,7 @@ namespace GardenPotOptions {
         void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
 
         void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null!, string fieldId = null!);
+
+        void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string> tooltip = null!, string[] allowedValues = null!, Func<string, string> formatAllowedValue = null!, string fieldId = null!);
     }
 }
