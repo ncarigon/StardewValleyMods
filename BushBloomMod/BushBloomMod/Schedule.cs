@@ -8,6 +8,7 @@ using StardewValley.TerrainFeatures;
 using StardewModdingAPI;
 using Microsoft.Xna.Framework;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace BushBloomMod {
     internal class Schedule {
@@ -21,34 +22,24 @@ namespace BushBloomMod {
             Config = config;
         }
 
+        public static bool IsReady { get; private set; }
+
         private static string MakeId(ContentEntry entry, string shakeOff = null) => $"{shakeOff ?? entry.ShakeOff};{Helpers.GetDayOfYear(entry.StartSeason, entry.StartDay)};{Helpers.GetDayOfYear(entry.EndSeason, entry.EndDay)};{entry.StartYear};{entry.EndYear};{entry.Chance};{string.Join(",", entry.Locations ?? Array.Empty<string>())};{string.Join(",", entry.ExcludeLocations ?? Array.Empty<string>())};{string.Join(",", entry.Weather ?? Array.Empty<string>())};{string.Join(",", entry.ExcludeWeather ?? Array.Empty<string>())};{string.Join(",", entry.DestroyWeather ?? Array.Empty<string>())};{string.Join(",", entry.Tiles ?? Array.Empty<Vector2>())};{entry.Texture}";
 
         private bool IsDefault;
 
-        public bool IsEnabled() => (this.Entry.Enabled ?? true) && (Config.EnableDefaultSchedules || !this.IsDefault);
+        public bool IsEnabled() => Config.EnableDefaultSchedules || !this.IsDefault;
 
         public ContentEntry Entry { get; private set; }
 
         public Texture2D Texture { get; private set; }
 
-        private string ContentDirectory;
-
         private static string GetShortDir(string dir) => Regex.Replace(dir ?? "", @"^.+[\\\/]Mods[\\\/]", "");
 
-        // need to validate this later is startup to ensure other mod content has loaded and can be found
+        // need to validate this later in startup to ensure other mod content has loaded and can be found
         private string _shakeOffId;
         public string ShakeOffId {
-            get {
-                if (this._shakeOffId == null) {
-                    this._shakeOffId = Helpers.GetItemIdFromName(this.Entry.ShakeOff);
-                    if (this._shakeOffId == null) {
-                        Monitor.Log($"Error in content pack: {GetShortDir(this.ContentDirectory)}; Invalid shakeoff item: {MakeId(this.Entry)}", LogLevel.Warn);
-                        this._shakeOffId = "";
-                        this.Entry.Enabled = false;
-                    }
-                }
-                return this._shakeOffId;
-            }
+            get => this._shakeOffId ??= Helpers.GetItemIdFromName(this.Entry.ShakeOff);
         }
 
         // need to delay id construction for the same reason as shake off id
@@ -57,20 +48,30 @@ namespace BushBloomMod {
             get => this._id ??= MakeId(this.Entry, this.ShakeOffId);
         }
 
-        private static readonly List<Schedule> Entries = new();
+        public static readonly List<Schedule> Entries = new();
 
-        public static void ReloadEntries() {
-            Entries.Clear();
-            try {
-                AddEntries(Helper.DirectoryPath, Helper.Data.ReadJsonFile<ContentEntry[]>("content.json"));
-            } catch {
-                Monitor.Log($"Unable to load content pack: {GetShortDir(Helper.DirectoryPath)}. Review that file for syntax errors.", LogLevel.Error);
-            }
-            foreach (var pack in Helper.ContentPacks.GetOwned()) {
+        public static async void ReloadEntries(int tries = 1) {
+            IsReady = false;
+            while (tries-- > 0) {
+                // need to add a delay to help ensure all content packs have loaded
+                await Task.Delay(500);
+                Entries.Clear();
                 try {
-                    AddEntries(pack.DirectoryPath, pack.ReadJsonFile<ContentEntry[]>("content.json"));
+                    AddEntries(Helper.DirectoryPath, Helper.Data.ReadJsonFile<ContentEntry[]>("content.json"));
                 } catch {
-                    Monitor.Log($"Unable to load content pack: {GetShortDir(pack.DirectoryPath)}. Review that file for syntax errors.", LogLevel.Error);
+                    Monitor.Log($"Unable to load content pack: {GetShortDir(Helper.DirectoryPath)}. Review that file for syntax errors.", LogLevel.Error);
+                }
+                foreach (var pack in Helper.ContentPacks.GetOwned()) {
+                    try {
+                        AddEntries(pack.DirectoryPath, pack.ReadJsonFile<ContentEntry[]>("content.json"));
+                    } catch {
+                        Monitor.Log($"Unable to load content pack: {GetShortDir(pack.DirectoryPath)}. Review that file for syntax errors.", LogLevel.Error);
+                    }
+                }
+                // check if any schedules have invalid items, likely a content pack that hasn't loaded yet
+                if (!Entries.Any(e => e.ShakeOffId is null)) {
+                    IsReady = true;
+                    break;
                 }
             }
         }
@@ -84,8 +85,7 @@ namespace BushBloomMod {
                 entry.Chance ??= 0.2;
                 var sched = new Schedule() {
                     IsDefault = isDefault,
-                    Entry = entry,
-                    ContentDirectory = contentDirectory
+                    Entry = entry
                 };
                 if (entry.Texture is not null) {
                     entry.Texture = string.Join(Path.DirectorySeparatorChar, entry.Texture.Split('/', '\\'));

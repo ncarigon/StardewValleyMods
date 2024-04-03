@@ -10,7 +10,7 @@ namespace BushBloomMod {
             Schedule.Register(helper, this.Monitor, config);
             //Almanac.Register(this.ModManifest, helper, this.Monitor, config);
             Automate.Register(this.ModManifest, helper, this.Monitor, config);
-            helper.Events.GameLoop.GameLaunched += (s, e) => Schedule.ReloadEntries();
+            helper.Events.GameLoop.GameLaunched += (s, e) => Schedule.ReloadEntries(10);
         }
 
         public override object GetApi() => new Api();
