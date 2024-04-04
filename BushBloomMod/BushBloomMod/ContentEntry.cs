@@ -6,6 +6,7 @@ using StardewValley;
 namespace BushBloomMod {
     internal class ContentEntry {
 #pragma warning disable CS0649
+        public bool? Enabled;
         public string ShakeOff;
         public string StartSeason, EndSeason;
         public int? StartDay, EndDay;
@@ -18,6 +19,9 @@ namespace BushBloomMod {
 #pragma warning restore CS0649
 
         public bool CanBloomToday(int year, int dayOfYear, bool ignoreWeather, bool allowExisting, GameLocation location = null, Vector2? tile = null) {
+            if (!(this.Enabled ?? true)) {
+                return false;
+            }
             var firstDayOfYear = Helpers.GetDayOfYear(this.StartSeason, this.StartDay);
             var lastDayOfYear = Helpers.GetDayOfYear(this.EndSeason, this.EndDay);
             var weather = location?.GetWeather().Weather;

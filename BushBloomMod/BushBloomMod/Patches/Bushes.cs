@@ -38,6 +38,10 @@ namespace BushBloomMod.Patches {
                 postfix: new HarmonyMethod(typeof(Bushes), nameof(Postfix_Bush_GetShakeOffItem))
             );
             harmony.Patch(
+                original: AccessTools.Method(typeof(Bush), "shake"),
+                postfix: new HarmonyMethod(typeof(Bushes), nameof(Postfix_Bush_shake))
+            );
+            harmony.Patch(
                 original: AccessTools.Method(typeof(Bush), "setUpSourceRect"),
                 postfix: new HarmonyMethod(typeof(Bushes), nameof(Postfix_Bush_setUpSourceRect))
             );
@@ -115,6 +119,13 @@ namespace BushBloomMod.Patches {
             if (__instance.IsAbleToBloom()) {
                 // overwrite with our item shake logic
                 __result = __instance.GetShakeOffId();
+            }
+        }
+
+        private static void Postfix_Bush_shake(
+            Bush __instance
+        ) {
+            if (__instance.IsAbleToBloom()) {
                 // clear schedule after shaking
                 Schedule.SetSchedule(__instance, null);
             }

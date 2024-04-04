@@ -28,7 +28,7 @@ namespace BushBloomMod {
 
         private bool IsDefault;
 
-        public bool IsEnabled() => Config.EnableDefaultSchedules || !this.IsDefault;
+        public bool IsEnabled() => (this.Entry.Enabled ?? true) && (Config.EnableDefaultSchedules || !this.IsDefault);
 
         public ContentEntry Entry { get; private set; }
 
