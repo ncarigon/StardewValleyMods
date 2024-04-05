@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "[BBM] Copper Still",
 	"Author": "NCarigon",
-	"Version": "1.1.1",
+	"Version": "1.1.2",
 	"Description": "Bush bloom content for Copper Still.",
 	"UniqueID": "NCarigon.CopperStillBBM",
 	"UpdateKeys": [ "nexus:15333" ],

@@ -128,6 +128,8 @@ namespace BushBloomMod.Patches {
             if (__instance.IsAbleToBloom()) {
                 // clear schedule after shaking
                 Schedule.SetSchedule(__instance, null);
+                __instance.tileSheetOffset.Value = 0;
+                __instance.setUpSourceRect();
             }
         }
 

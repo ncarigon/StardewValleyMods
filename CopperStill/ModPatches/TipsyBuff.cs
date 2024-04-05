@@ -16,7 +16,7 @@ namespace CopperStill.ModPatches {
         private static bool Prefix_BuffManager_Apply(
             BuffManager __instance, Buff buff
         ) {
-            if (buff.id != Buff.tipsy &&
+            if (__instance is not null && buff?.source is not null && buff.id != Buff.tipsy &&
                 (buff.source.Contains("Brandy") || buff.source.Contains("Vodka") || buff.source.Contains("Gin")
                 || buff.source.Contains("Tequila") || buff.source.Contains("Moonshine") || buff.source.Contains("Whiskey")
                 || buff.source.Contains("Rum") || buff.source.Contains("Soju") || buff.source.Contains("Sake"))

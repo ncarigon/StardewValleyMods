@@ -12,12 +12,14 @@ namespace CopperStill.ModPatches {
                 if (id != null) {
                     var bundles = Game1.netWorldState.Value.BundleData;
                     foreach (var key in bundles.Keys.ToArray()) {
-                        var val = bundles[key];
-                        if (key == "Abandoned Joja Mart/36" && val == "The Missing//348 1 1 807 1 0 74 1 0 454 5 2 795 1 2 445 1 0/1/5//The Missing") {
-                            bundles[key] = val.Replace("//348 1 1 ", $"//{id} 1 1 ");
-                            Game1.netWorldState.Value.SetBundleData(bundles);
-                            monitor.Log("Found default bundle, adjusting accordingly.", LogLevel.Info);
-                            break;
+                        if (key == "Abandoned Joja Mart/36") {
+                            var val = bundles[key];
+                            if (val == "The Missing//348 1 1 807 1 0 74 1 0 454 5 2 795 1 2 445 1 0/1/5//The Missing") {
+                                bundles[key] = val.Replace("//348 1 1 ", $"//{id} 1 1 ");
+                                Game1.netWorldState.Value.SetBundleData(bundles);
+                                monitor.Log("Found default bundle, adjusting accordingly.", LogLevel.Info);
+                                break;
+                            }
                         }
                     }
                 }
