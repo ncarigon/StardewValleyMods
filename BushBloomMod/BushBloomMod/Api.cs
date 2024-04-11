@@ -41,16 +41,16 @@ namespace BushBloomMod {
         /// <summary>
         /// Performs the general operations of the Bush.shake() function without all the player, debris,
         /// and UI logic. Namely, this will return an item ID if the bush is in bloom and mark the bush
-        /// as no longer blooming. You must create the item and handle any operations needed for it.
+        /// as no longer blooming. You must create the item and handle any logic operations needed for it.
         /// </summary>
         public string FakeShake(Bush bush) {
             if (bush.IsAbleToBloom()) {
                 // overwrite with our item shake logic
                 var item = bush.GetShakeOffId();
-                // disable blooming
-                bush.tileSheetOffset.Value = 0;
                 // clear schedule after shaking
-                Schedule.SetSchedule(bush, null);
+                bush.DataSetSchedule(null);
+                bush.tileSheetOffset.Value = 0;
+                bush.setUpSourceRect();
                 return item;
             }
             return null;

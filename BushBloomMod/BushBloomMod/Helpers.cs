@@ -22,7 +22,7 @@ namespace BushBloomMod {
                 }
                 var item = ItemRegistry.GetMetadata(name);
                 if (!item.Exists()) {
-                    item = ItemRegistry.GetMetadata($"(O){name}");
+                    item = ItemRegistry.GetMetadata("(O){name}");
                 }
                 if (item.Exists()) {
                     return item.QualifiedItemId[3..];

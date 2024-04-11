@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,34 +6,55 @@ using StardewValley;
 using StardewValley.TerrainFeatures;
 using StardewModdingAPI;
 using Microsoft.Xna.Framework;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using StardewModdingAPI.Utilities;
+using System;
+using StardewModdingAPI.Events;
 
 namespace BushBloomMod {
     internal class Schedule {
-        private static IModHelper Helper;
-        private static IMonitor Monitor;
-        private static Config Config;
+        public static readonly string ContentRoot = "NCarigon.BushBloomMod";
+        public static readonly string SchedulePath = PathUtilities.NormalizeAssetName(ContentRoot + "/Schedules");
+        public static readonly string TexturePrefix = PathUtilities.NormalizeAssetName(ContentRoot + "/Textures");
 
-        public static void Register(IModHelper helper, IMonitor monitor, Config config) {
-            Helper = helper;
-            Monitor = monitor;
-            Config = config;
+        public static void Content_AssetRequested(object sender, AssetRequestedEventArgs e) {
+            if (e.NameWithoutLocale.Name.Equals(SchedulePath, StringComparison.InvariantCultureIgnoreCase)) {
+                e.LoadFrom(() => new Dictionary<string, ContentEntry>(Entries.Select(e => new KeyValuePair<string, ContentEntry>(e.Entry.Id, e.Entry))), AssetLoadPriority.Exclusive);
+            } else if (e.NameWithoutLocale.Name.StartsWith(TexturePrefix, StringComparison.InvariantCultureIgnoreCase)) {
+                if (e.NameWithoutLocale.Name.Equals(TexturePrefix + "/WinterBerry")) {
+                    e.LoadFrom(() => Texture2D.FromFile(Game1.graphics.GraphicsDevice, Path.Combine(ModEntry.Instance.Helper.DirectoryPath, "assets", "winter.png")), AssetLoadPriority.Exclusive);
+                } else {
+                    var imgPath = Entries
+                        .Where(s => !string.IsNullOrWhiteSpace(s.Entry.Texture) && e.NameWithoutLocale.Name.Equals(PathUtilities.NormalizeAssetName(TexturePrefix + "/" + s.Entry.Id), StringComparison.InvariantCultureIgnoreCase))
+                        .Select(s => Path.Combine(ModEntry.Instance.Helper.DirectoryPath, "..", s.Entry.Texture))
+                        .Where(s => File.Exists(s))
+                        .FirstOrDefault();
+                    if (imgPath is not null) {
+                        e.LoadFrom(() => Texture2D.FromFile(Game1.graphics.GraphicsDevice, imgPath), AssetLoadPriority.Exclusive);
+                    } else {
+                        // create a fake texture we can detect and ignore later. CP overwrites will modify it and bypass the ignore.
+                        e.LoadFrom(() => new Texture2D(Game1.graphics.GraphicsDevice, 32, 1), AssetLoadPriority.Exclusive);
+                    }
+                }
+            }
         }
 
         public static bool IsReady { get; private set; }
 
-        private static string MakeId(ContentEntry entry, string shakeOff = null) => $"{shakeOff ?? entry.ShakeOff};{Helpers.GetDayOfYear(entry.StartSeason, entry.StartDay)};{Helpers.GetDayOfYear(entry.EndSeason, entry.EndDay)};{entry.StartYear};{entry.EndYear};{entry.Chance};{string.Join(",", entry.Locations ?? Array.Empty<string>())};{string.Join(",", entry.ExcludeLocations ?? Array.Empty<string>())};{string.Join(",", entry.Weather ?? Array.Empty<string>())};{string.Join(",", entry.ExcludeWeather ?? Array.Empty<string>())};{string.Join(",", entry.DestroyWeather ?? Array.Empty<string>())};{string.Join(",", entry.Tiles ?? Array.Empty<Vector2>())};{entry.Texture}";
-
         private bool IsDefault;
 
-        public bool IsEnabled() => (this.Entry.Enabled ?? true) && (Config.EnableDefaultSchedules || !this.IsDefault);
+        public bool IsEnabled() => (this.Entry.Enabled ?? true) && (ModEntry.Instance.Config.EnableDefaultSchedules || !this.IsDefault);
 
         public ContentEntry Entry { get; private set; }
 
-        public Texture2D Texture { get; private set; }
+        public Texture2D Texture {
+            // check the cache, and ensure it's not a fake texture (height)
+            get => CachedTextures.TryGetValue(this.Entry.Id, out var value) && value.Height > 1 ? value : null;
+        }
 
-        private static string GetShortDir(string dir) => Regex.Replace(dir ?? "", @"^.+[\\\/]Mods[\\\/]", "");
+        public static Texture2D WinterBerry {
+            get => CachedTextures.TryGetValue("WinterBerry", out var value) && value.Height > 1 ? value : null;
+        }
 
         // need to validate this later in startup to ensure other mod content has loaded and can be found
         private string _shakeOffId;
@@ -42,63 +62,82 @@ namespace BushBloomMod {
             get => this._shakeOffId ??= Helpers.GetItemIdFromName(this.Entry.ShakeOff);
         }
 
-        // need to delay id construction for the same reason as shake off id
-        private string _id;
-        public string Id {
-            get => this._id ??= MakeId(this.Entry, this.ShakeOffId);
-        }
-
         public static readonly List<Schedule> Entries = new();
 
-        public static async void ReloadEntries(int tries = 1) {
+        private static readonly Dictionary<string, Texture2D> CachedTextures = new(StringComparer.InvariantCultureIgnoreCase);
+
+        // Texture parsing can't happen during first call since UI hasn't been created yet
+        private static bool FirstLoad = true;
+
+        public static async void ReloadEntries(int retries = 0) {
             IsReady = false;
-            while (tries-- > 0) {
-                // need to add a delay to help ensure all content packs have loaded
-                await Task.Delay(500);
+            var tries = 0;
+            while (tries++ <= retries) {
                 Entries.Clear();
                 try {
-                    AddEntries(Helper.DirectoryPath, Helper.Data.ReadJsonFile<ContentEntry[]>("content.json"));
+                    AddEntries(ModEntry.Instance.Helper.DirectoryPath, ModEntry.Instance.Helper.Data.ReadJsonFile<ContentEntry[]>("content.json"));
                 } catch {
-                    Monitor.Log($"Unable to load content pack: {GetShortDir(Helper.DirectoryPath)}. Review that file for syntax errors.", LogLevel.Error);
+                    ModEntry.Instance.Monitor.Log($"Unable to load content pack: {new DirectoryInfo(ModEntry.Instance.Helper.DirectoryPath).Name}. Review that file for syntax errors.", LogLevel.Error);
                 }
-                foreach (var pack in Helper.ContentPacks.GetOwned()) {
+                foreach (var pack in ModEntry.Instance.Helper.ContentPacks.GetOwned()) {
                     try {
                         AddEntries(pack.DirectoryPath, pack.ReadJsonFile<ContentEntry[]>("content.json"));
                     } catch {
-                        Monitor.Log($"Unable to load content pack: {GetShortDir(pack.DirectoryPath)}. Review that file for syntax errors.", LogLevel.Error);
+                        ModEntry.Instance.Monitor.Log($"Unable to load content pack: {new DirectoryInfo(pack.DirectoryPath).Name}. Review that file for syntax errors.", LogLevel.Error);
                     }
                 }
                 // check if any schedules have invalid items, likely a content pack that hasn't loaded yet
                 if (!Entries.Any(e => e.ShakeOffId is null)) {
                     IsReady = true;
+                }
+                if (IsReady) {
                     break;
                 }
+                // need to add a delay to help ensure all content packs have loaded
+                if (retries > 0) {
+                    await Task.Delay(500);
+                }
+            }
+            // load schedules and allow CP to overwrite
+            var loaded = Game1.content.Load<Dictionary<string, ContentEntry>>(SchedulePath).ToList();
+            Entries.Clear();
+            loaded.ForEach(e => {
+                if (e.Value.IsValid()) {
+                    e.Value.Id = e.Key;
+                    Entries.Add(new Schedule() {
+                        Entry = e.Value
+                    });
+                }
+            });
+            CachedTextures.Clear();
+            if (!FirstLoad) {
+                // load textures and allow CP to overwrite entries
+                Entries.ForEach(e => CachedTextures[e.Entry.Id] = Game1.content.Load<Texture2D>(PathUtilities.NormalizeAssetName(TexturePrefix + "/" + e.Entry.Id)));
+                // our custom winter berry
+                CachedTextures["WinterBerry"] = Game1.content.Load<Texture2D>(TexturePrefix + "/WinterBerry");
+            } else {
+                FirstLoad = false;
             }
         }
 
         private static void AddEntries(string contentDirectory, ContentEntry[] content) {
             var isDefault = Entries.Count == 0;
+            var dir = new DirectoryInfo(contentDirectory).Name;
             foreach (var entry in content) {
                 entry.EndSeason ??= entry.StartSeason;
                 entry.EndDay ??= entry.StartDay;
                 entry.StartYear ??= 1;
                 entry.Chance ??= 0.2;
+                entry.Id ??= $"{(isDefault ? "default" : dir)}/{entry.StartSeason}_{entry.ShakeOff}";
+                if (entry.Texture is not null) {
+                    entry.Texture = Path.Combine(dir, string.Join(Path.DirectorySeparatorChar, entry.Texture.Split('/', '\\')));
+                }
                 var sched = new Schedule() {
                     IsDefault = isDefault,
                     Entry = entry
                 };
-                if (entry.Texture is not null) {
-                    entry.Texture = string.Join(Path.DirectorySeparatorChar, entry.Texture.Split('/', '\\'));
-                    var fullPath = Path.Combine(contentDirectory, entry.Texture);
-                    try {
-                        sched.Texture = Texture2D.FromFile(Game1.graphics.GraphicsDevice, fullPath);
-                    } catch {
-                        Monitor.Log($"Error in content pack: {GetShortDir(contentDirectory)}; Failed to load texture: {MakeId(entry)}", LogLevel.Error);
-                        continue;
-                    }
-                }
                 if (!entry.IsValid()) {
-                    Monitor.Log($"Error in content pack: {GetShortDir(contentDirectory)}; Invalid bloom schedule: {MakeId(entry)}", LogLevel.Error);
+                    ModEntry.Instance.Monitor.Log($"Error in content pack: {dir}; Invalid bloom schedule: {entry.Id}", LogLevel.Error);
                     continue;
                 }
                 Entries.Add(sched);
@@ -112,63 +151,40 @@ namespace BushBloomMod {
                 : candidates;
         }
 
-        private const string KeyBushDay = "bush-day", KeyBushSchedule = "bush-schedule";
-
-        public static void SetSchedule(Bush bush, string id) => bush.modData[$"{Helper.ModContent.ModID}/{KeyBushSchedule}"] = id;
-        
-        public static bool TryGetExistingSchedule(Bush bush, out Schedule schedule) => (schedule = GetExistingSchedule(bush)) is not null;
-
-        public static Schedule GetExistingSchedule(Bush bush) {
-            if (bush.IsAbleToBloom()
-                && bush.modData.TryGetValue($"{Helper.ModContent.ModID}/{KeyBushSchedule}", out var value)
-                && value is not null
-                && value != "-1"
-            ) {
-                return Entries.Where(e => e.IsEnabled() && string.Compare(e.Id, value) == 0).FirstOrDefault();
+        public static bool TryGetExistingSchedule(Bush bush, out Schedule schedule) {
+            schedule = null;
+            if (bush.IsAbleToBloom() && bush.TryDataGetSchedule(out var value)) {
+                schedule = Entries.Where(e => e.IsEnabled() && string.Compare(e.Entry.Id, value, true) == 0).FirstOrDefault();
             }
-            return null;
+            return schedule is not null;
         }
 
         public static Schedule GetSchedule(Bush bush) {
             if (!bush.IsAbleToBloom())
                 return null;
-            Schedule entry = null;
             var doy = Helpers.GetDayOfYear(bush.Location.GetSeasonKey(), Game1.dayOfMonth);
-            var yDays = (Game1.year - 1) * 112;
-            // check if we already picked a schedule for this bush and it's still valid
-            if (bush.modData.TryGetValue($"{Helper.ModContent.ModID}/{KeyBushDay}", out var value) && int.TryParse(value ?? "", out var i)
-                && i == doy + yDays - 1 // it had to be yesterday's schedule
-                && bush.modData.TryGetValue($"{Helper.ModContent.ModID}/{KeyBushSchedule}", out value) && value is not null && value != "-1"
-            ) {
-                // check for valid schedules
-                entry = GetAllCandidates(Game1.year, doy, false, true, bush.Location, bush.Tile).FirstOrDefault(e => e.IsEnabled() && string.Compare(e.Id, value) == 0);
-            }
-            if (entry == null) { // found no existing valid schedule
+            // check if bush already has a valid schedule
+            if (!(TryGetExistingSchedule(bush, out var sched) && sched.Entry.CanBloomToday(Game1.year, doy, false, true, bush.Location, bush.Tile))) {
+                sched = null;
+                // if not, search for one
                 var candidates = GetAllCandidates(Game1.year, doy, false, false, bush.Location, bush.Tile);
-                // check if bush is not blooming already, or is from an active schedule and use same
-                if (bush.tileSheetOffset.Value == 0
-                    || !bush.modData.TryGetValue($"{Helper.ModContent.ModID}/{KeyBushSchedule}", out value) || value is null
-                    || (entry = candidates.FirstOrDefault(e => string.Compare(e.Id, value) == 0)) is null
-                ) {
-                    // else get a new active schedule
-                    // calculate the chance of NOT blooming today, based on all schedules
+                // calculate the chance of NOT blooming today, based on all schedules
+                if (candidates.Any()) {
                     var chance = candidates
                         .Select(e => 1.0 - e.Entry.Chance)
                         .DefaultIfEmpty(1.0)
                         .Aggregate((a, e) => a * e);
                     // is the bush blooming?
-                    if (Game1.random.NextDouble() > chance) {
+                    // we create a predicatable random for each bush/day check so we can be consistent if recalled
+                    if (Utility.CreateRandom(Game1.uniqueIDForThisGame, bush.Tile.X * 100 + bush.Tile.Y * 1000, Game1.year, doy).NextDouble() > chance) {
                         // select a schedule from the candidates
                         var selected = candidates.Sum(e => e.Entry.Chance) * Game1.random.NextDouble();
-                        entry = candidates
-                            // find the selected schedule
-                            .FirstOrDefault(e => (selected -= e.Entry.Chance) <= 0.0);
+                        sched = candidates.FirstOrDefault(e => (selected -= e.Entry.Chance) <= 0.0);
                     }
                 }
             }
-            bush.modData[$"{Helper.ModContent.ModID}/{KeyBushDay}"] = (doy + yDays).ToString();
-            SetSchedule(bush, entry?.Id ?? "-1");
-            return entry;
+            bush.DataSetSchedule(sched?.Entry?.Id);
+            return sched;
         }
     }
 }

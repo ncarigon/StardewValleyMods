@@ -2,15 +2,15 @@ using System;
 using StardewModdingAPI;
 
 namespace BushBloomMod {
-    public class Config {
+    public class Configuration {
         public bool EnableDefaultSchedules { get; set; } = true;
         public bool UseSpringBushForSummer { get; set; } = true;
         public bool UseCustomWinterBerrySprite { get; set; } = true;
         //public bool EnableALMIntegration { get; set; } = true;
         public bool EnableAutomateIntegration { get; set; } = true;
 
-        internal static Config Register(IModHelper helper) {
-            var config = helper.ReadConfig<Config>();
+        internal static Configuration Register(IModHelper helper) {
+            var config = helper.ReadConfig<Configuration>();
 
             helper.Events.GameLoop.GameLaunched += (s, e) => {
                 var configMenu = helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
@@ -20,7 +20,7 @@ namespace BushBloomMod {
                 var manifest = helper.ModRegistry.Get(helper.ModContent.ModID)!.Manifest;
                 configMenu.Register(
                     mod: manifest,
-                    reset: () => config = new Config(),
+                    reset: () => config = new Configuration(),
                     save: () => {
                         helper.WriteConfig(config);
                         Schedule.ReloadEntries();

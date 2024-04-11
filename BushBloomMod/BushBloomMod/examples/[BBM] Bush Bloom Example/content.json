@@ -5,6 +5,9 @@
 		// Optional; Default is true if missing
 		"Enabled": true,
 
+		// Optional: Default will be 'ModDirectoryName/StartSeason_ShakeOff'
+		"Id": "[BBM] Bush Bloom Example/spring_0",
+
 		// Required; Value can be the item ID or Name, but must exist
 		"ShakeOff": 0,
 

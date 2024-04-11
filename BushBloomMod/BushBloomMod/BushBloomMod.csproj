@@ -86,13 +86,31 @@
     <None Update="examples\wild_berries\manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="example\assets\berry.png">
+    <None Update="examples\[CP] Advanced Bush Bloom Example\assets\berry.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="example\content.json">
+    <None Update="examples\[CP] Advanced Bush Bloom Example\content.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="example\manifest.json">
+    <None Update="examples\[CP] Advanced Bush Bloom Example\manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="examples\[CP] Basic Bush Bloom Example\assets\berry.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="examples\[CP] Basic Bush Bloom Example\content.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="examples\[CP] Basic Bush Bloom Example\manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="examples\[BBM] Bush Bloom Example\assets\berry.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="examples\[BBM] Bush Bloom Example\content.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="examples\[BBM] Bush Bloom Example\manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

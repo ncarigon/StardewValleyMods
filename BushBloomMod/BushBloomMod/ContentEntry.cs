@@ -7,6 +7,7 @@ namespace BushBloomMod {
     internal class ContentEntry {
 #pragma warning disable CS0649
         public bool? Enabled;
+        public string Id;
         public string ShakeOff;
         public string StartSeason, EndSeason;
         public int? StartDay, EndDay;
