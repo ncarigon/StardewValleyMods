@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using HarmonyLib;
@@ -73,8 +74,8 @@ namespace PassableCrops.Patches {
             if ((Mod?.Config?.PassableForage ?? false) && (o?.isForage() ?? false) && (o?.Category != -9) && (o?.ParentSheetIndex != 590))
                 return ObjType.Forage;
             if ((Mod?.Config?.PassableWeeds ?? false)
-                && (o?.HasContextTag("item_weeds") ?? false)
-                && (o.ParentSheetIndex < 319 || o.ParentSheetIndex > 321) //Ice Crystals are labeled as weeds so ignore them
+                && (o?.GetContextTags()?.Any(c => c.Contains("item_weeds") || c.Contains("item_greenrainweeds")) ?? false)
+                && !(new int[] { 319,320,321 }.Any(c => c == (o?.ParentSheetIndex ?? 0))) //Ice Crystals are labeled as weeds so ignore them
             ) {
                 return ObjType.Weed;
             }
