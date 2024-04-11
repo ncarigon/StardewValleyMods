@@ -117,7 +117,7 @@ namespace GardenPotOptions {
         private static void Postfix_Object_ApplySprinkler(SObject __instance, Vector2 tile) {
             if ((Config?.EnableSprinklers ?? false)
                 && __instance.Location.Objects.TryGetValue(tile, out var obj) && obj is IndoorPot pot
-                && pot.hoeDirt.Value.state.Value != 2
+                && (pot.hoeDirt.Value?.state.Value ?? 2) != 2
             ) {
                 pot.hoeDirt.Value.state.Value = 1;
                 pot.showNextIndex.Value = true;
