@@ -3,8 +3,9 @@
 namespace CopperStill {
     internal sealed class ModEntry : Mod {
         public override void Entry(IModHelper helper) {
-            ModPatches.AdjustPricing.Register(helper, Monitor);
-            ModPatches.ModifyBundle.Register(helper, Monitor);
+            var config = Config.Register(helper, this.Monitor);
+            ModPatches.AdjustPricing.Register(helper, this.Monitor);
+            ModPatches.ModifyBundle.Register(helper, this.Monitor, config);
             ModPatches.TipsyBuff.Register(helper);
         }
     }
