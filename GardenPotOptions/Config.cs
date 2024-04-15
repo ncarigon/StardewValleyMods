@@ -10,7 +10,6 @@ namespace GardenPotOptions {
 
         internal static Config Register(IModHelper helper) {
             var config = helper.ReadConfig<Config>();
-
             helper.Events.GameLoop.GameLaunched += (s, e) => {
                 var configMenu = helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
                 if (configMenu is null)

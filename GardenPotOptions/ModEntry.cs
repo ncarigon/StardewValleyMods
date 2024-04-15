@@ -1,12 +1,12 @@
-﻿using HarmonyLib;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 
 namespace GardenPotOptions {
     internal class ModEntry : Mod {
+        public static Config? ModConfig;
+
         public override void Entry(IModHelper helper) {
-            var config = Config.Register(helper);
-            var harmony = new Harmony(helper.ModContent.ModID);
-            Patches.Register(harmony, config);
+            ModConfig = Config.Register(helper);
+            Patches.Register(helper);
         }
     }
 }
