@@ -158,8 +158,6 @@ namespace BushBloomMod.Patches {
             Bush __instance
         ) {
             if (!IsBaseGameUpdate && __instance.IsAbleToBloom()) {
-                // setting this here seems to catch cases where stale schedule data still exists from removed content packs
-                __instance.tileSheetOffset.Value = __instance.HasBloomedToday() ? 1 : 0;
                 var season = ((!__instance.IsSheltered()) ? __instance.Location.GetSeason() : Season.Spring);
                 var sheetOffset = __instance.tileSheetOffset.Value;
                 if (__instance.tileSheetOffset.Value == 1) {

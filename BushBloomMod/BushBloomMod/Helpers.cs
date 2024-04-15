@@ -21,17 +21,16 @@ namespace BushBloomMod {
                     name = $"(O){i}";
                 }
                 var item = ItemRegistry.GetMetadata(name);
-                if (!item.Exists()) {
-                    item = ItemRegistry.GetMetadata("(O){name}");
+                if (!(item?.Exists() ?? false)) {
+                    item = ItemRegistry.GetMetadata($"(O){name}");
                 }
-                if (item.Exists()) {
-                    return item.QualifiedItemId[3..];
+                if ((item?.Exists() ?? false) && item.QualifiedItemId.Contains(')')) {
+                    return item.QualifiedItemId[(item.QualifiedItemId.IndexOf(')') + 1)..];
                 }
                 return Game1.objectData
                     .Where(d => string.Compare(d.Value.Name, name, true) == 0)
                     .Select(d => d.Key)
                     .FirstOrDefault();
-
             }
             return null;
         }

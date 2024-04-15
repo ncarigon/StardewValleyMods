@@ -25,9 +25,10 @@ namespace BushBloomMod {
                     e.LoadFrom(() => Texture2D.FromFile(Game1.graphics.GraphicsDevice, Path.Combine(ModEntry.Instance.Helper.DirectoryPath, "assets", "winter.png")), AssetLoadPriority.Exclusive);
                 } else {
                     var imgPath = Entries
-                        .Where(s => !string.IsNullOrWhiteSpace(s.Entry.Texture) && e.NameWithoutLocale.Name.Equals(PathUtilities.NormalizeAssetName(TexturePrefix + "/" + s.Entry.Id), StringComparison.InvariantCultureIgnoreCase))
-                        .Select(s => Path.Combine(ModEntry.Instance.Helper.DirectoryPath, "..", s.Entry.Texture))
-                        .Where(s => File.Exists(s))
+                        .Where(s => !string.IsNullOrWhiteSpace(s.Entry.Texture)
+                            && e.NameWithoutLocale.Name.Equals(PathUtilities.NormalizeAssetName(TexturePrefix + "/" + s.Entry.Id), StringComparison.InvariantCultureIgnoreCase)
+                            && File.Exists(s.Entry.Texture))
+                        .Select(s => s.Entry.Texture)
                         .FirstOrDefault();
                     if (imgPath is not null) {
                         e.LoadFrom(() => Texture2D.FromFile(Game1.graphics.GraphicsDevice, imgPath), AssetLoadPriority.Exclusive);
@@ -123,14 +124,21 @@ namespace BushBloomMod {
         private static void AddEntries(string contentDirectory, ContentEntry[] content) {
             var isDefault = Entries.Count == 0;
             var dir = new DirectoryInfo(contentDirectory).Name;
+            var names = new List<string>();
             foreach (var entry in content) {
                 entry.EndSeason ??= entry.StartSeason;
                 entry.EndDay ??= entry.StartDay;
                 entry.StartYear ??= 1;
                 entry.Chance ??= 0.2;
                 entry.Id ??= $"{(isDefault ? "default" : dir)}/{entry.StartSeason}_{entry.ShakeOff}";
+                var count = 0;
+                while (names.Contains(entry.Id, StringComparer.InvariantCultureIgnoreCase)) {
+                    count++;
+                    entry.Id = $"{(isDefault ? "default" : dir)}/{entry.StartSeason}_{entry.ShakeOff}_{count}";
+                }
+                names.Add(entry.Id);
                 if (entry.Texture is not null) {
-                    entry.Texture = Path.Combine(dir, string.Join(Path.DirectorySeparatorChar, entry.Texture.Split('/', '\\')));
+                    entry.Texture = Path.Combine(contentDirectory, string.Join(Path.DirectorySeparatorChar, entry.Texture.Split('/', '\\')));
                 }
                 var sched = new Schedule() {
                     IsDefault = isDefault,
