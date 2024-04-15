@@ -1,10 +1,6 @@
 ﻿using BushBloomMod.Patches;
-using BushBloomMod.Patches.Integrations;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
-using StardewValley.TerrainFeatures;
-using System.Linq;
 
 namespace BushBloomMod {
     internal sealed class ModEntry : Mod {
@@ -17,7 +13,7 @@ namespace BushBloomMod {
             Config = Configuration.Register(helper);
             Bushes.Register();
             //Almanac.Register(this.ModManifest);
-            Automate.Register(this.ModManifest);
+            //Automate.Register(this.ModManifest);
             helper.Events.GameLoop.GameLaunched += (s, e) => Schedule.ReloadEntries(9);
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             helper.Events.Content.AssetRequested += Schedule.Content_AssetRequested;

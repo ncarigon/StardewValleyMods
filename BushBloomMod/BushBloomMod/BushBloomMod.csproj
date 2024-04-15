@@ -27,12 +27,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Patches\Integrations\Almanac.cs" />
+    <Compile Remove="Patches\Integrations\Automate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\AutomateBBM\bin\Release\net6.0\AutomateBBM.dll" Link="AutomateBBM.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Include="Patches\Integrations\Almanac.cs" />
+    <None Include="Patches\Integrations\Automate.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />

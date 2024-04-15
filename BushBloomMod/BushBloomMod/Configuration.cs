@@ -7,7 +7,7 @@ namespace BushBloomMod {
         public bool UseSpringBushForSummer { get; set; } = true;
         public bool UseCustomWinterBerrySprite { get; set; } = true;
         //public bool EnableALMIntegration { get; set; } = true;
-        public bool EnableAutomateIntegration { get; set; } = true;
+        //public bool EnableAutomateIntegration { get; set; } = true;
 
         internal static Configuration Register(IModHelper helper) {
             var config = helper.ReadConfig<Configuration>();
@@ -55,13 +55,13 @@ namespace BushBloomMod {
                 //    getValue: () => config.EnableALMIntegration,
                 //    setValue: value => config.EnableALMIntegration = value
                 //);
-                configMenu.AddBoolOption(
-                    mod: manifest,
-                    name: () => "Support Automate",
-                    tooltip: () => "When using that mod, allows chests to harvest custom items from bushes.",
-                    getValue: () => config.EnableAutomateIntegration,
-                    setValue: value => config.EnableAutomateIntegration = value
-                );
+                //configMenu.AddBoolOption(
+                //    mod: manifest,
+                //    name: () => "Support Automate",
+                //    tooltip: () => "When using that mod, allows chests to harvest custom items from bushes.",
+                //    getValue: () => config.EnableAutomateIntegration,
+                //    setValue: value => config.EnableAutomateIntegration = value
+                //);
             };
 
             return config;
