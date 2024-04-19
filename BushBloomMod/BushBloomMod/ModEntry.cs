@@ -13,8 +13,7 @@ namespace BushBloomMod {
             Config = Configuration.Register(helper);
             Bushes.Register();
             //Almanac.Register(this.ModManifest);
-            //Automate.Register(this.ModManifest);
-            helper.Events.GameLoop.GameLaunched += (s, e) => Schedule.ReloadEntries(9);
+            helper.Events.GameLoop.GameLaunched += (_, _) => Schedule.ReloadSchedules();
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             helper.Events.Content.AssetRequested += Schedule.Content_AssetRequested;
         }
@@ -24,8 +23,6 @@ namespace BushBloomMod {
         // called that function.
         [EventPriority(EventPriority.Low)]
         private void GameLoop_DayStarted(object sender, DayStartedEventArgs e) {
-            // grab newest content, with any CP updates
-            Schedule.ReloadEntries();
             // find all bushes and update for real
             Bushes.UpdateAllBushes();
         }

@@ -2,6 +2,7 @@
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BushBloomMod {
     public class Api {
@@ -15,7 +16,7 @@ namespace BushBloomMod {
             GameLocation location = null, Vector2? tile = null
         ) =>
             Schedule.GetAllCandidates(year ?? Game1.year, Helpers.GetDayOfYear(season, dayofMonth), true, false, location, tile)
-                .Where(c => c.ShakeOffId != null)
+                .Where(c => c.ShakeOffId is not null && c.Entry.IsValid())
                 .Select(c => (c.ShakeOffId, c.Entry.FirstDay, c.Entry.LastDay))
                 .ToArray();
 
@@ -23,20 +24,20 @@ namespace BushBloomMod {
         /// Returns an array of (item_id, first_day, last_day) for all blooming schedules.
         /// </summary>
         public (string, WorldDate, WorldDate)[] GetAllSchedules() =>
-            Schedule.Entries
-                .Where(c => c.ShakeOffId != null)
+            Schedule.LoadedSchedules
+                .Where(c => c.ShakeOffId != null && c.Entry.IsValid())
                 .Select(c => (c.ShakeOffId, c.Entry.FirstDay, c.Entry.LastDay))
                 .ToArray();
 
         /// <summary>
         /// Clear and reparse all schedules.
         /// </summary>
-        public void ReloadSchedules() => Schedule.ReloadEntries();
+        public void ReloadSchedules() => Schedule.ReloadSchedules();
 
         /// <summary>
         /// Specifies whether BBM successfully parsed all schedules.
         /// </summary>
-        public bool IsReady() => Schedule.IsReady;
+        public bool IsReady() => !Schedule.IsReloading;
 
         /// <summary>
         /// Performs the general operations of the Bush.shake() function without all the player, debris,

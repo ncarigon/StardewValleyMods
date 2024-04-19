@@ -1,5 +1,4 @@
-﻿using StardewValley;
-using StardewValley.TerrainFeatures;
+﻿using StardewValley.TerrainFeatures;
 
 namespace BushBloomMod {
     public static class BushExtensions {

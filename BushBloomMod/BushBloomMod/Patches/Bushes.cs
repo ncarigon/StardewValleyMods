@@ -162,8 +162,7 @@ namespace BushBloomMod.Patches {
                 var sheetOffset = __instance.tileSheetOffset.Value;
                 if (__instance.tileSheetOffset.Value == 1) {
                     // if blooming, cache any custom blooming texture
-                    var t = Schedule.TryGetExistingSchedule(__instance, out var schedule)
-                        ? schedule.Texture : null
+                    var t = (Schedule.TryGetExistingSchedule(__instance, out var schedule) ? schedule.Texture : null)
                         // use our default winter berry if no other is specified
                         ?? (season == Season.Winter && ModEntry.Instance.Config.UseCustomWinterBerrySprite ? Schedule.WinterBerry : null);
                     // switch to non-blooming texture if using a custom texture

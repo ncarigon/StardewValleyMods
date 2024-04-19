@@ -7,7 +7,6 @@ namespace BushBloomMod {
         public bool UseSpringBushForSummer { get; set; } = true;
         public bool UseCustomWinterBerrySprite { get; set; } = true;
         //public bool EnableALMIntegration { get; set; } = true;
-        //public bool EnableAutomateIntegration { get; set; } = true;
 
         internal static Configuration Register(IModHelper helper) {
             var config = helper.ReadConfig<Configuration>();
@@ -23,7 +22,7 @@ namespace BushBloomMod {
                     reset: () => config = new Configuration(),
                     save: () => {
                         helper.WriteConfig(config);
-                        Schedule.ReloadEntries();
+                        Schedule.ReloadSchedules();
                     }
                 );
 
@@ -54,13 +53,6 @@ namespace BushBloomMod {
                 //    tooltip: () => "When using that mod, allows the almanac to show custom gathering schedules. When enabled, it's highly recommended to disable that mod's option 'Page: Local Notices' > 'Show Gathering' in order to not show duplicates of the default gathering schedules.",
                 //    getValue: () => config.EnableALMIntegration,
                 //    setValue: value => config.EnableALMIntegration = value
-                //);
-                //configMenu.AddBoolOption(
-                //    mod: manifest,
-                //    name: () => "Support Automate",
-                //    tooltip: () => "When using that mod, allows chests to harvest custom items from bushes.",
-                //    getValue: () => config.EnableAutomateIntegration,
-                //    setValue: value => config.EnableAutomateIntegration = value
                 //);
             };
 

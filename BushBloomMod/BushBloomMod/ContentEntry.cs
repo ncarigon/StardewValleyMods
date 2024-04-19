@@ -6,7 +6,7 @@ using StardewValley;
 namespace BushBloomMod {
     internal class ContentEntry {
 #pragma warning disable CS0649
-        public bool? Enabled;
+        public bool? Enabled, IsDefault;
         public string Id;
         public string ShakeOff;
         public string StartSeason, EndSeason;
@@ -45,21 +45,39 @@ namespace BushBloomMod {
             return bloom;
         }
 
-        public bool IsValid() =>
-            Helpers.IsValidDayOfYear(this.StartSeason, this.StartDay)
-            && Helpers.IsValidDayOfYear(this.EndSeason, this.EndDay);
+        public bool IsValid() {
+            this.IsDefault ??= false;
+            this.EndSeason ??= this.StartSeason;
+            this.EndDay ??= this.StartDay;
+            this.StartYear ??= 1;
+            this.Chance ??= 0.2;
+            return this.FirstDay is not null
+                && this.LastDay is not null
+                && Helpers.IsValidDayOfYear(this.StartSeason, this.StartDay)
+                && Helpers.IsValidDayOfYear(this.EndSeason, this.EndDay);
+        }
 
         public WorldDate FirstDay {
-            get => new(this.StartYear ?? Game1.year, this.StartSeason, this.StartDay ?? 0);
+            get {
+                try {
+                    return new(this.StartYear ?? Game1.year, this.StartSeason, this.StartDay ?? 0);
+                } catch {
+                    return null;
+                }
+            }
         }
 
         public WorldDate LastDay {
             get {
-                var ld = new WorldDate(this.EndYear ?? Game1.year, this.EndSeason, this.EndDay ?? 0);
-                if (this.FirstDay > ld) {
-                    ld.Year++;
+                try {
+                    var ld = new WorldDate(this.EndYear ?? Game1.year, this.EndSeason ?? this.StartSeason, this.EndDay ?? 0);
+                    if (this.FirstDay > ld) {
+                        ld.Year++;
+                    }
+                    return ld;
+                } catch {
+                    return null;
                 }
-                return ld;
             }
         }
     }
