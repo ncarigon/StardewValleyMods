@@ -1,8 +1,0 @@
-[
-	{
-		"Id": "NCarigon.CopperStill:StillRecipe",
-		"Text": "Dear @,^^I'm looking to expand my drinks menu, but I need more options. Here's a blueprint I had laying around. Maybe you can find it useful and help us both out.^^- Gus",
-		"Recipe": "Still",
-		"SkillConditions": [{ "SkillName": "Farming", "SkillLevel": 9 }]
-    }
-]

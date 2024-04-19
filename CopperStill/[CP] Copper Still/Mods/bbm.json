@@ -1,0 +1,21 @@
+﻿{
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "NCarigon.BushBloomMod/Schedules",
+			"Entries": {
+				"{{ModId}}/fall_JuniperBerry": {
+					"ShakeOff": "{{ModId}}_JuniperBerry",
+					"StartSeason": "fall",
+					"StartDay": 21,
+					"EndDay": 24
+				}
+			}
+		},
+		{
+			"Action": "EditImage",
+			"Target": "NCarigon.BushBloomMod/Textures/{{ModId}}/fall_JuniperBerry",
+			"FromFile": "assets/juniper_bush.png"
+		}
+	]
+}

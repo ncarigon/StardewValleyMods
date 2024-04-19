@@ -1,0 +1,30 @@
+﻿{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "{{ModId}}_JuniperBerry": {
+                    "Name": "Juniper Berry",
+                    "DisplayName": "{{i18n: juniper_Name}}",
+                    "Description": "{{i18n: juniper_Description}}",
+                    "Type": "Basic",
+                    "Category": -81,
+                    "Price": 30,
+                    "Edibility": -300,
+                    "Texture": "Mods/{{ModId}}/JuniperBerry",
+                    "ContextTags": [
+                        "color_dark_blue",
+                        "forage_item",
+                        "season_fall"
+                    ]
+                }
+            }
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/JuniperBerry",
+            "FromFile": "assets/juniper_berry.png"
+        }
+    ]
+}

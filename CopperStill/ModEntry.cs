@@ -1,12 +1,21 @@
-﻿using StardewModdingAPI;
+﻿using HarmonyLib;
+using StardewModdingAPI;
 
 namespace CopperStill {
     internal sealed class ModEntry : Mod {
+        public static ModEntry? Instance { get; private set; }
+
+        public static Harmony? ModHarmony { get; private set; }
+
         public override void Entry(IModHelper helper) {
-            var config = Config.Register(helper, this.Monitor);
-            ModPatches.AdjustPricing.Register(helper, this.Monitor);
-            ModPatches.ModifyBundle.Register(helper, this.Monitor, config);
-            ModPatches.TipsyBuff.Register(helper);
+            Instance = this;
+            ModHarmony = new Harmony(helper.ModContent.ModID);
+            Config.Register();
+            ModPatches.AdjustPricing.Register();
+            ModPatches.ModifyBundle.Register();
+            ModPatches.MachineData.Register();
+            ModPatches.LookupAnything.Register();
+            ModPatches.LegacyItemConverter.Register();
         }
     }
 }

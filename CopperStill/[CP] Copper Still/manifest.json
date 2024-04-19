@@ -1,0 +1,15 @@
+﻿{
+	"Name": "[CP] Copper Still",
+	"Author": "NCarigon",
+	"Version": "2.0.1",
+	"Description": "Content Patcher for Copper Still.",
+	"UniqueID": "NCarigon.CopperStillCP",
+	"UpdateKeys": [ "nexus:15333" ],
+	"MinimumApiVersion": "4.0.0",
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher"
+	},
+	"Dependencies": [
+		{ "UniqueID": "NCarigon.CopperStill" }
+	]
+}

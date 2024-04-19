@@ -1,0 +1,114 @@
+{
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules" ],
+			"Entries": {
+				"{{ModId}}_Whiskey": {
+					"Id": "{{ModId}}_Whiskey",
+					"Triggers": [
+						{
+							"Id": "{{ModId}}_Whiskey",
+							"RequiredItemId": "(O){{ModId}}_Moonshine"
+						}
+					],
+					"OutputItem": [
+						{
+							"Id": "{{ModId}}_Whiskey",
+							"ItemId": "(O){{ModId}}_Whiskey"
+						}
+					],
+					"MinutesUntilReady": 10000
+				},
+				"{{ModId}}_TequilaAnejo": {
+					"Id": "{{ModId}}_TequilaAnejo",
+					"Triggers": [
+						{
+							"Id": "{{ModId}}_TequilaAnejo",
+							"RequiredItemId": "(O){{ModId}}_TequilaBlanco"
+						}
+					],
+					"OutputItem": [
+						{
+							"Id": "{{ModId}}_TequilaAnejo",
+							"ItemId": "(O){{ModId}}_TequilaAnejo"
+						}
+					],
+					"MinutesUntilReady": 10000
+				},
+				"{{ModId}}_RumDark": {
+					"Id": "{{ModId}}_RumDark",
+					"Triggers": [
+						{
+							"Id": "{{ModId}}_RumDark",
+							"RequiredItemId": "(O){{ModId}}_RumWhite"
+						}
+					],
+					"OutputItem": [
+						{
+							"Id": "{{ModId}}_RumDark",
+							"ItemId": "(O){{ModId}}_RumDark"
+						}
+					],
+					"MinutesUntilReady": 10000
+				},
+				"{{ModId}}_Sake": {
+					"Id": "{{ModId}}_Sake",
+					"Triggers": [
+						{
+							"Id": "{{ModId}}_Sake",
+							"RequiredItemId": "(O)271" // take over rice juice
+						}
+					],
+					"OutputItem": [
+						{
+							"Id": "{{ModId}}_Sake",
+							"ItemId": "(O){{ModId}}_Sake"
+						}
+					],
+					"MinutesUntilReady": 2250
+				},
+				"Default_Juice": null // need to delete the original so sake takes priority
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules" ],
+			"Entries": {
+				"Default_Juice": { // recreate default juice rule
+					"Id": "Default_Juice",
+					"Triggers": [
+						{
+							"Id": "ItemPlacedInMachine_Vegetable",
+							"RequiredTags": [
+								"category_vegetable"
+							]
+						},
+						{
+							"Id": "ItemPlacedInMachine_Forage",
+							"RequiredTags": [
+								"category_greens"
+							],
+							"Condition": "!ITEM_CONTEXT_TAG Input edible_mushroom, ITEM_EDIBILITY Input 1"
+						},
+						{
+							"Id": "ItemPlacedInMachine_Juice",
+							"RequiredTags": [
+								"keg_juice"
+							]
+						}
+					],
+					"OutputItem": [
+						{
+							"Id": "Default",
+							"ItemId": "FLAVORED_ITEM Juice DROP_IN_ID"
+						}
+					],
+					"MinutesUntilReady": 6000
+				}
+			}
+		}
+	]
+}

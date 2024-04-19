@@ -1,0 +1,78 @@
+{
+    "Format": "2.0.0",
+    "Changes": [
+        {
+            "Action": "Include",
+            "FromFile": "BigCraftables/still.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Machines/still.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Machines/keg.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Mail/still.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Mods/bbm.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/pina_colada.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/brandy.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/gin.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/juniper_berry.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/moonshine.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/rum_dark.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/rum_white.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/sake.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/soju.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/tequila_anejo.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/tequila_blanco.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/vodka.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/whiskey.json"
+        }
+    ]
+}
+

@@ -1,0 +1,11 @@
+﻿{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "Entries": {
+                "Piña Colada": "832 1 88 1 (O){{ModId}}_RumWhite 1/1 10/873 12/f Gus 6"
+            }
+        }
+    ]
+}
