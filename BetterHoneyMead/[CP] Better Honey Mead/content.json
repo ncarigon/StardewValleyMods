@@ -1,5 +1,11 @@
 {
     "Format": "2.0.0",
+    "ConfigSchema": {
+        "EnableColoredSprites": {
+            "AllowValues": "true, false",
+            "Default": "true"
+        }
+    },
     "Changes": [
         {
             "Action": "EditData",
@@ -10,21 +16,73 @@
         },
         {
             "Action": "Load",
-            "Target": "Mods/{{ModId}}/Honey",
-            "FromFile": "assets/honey.png"
+            "Target": "Mods/{{ModId}}/HoneyNoColor",
+            "FromFile": "assets/honey_no-color.png"
         },
         {
             "Action": "Load",
-            "Target": "Mods/{{ModId}}/Mead",
-            "FromFile": "assets/mead.png"
+            "Target": "Mods/{{ModId}}/HoneyColored",
+            "FromFile": "assets/honey_colored.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/MeadNoColor",
+            "FromFile": "assets/mead_no-color.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "Mods/{{ModId}}/MeadColored",
+            "FromFile": "assets/mead_colored.png"
         },
         {
             "Action": "EditData",
             "Target": "Data/Objects",
             "TargetField": [ "340" ],
             "Entries": {
-                "Texture": "Mods/{{ModId}}/Honey",
-                "SpriteIndex": 0,
+                "Texture": "Mods/{{ModId}}/HoneyNoColor"
+            },
+            "When": {
+                "EnableColoredSprites": "false"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "340" ],
+            "Entries": {
+                "Texture": "Mods/{{ModId}}/HoneyColored"
+            },
+            "When": {
+                "EnableColoredSprites": "true"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "459" ],
+            "Entries": {
+                "Texture": "Mods/{{ModId}}/MeadNoColor"
+            },
+            "When": {
+                "EnableColoredSprites": "false"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "459" ],
+            "Entries": {
+                "Texture": "Mods/{{ModId}}/MeadColored"
+            },
+            "When": {
+                "EnableColoredSprites": "true"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "340" ],
+            "Entries": {
                 "ContextTags": [
                     "honey_item",
                     "use_reverse_name_for_sorting"
@@ -36,8 +94,6 @@
             "Target": "Data/Objects",
             "TargetField": [ "459" ],
             "Entries": {
-                "Texture": "Mods/{{ModId}}/Mead",
-                "SpriteIndex": 0,
                 "ContextTags": [
                     "alcohol_item",
                     "use_reverse_name_for_sorting"

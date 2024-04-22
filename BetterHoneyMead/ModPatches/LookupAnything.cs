@@ -63,26 +63,19 @@ namespace BetterHoneyMead.ModPatches {
         }
 
         private static SObject? CreateFlavoredMead(SObject ingredient) {
-            var color = TailoringMenu.GetDyeColor(ingredient);
-            if (color is null) {
-                return null;
+            var color = TailoringMenu.GetDyeColor(ingredient) ?? Color.Gold;
+            var item = new ColoredObject("459", 999, color) {
+                displayNameFormat = "%PRESERVED_DISPLAY_NAME %DISPLAY_NAME",
+            };
+            item.preservedParentSheetIndex.Value = ingredient.ItemId;
+            var price = ((Game1.objectData.FirstOrDefault(o => o.Key.Equals("340")).Value?.Price ?? 0) + (ingredient is null ? 0 : ingredient.Price * 2)) * 2;
+            if (price > 0) {
+                item.Price = price;
             }
-            var item = new ColoredObject($"459", 999, color.Value);
-            try {
-                item.displayNameFormat = "%PRESERVED_DISPLAY_NAME %DISPLAY_NAME";
-                item.preservedParentSheetIndex.Value = ingredient.ItemId;
-                var price = (GetPrice("340") + (ingredient is null ? 0 : ingredient.Price * 2)) * 2;
-                if (price > 0) {
-                    item.Price = price;
-                }
-                if (ingredient?.Name is not null) {
-                    item.Name = $"{item.QualifiedItemId}_{ingredient.Name} Honey";
-                }
-            } catch { }
+            if (ingredient?.Name is not null) {
+                item.Name = $"{item.QualifiedItemId}_{ingredient.Name} Honey";
+            }
             return item;
         }
-
-        private static int GetPrice(string ItemId) =>
-            Game1.objectData.FirstOrDefault(o => o.Key.Equals(ItemId)).Value?.Price ?? 0;
     }
 }

@@ -1,0 +1,4 @@
+﻿{
+    "config.EnableColoredSprites.name": "Enable Colored Sprites",
+    "config.EnableColoredHoney.description": "Use a color-aware sprite for honey and mead, based on the ingredient color"
+}

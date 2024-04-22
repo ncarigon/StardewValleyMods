@@ -23,11 +23,12 @@ namespace BetterHoneyMead.ModPatches {
             ref Item __result,
             MachineItemOutput outputData, Item inputItem
         ) {
-            if ((outputData?.PreserveId ?? "") == "DROP_IN_PRESERVE"
-                && __result is SObject item1 && item1 is not null
-                && inputItem is SObject item2 && item2 is not null
-            ) {
-                item1.preservedParentSheetIndex.Value = item2.preservedParentSheetIndex.Value;
+            if (__result is SObject item1 && item1 is not null) {
+                if ((outputData?.PreserveId ?? "") == "DROP_IN_PRESERVE"
+                    && inputItem is SObject item2 && item2 is not null
+                ) {
+                    item1.preservedParentSheetIndex.Value = item2.preservedParentSheetIndex.Value;
+                }
             }
         }
 
