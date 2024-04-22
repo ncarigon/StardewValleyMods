@@ -11,6 +11,10 @@
         },
         {
             "Action": "Include",
+            "FromFile": "Machines/cask.json"
+        },
+        {
+            "Action": "Include",
             "FromFile": "Machines/keg.json"
         },
         {

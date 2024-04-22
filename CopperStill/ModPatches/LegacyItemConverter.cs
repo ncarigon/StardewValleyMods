@@ -3,7 +3,6 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static System.Net.Mime.MediaTypeNames;
 using SObject = StardewValley.Object;
 
 namespace CopperStill.ModPatches {

@@ -39,9 +39,12 @@ namespace CopperStill.ModPatches {
             ref bool probe, out Tuple<bool, bool>? __state
         ) {
             __state = new(false, probe);
+            // need to detect whether the call came from the base game or our logic below
             if (!FromOverride) {
                 FromOverride = true;
+                // state = (useOutLogic?, wasProbeCall?)
                 __state = new(true, probe);
+                // override original value to prevent any actions from the base game call
                 probe = true;
             }
         }
@@ -50,23 +53,32 @@ namespace CopperStill.ModPatches {
            SObject __instance, ref bool __result, Tuple<bool, bool>? __state,
            SMachineData machineData, Item inputItem, Farmer who, bool showMessages, bool playSounds
         ) {
+            // only use our logic if called from base game
             if (__state?.Item1 ?? false) {
+                // search for all machines
                 foreach (var machineOverride in Game1.content.Load<Dictionary<string, SMachineData>>("Data\\Machines")
-                    .Where(m => m.Key?.StartsWith(__instance.QualifiedItemId) ?? false)
-                    .Where(m => !m.Key.Equals(__instance.QualifiedItemId))
+                    // which start with 'QualifiedMachineId:' which will be alternate operations
+                    .Where(m => m.Key?.StartsWith($"{__instance.QualifiedItemId}:") ?? false)
+                    // only need the MachineData
                     .Select(m => m.Value)
                 ) {
+                    // test wheterh alternate machine data can successfully process our item
                     if (MachineDataUtility.TryGetMachineOutputRule(
                         __instance, machineOverride, MachineOutputTrigger.ItemPlacedInMachine, inputItem, who, __instance.Location,
                         out _, out _, out _, out var triggerIgnoringCount)
                         || triggerIgnoringCount is not null
                     ) {
-                        __result = __state.Item2 || __instance.PlaceInMachine(machineOverride, inputItem, __state.Item2, who, showMessages, playSounds);
+                        // if yes, perform real call and update results for original game call
+                        __result = (__state?.Item2 ?? false) || __instance.PlaceInMachine(machineOverride, inputItem, __state?.Item2 ?? false, who, showMessages, playSounds);
+                        // disable our logic
                         FromOverride = false;
+                        // stop looking
                         return;
                     }
                 }
-                __result = __instance.PlaceInMachine(machineData, inputItem, __state.Item2, who, showMessages, playSounds);
+                // no alternate operations were successful, perform original game logic
+                __result = __instance.PlaceInMachine(machineData, inputItem, __state?.Item2 ?? false, who, showMessages, playSounds);
+                // disable our logic
                 FromOverride = false;
             }
         }
