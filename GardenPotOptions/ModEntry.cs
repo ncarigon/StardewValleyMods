@@ -2,11 +2,14 @@
 
 namespace GardenPotOptions {
     internal class ModEntry : Mod {
-        public static Config? ModConfig;
+        public static ModEntry? Instance;
+
+        public Config? ModConfig;
 
         public override void Entry(IModHelper helper) {
-            ModConfig = Config.Register(helper);
-            Patches.Register(helper);
+            Instance = this;
+            Config.Register();
+            Patches.Register();
         }
     }
 }
