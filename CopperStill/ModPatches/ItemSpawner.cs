@@ -8,25 +8,25 @@ using System.Collections.Generic;
 using SObject = StardewValley.Object;
 
 namespace CopperStill.ModPatches {
-    internal static class LookupAnything {
+    internal static class ItemSpawner {
         public static void Register() {
             if (ModEntry.Instance?.Helper?.ModRegistry.IsLoaded("CJBok.ItemSpawner") ?? false) {
                 ModEntry.ModHarmony?.Patch(
                     original: AccessTools.Method(typeof(StardewValley.ItemTypeDefinitions.ObjectDataDefinition), "CreateFlavoredWine"),
-                    postfix: new HarmonyMethod(typeof(LookupAnything), nameof(Postfix_ObjectDataDefinition_CreateFlavoredWine))
+                    postfix: new HarmonyMethod(typeof(ItemSpawner), nameof(Postfix_ObjectDataDefinition_CreateFlavoredWine))
                 );
                 ModEntry.ModHarmony?.Patch(
                     original: AccessTools.Method(typeof(StardewValley.ItemTypeDefinitions.ObjectDataDefinition), "CreateFlavoredJuice"),
-                    postfix: new HarmonyMethod(typeof(LookupAnything), nameof(Postfix_ObjectDataDefinition_CreateFlavoredJuice))
+                    postfix: new HarmonyMethod(typeof(ItemSpawner), nameof(Postfix_ObjectDataDefinition_CreateFlavoredJuice))
                 );
                 ModEntry.ModHarmony?.Patch(
                     original: AccessTools.Method("CJBItemSpawner.ModEntry:BuildMenu"),
-                    prefix: new HarmonyMethod(typeof(LookupAnything), nameof(Prefix_ModEntry_BuildMenu)),
-                    postfix: new HarmonyMethod(typeof(LookupAnything), nameof(Postfix_ModEntry_BuildMenu))
+                    prefix: new HarmonyMethod(typeof(ItemSpawner), nameof(Prefix_ModEntry_BuildMenu)),
+                    postfix: new HarmonyMethod(typeof(ItemSpawner), nameof(Postfix_ModEntry_BuildMenu))
                 );
                 ModEntry.ModHarmony?.Patch(
                     original: AccessTools.Method("CJBItemSpawner.Framework.ItemMenu:ResetItemView"),
-                    postfix: new HarmonyMethod(typeof(LookupAnything), nameof(Postfix_ItemSpawner_ResetItemView))
+                    postfix: new HarmonyMethod(typeof(ItemSpawner), nameof(Postfix_ItemSpawner_ResetItemView))
                 );
             }
         }

@@ -58,7 +58,7 @@
 					"Triggers": [
 						{
 							"Id": "{{ModId}}_Sake",
-							"RequiredItemId": "(O)271" // take over rice juice
+							"RequiredItemId": "(O)271"
 						}
 					],
 					"OutputItem": [
@@ -68,46 +68,27 @@
 						}
 					],
 					"MinutesUntilReady": 2250
-				},
-				"Default_Juice": null // need to delete the original so sake takes priority
+				}
 			}
 		},
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules" ],
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "#0" ],
 			"Entries": {
-				"Default_Juice": { // recreate default juice rule
-					"Id": "Default_Juice",
-					"Triggers": [
-						{
-							"Id": "ItemPlacedInMachine_Vegetable",
-							"RequiredTags": [
-								"category_vegetable"
-							]
-						},
-						{
-							"Id": "ItemPlacedInMachine_Forage",
-							"RequiredTags": [
-								"category_greens"
-							],
-							"Condition": "!ITEM_CONTEXT_TAG Input edible_mushroom, ITEM_EDIBILITY Input 1"
-						},
-						{
-							"Id": "ItemPlacedInMachine_Juice",
-							"RequiredTags": [
-								"keg_juice"
-							]
-						}
-					],
-					"OutputItem": [
-						{
-							"Id": "Default",
-							"ItemId": "FLAVORED_ITEM Juice DROP_IN_ID"
-						}
-					],
-					"MinutesUntilReady": 6000
-				}
+				"Condition": "!ITEM_ID Input (O)271"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "{{ModId}}_Sake", "Triggers", "#0" ],
+			"Entries": {
+				"RequiredItemId": "(O)NCarigon.MoreSensibleJuicesCP_Mash",
+				"RequiredTags": [ "preserve_sheet_index_271" ]
+			},
+			"When": {
+				"HasMod": "NCarigon.MoreSensibleJuices"
 			}
 		}
 	]

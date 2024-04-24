@@ -284,7 +284,7 @@
 			"Target": "Data/Machines",
 			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_RumWhite", "OutputItem", "#0", "PriceModifiers", "#0" ],
 			"Entries": {
-				"Amount": 8
+				"Amount": 10
 			},
 			"When": {
 				"query: NOT {{NCarigon.CopperStill/ArePricesBalanced}}": true
@@ -304,6 +304,17 @@
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_TequilaBlanco", "OutputItem", "#0", "PriceModifiers", "#0" ],
+			"Entries": {
+				"Amount": 8
+			},
+			"When": {
+				"query: NOT {{NCarigon.CopperStill/ArePricesBalanced}}": true
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
 			"TargetField": [ "(BC){{ModId}}_Still:Vodka_to_Gin", "AdditionalConsumedItems", "#1" ],
 			"Entries": {
 				"ItemId": "(O){{ModId}}_JuniperBerry",
@@ -311,6 +322,39 @@
 			},
 			"When": {
 				"HasMod": "NCarigon.BushBloomMod"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_Vodka", "Triggers", "#0" ],
+			"Entries": {
+				"RequiredItemId": "(O)NCarigon.MoreSensibleJuicesCP_Mash"
+			},
+			"When": {
+				"HasMod": "NCarigon.MoreSensibleJuices"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_Moonshine", "Triggers", "#0" ],
+			"Entries": {
+				"RequiredItemId": "(O)NCarigon.MoreSensibleJuicesCP_Mash"
+			},
+			"When": {
+				"HasMod": "NCarigon.MoreSensibleJuices"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_RumWhite", "Triggers", "#0" ],
+			"Entries": {
+				"RequiredItemId": "(O)NCarigon.MoreSensibleJuicesCP_Mash"
+			},
+			"When": {
+				"HasMod": "NCarigon.MoreSensibleJuices"
 			}
 		}
 	]

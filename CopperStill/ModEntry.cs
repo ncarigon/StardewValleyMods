@@ -14,7 +14,7 @@ namespace CopperStill {
             ModPatches.AdjustPricing.Register();
             ModPatches.ModifyBundle.Register();
             ModPatches.MachineData.Register();
-            ModPatches.LookupAnything.Register();
+            ModPatches.ItemSpawner.Register();
             ModPatches.LegacyItemConverter.Register();
         }
     }
