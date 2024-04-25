@@ -8,6 +8,7 @@ namespace AdjustableSprinklers {
         public bool ShowSprinklerArea { get; set; } = true;
         public bool ShowScarecrowArea { get; set; } = true;
         public bool ActivateWhenClicked { get; set; } = true;
+        public bool WaterGardenPots { get; set; } = true;
 
         internal static Config Register(IModHelper helper) {
             var config = helper.ReadConfig<Config>();
@@ -68,6 +69,13 @@ namespace AdjustableSprinklers {
                     tooltip: () => "Activates a sprinkler when you click on it.",
                     getValue: () => config.ActivateWhenClicked,
                     setValue: value => config.ActivateWhenClicked = value
+                );
+                configMenu.AddBoolOption(
+                    mod: manifest,
+                    name: () => "Water Garden Pots",
+                    tooltip: () => "Allow sprinklers to water garden pots.",
+                    getValue: () => config.WaterGardenPots,
+                    setValue: value => config.WaterGardenPots = value
                 );
             };
 

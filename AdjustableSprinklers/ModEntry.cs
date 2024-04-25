@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Objects;
 using SObject = StardewValley.Object;
 
 namespace AdjustableSprinklers {
@@ -30,6 +31,10 @@ namespace AdjustableSprinklers {
                 original: AccessTools.Method(typeof(SObject), "drawPlacementBounds"),
                 postfix: new HarmonyMethod(typeof(ModEntry), nameof(Postfix_Object_drawPlacementBounds))
             );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SObject), "ApplySprinkler"),
+                postfix: new HarmonyMethod(typeof(ModEntry), nameof(Postfix_Object_ApplySprinkler))
+            );
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
         }
 
@@ -37,7 +42,7 @@ namespace AdjustableSprinklers {
         private static void Postfix_Object_GetBaseRadiusForSprinkler(
             SObject __instance, ref int __result
         ) {
-            if (__result != -1) {
+            if (__instance is not null && __result != -1) {
                 var radius = ModConfig?.BaseRadius ?? 0;
                 var increase = ModConfig?.TierIncrease ?? 1;
                 __result = __instance.QualifiedItemId switch {
@@ -63,7 +68,7 @@ namespace AdjustableSprinklers {
         private static void Postfix_Object_GetModifiedRadiusForSprinkler(
             SObject __instance, ref int __result
         ) {
-            if (__result != -1) {
+            if (__instance is not null && __result != -1) {
                 if (__instance.heldObject.Value != null && __instance.heldObject.Value.QualifiedItemId == "(O)915") {
                     // need to -1 here to remove vanilla game logic and adjust to the configured value
                     __result += (ModConfig?.TierIncrease ?? 1) - 1;
@@ -75,7 +80,7 @@ namespace AdjustableSprinklers {
         private static void Postfix_Object_GetSprinklerTiles(
             SObject __instance, ref List<Vector2> __result
         ) {
-            if ((ModConfig?.CircularArea ?? false) && __instance.IsSprinkler()) {
+            if ((ModConfig?.CircularArea ?? false) && (__instance?.IsSprinkler() ?? false)) {
                 __result = GetTiles(__instance.TileLocation, __instance.GetModifiedRadiusForSprinkler(), true);
             }
         }
@@ -83,7 +88,9 @@ namespace AdjustableSprinklers {
         private static void Postfix_Object_drawPlacementBounds(
             SObject __instance, SpriteBatch spriteBatch
         ) {
-            if ((ModConfig?.ShowSprinklerArea ?? false) || (ModConfig?.ShowScarecrowArea ?? false)) {
+            if (__instance is not null && spriteBatch is not null
+                && ((ModConfig?.ShowSprinklerArea ?? false) || (ModConfig?.ShowScarecrowArea ?? false))
+            ) {
                 List<Vector2>? tiles = null;
                 if ((ModConfig?.ShowSprinklerArea ?? false) && __instance.IsSprinkler()) {
                     tiles = __instance.GetSprinklerTiles();
@@ -112,15 +119,30 @@ namespace AdjustableSprinklers {
         }
 
         private void Input_ButtonPressed(object? sender, StardewModdingAPI.Events.ButtonPressedEventArgs e) {
-            if ((ModConfig?.ActivateWhenClicked ?? false) && e.Button.IsActionButton()) {
+            if ((ModConfig?.ActivateWhenClicked ?? false)
+                && (e?.Button.IsActionButton() ?? false)
+                && Game1.player?.currentLocation is not null
+            ) {
                 var obj = Game1.player.currentLocation.getObjectAtTile((int)e.Cursor.GrabTile.X, (int)e.Cursor.GrabTile.Y);
                 if (obj?.IsSprinkler() ?? false) {
                     obj.ApplySprinklerAnimation();
-                    Task.Delay(2000); // INFO: adding a delay here for a more natural look
-                    foreach (var tile in obj.GetSprinklerTiles()) {
-                        obj.ApplySprinkler(tile);
-                    }
+                    Task.Delay(2000).ContinueWith(_ => { // INFO: adding a delay here for a more natural look
+                        foreach (var tile in obj.GetSprinklerTiles()) {
+                            obj.ApplySprinkler(tile);
+                        }
+                    });
                 }
+            }
+        }
+
+        private static void Postfix_Object_ApplySprinkler(
+            SObject __instance, Vector2 tile
+        ) {
+            if ((ModConfig?.WaterGardenPots ?? false)
+                && (__instance?.Location?.Objects?.TryGetValue(tile, out var t) ?? false)
+                && t is IndoorPot pot && pot is not null
+            ) {
+                pot?.Water();
             }
         }
     }
