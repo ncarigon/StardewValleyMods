@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.GameData;
 using StardewValley.Objects;
@@ -212,15 +211,17 @@ namespace GardenPotOptions {
         }
 
         private static void Postfix_Object_placementAction(
-            SObject __instance, GameLocation location, int x, int y
+            SObject __instance, ref bool __result,
+            GameLocation location, int x, int y
         ) {
-            try {
-                var tile = new Vector2(x / 64, y / 64);
-                if ((ModEntry.Instance?.ModConfig?.KeepContents ?? false)
-                    && IsFilledPot(__instance, out var pot)
-                    && (location?.Objects?.TryGetValue(tile, out var p) ?? false)
-                    && p is IndoorPot newPot && newPot is not null
-                ) {
+            var tile = new Vector2(x / 64, y / 64);
+            if (__result &&
+                (ModEntry.Instance?.ModConfig?.KeepContents ?? false)
+                && IsFilledPot(__instance, out var pot)
+                && (location?.Objects?.TryGetValue(tile, out var p) ?? false)
+                && p is IndoorPot newPot && newPot is not null
+            ) {
+                if (Game1.IsMasterGame) {
                     // directly swapping does not seem to work after the first placement
                     //location.objects.Remove(tile);
                     //location.objects.Add(tile, __instance);
@@ -247,8 +248,15 @@ namespace GardenPotOptions {
                     try { newPot.hoeDirt.Value.Tile = tile; } catch { }
                     try { newPot.hoeDirt.Value.crop.tilePosition = tile; } catch { }
                     try { newPot.heldObject.Value.TileLocation = tile; } catch { }
+                } else {
+                    // don't remove item
+                    __result = false;
+                    // remove the new empty pot
+                    location.objects.Remove(tile);
+                    // notify user
+                    Game1.showRedMessage(ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/farmhand_placement_error") ?? "null");
                 }
-            } catch { }
+            }
         }
 
         private static void Postfix_Object_loadDisplayName(SObject __instance, ref string __result) {
@@ -283,8 +291,7 @@ namespace GardenPotOptions {
                     && (__instance?.Location?.Objects?.TryGetValue(tile, out var obj) ?? false) && obj is IndoorPot pot
                     && (pot?.hoeDirt?.Value?.state?.Value ?? 2) != 2
                 ) {
-                    pot!.hoeDirt.Value.state.Value = 1;
-                    pot.showNextIndex.Value = true;
+                    pot?.Water();
                 }
             } catch { }
         }

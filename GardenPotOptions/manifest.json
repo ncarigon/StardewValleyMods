@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Garden Pot Options",
     "Author": "NCarigon",
-    "Version": "1.0.3",
+    "Version": "1.0.4",
     "Description": "Enables additional options for how garden pots work.",
     "UniqueID": "NCarigon.GardenPotOptions",
     "EntryDll": "GardenPotOptions.dll",

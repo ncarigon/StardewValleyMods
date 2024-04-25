@@ -8,6 +8,8 @@ namespace GardenPotOptions {
         public bool AllowAncientSeeds { get; set; } = false;
         public string SafeTool { get; set; } = "Pickaxe";
         public bool AllowTransplant { get; set; } = true;
+        public int HeartsForGardenPot { get; set; } = 4;
+        public int HeartsForRecipe { get; set; } = 8;
 
         internal static void Register() {
             var config = ModEntry.Instance?.Helper?.ReadConfig<Config>();
@@ -24,15 +26,15 @@ namespace GardenPotOptions {
                     );
                     configMenu.AddBoolOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => "Keep Contents",
-                        tooltip: () => "Prevents garden pot contents from being destroyed when picked up.",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_KeepContents") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_KeepContents") ?? "null",
                         getValue: () => ModEntry.Instance!.ModConfig.KeepContents,
                         setValue: value => ModEntry.Instance!.ModConfig.KeepContents = value
                     );
                     configMenu.AddTextOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => "Safe Tool",
-                        tooltip: () => "Select which tool can pick up garden pots without breaking them.",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_SafeTool") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_SafeTool") ?? "null",
                         getValue: () => ModEntry.Instance!.ModConfig.SafeTool,
                         setValue: value => ModEntry.Instance!.ModConfig.SafeTool = value,
                         allowedValues: new string[] { "Pickaxe", "Axe", "Hoe" },
@@ -40,24 +42,42 @@ namespace GardenPotOptions {
                     );
                     configMenu.AddBoolOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => "Enable Sprinklers",
-                        tooltip: () => "Enable sprinklers to water garden pots.",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_EnableSprinklers") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_EnableSprinklers") ?? "null",
                         getValue: () => ModEntry.Instance!.ModConfig.EnableSprinklers,
                         setValue: value => ModEntry.Instance!.ModConfig.EnableSprinklers = value
                     );
                     configMenu.AddBoolOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => "Allow Ancient Seeds",
-                        tooltip: () => "Allow ancient seeds to be planted in garden pots.",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_AncientSeeds") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_AncientSeeds") ?? "null",
                         getValue: () => ModEntry.Instance!.ModConfig.AllowAncientSeeds,
                         setValue: value => ModEntry.Instance!.ModConfig.AllowAncientSeeds = value
                     );
                     configMenu.AddBoolOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => "Allow Transplant",
-                        tooltip: () => "Allow garden pots to pickup and put down crops from hoed dirt.",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_AllowTransplant") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_AllowTransplant") ?? "null",
                         getValue: () => ModEntry.Instance!.ModConfig.AllowTransplant,
                         setValue: value => ModEntry.Instance!.ModConfig.AllowTransplant = value
+                    );
+                    configMenu.AddNumberOption(
+                        mod: ModEntry.Instance!.ModManifest,
+                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_HeartsGardenPot") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_HeartsGardenPot") ?? "null",
+                        getValue: () => config.HeartsForGardenPot,
+                        setValue: value => config.HeartsForGardenPot = value,
+                        min: -1,
+                        max: 10
+                    );
+                    configMenu.AddNumberOption(
+                        mod: ModEntry.Instance!.ModManifest,
+                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_HeartsRecipe") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_HeartsRecipe") ?? "null",
+                        getValue: () => config.HeartsForRecipe,
+                        setValue: value => config.HeartsForRecipe = value,
+                        min: -1,
+                        max: 10
                     );
                 };
             }
@@ -70,5 +90,7 @@ namespace GardenPotOptions {
         void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null!, string fieldId = null!);
 
         void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string> tooltip = null!, string[] allowedValues = null!, Func<string, string> formatAllowedValue = null!, string fieldId = null!);
+
+        void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null!, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null!, string fieldId = null!);
     }
 }

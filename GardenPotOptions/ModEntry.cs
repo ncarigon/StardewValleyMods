@@ -10,6 +10,7 @@ namespace GardenPotOptions {
             Instance = this;
             Config.Register();
             Patches.Register();
+            Events.Register();
         }
     }
 }
