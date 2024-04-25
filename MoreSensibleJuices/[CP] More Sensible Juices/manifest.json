@@ -1,0 +1,15 @@
+﻿{
+	"Name": "[CP] More Sensible Juices",
+	"Author": "NCarigon",
+	"Version": "1.0.1",
+	"Description": "Content Patcher for More Sensible Juices.",
+	"UniqueID": "NCarigon.MoreSensibleJuicesCP",
+	"UpdateKeys": [ "nexus:23146" ],
+	"MinimumApiVersion": "4.0.0",
+	"ContentPackFor": {
+		"UniqueID": "Pathoschild.ContentPatcher"
+	},
+	"Dependencies": [
+		{ "UniqueID": "NCarigon.MoreSensibleJuices" }
+	]
+}

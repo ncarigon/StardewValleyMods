@@ -1,0 +1,44 @@
+{
+    "Format": "2.0.0",
+    "ConfigSchema": {
+        "PressRetainsQuality": {
+            "AllowValues": "true, false",
+            "Default": "true"
+        },
+        "UseNormalWineRecipe": {
+            "AllowValues": "true, false",
+            "Default": "false"
+        },
+        "UseNormalBeerRecipe": {
+            "AllowValues": "true, false",
+            "Default": "false"
+        },
+        "UseNormalPaleAleRecipe": {
+            "AllowValues": "true, false",
+            "Default": "false"
+        },
+        "UseNormalSakeRecipe": {
+            "AllowValues": "true, false",
+            "Default": "false"
+        }
+    },
+    "Changes": [
+        {
+            "Action": "Include",
+            "FromFile": "Machines/press.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Machines/keg.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/mash.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Mods/CopperStill.json"
+        }
+    ]
+}
+
