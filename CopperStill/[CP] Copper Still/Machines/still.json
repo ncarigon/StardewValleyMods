@@ -323,39 +323,6 @@
 			"When": {
 				"HasMod": "NCarigon.BushBloomMod"
 			}
-		},
-		{
-			"Action": "EditData",
-			"Target": "Data/Machines",
-			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_Vodka", "Triggers", "#0" ],
-			"Entries": {
-				"RequiredItemId": "(O)NCarigon.MoreSensibleJuicesCP_Mash"
-			},
-			"When": {
-				"HasMod": "NCarigon.MoreSensibleJuices"
-			}
-		},
-		{
-			"Action": "EditData",
-			"Target": "Data/Machines",
-			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_Moonshine", "Triggers", "#0" ],
-			"Entries": {
-				"RequiredItemId": "(O)NCarigon.MoreSensibleJuicesCP_Mash"
-			},
-			"When": {
-				"HasMod": "NCarigon.MoreSensibleJuices"
-			}
-		},
-		{
-			"Action": "EditData",
-			"Target": "Data/Machines",
-			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_RumWhite", "Triggers", "#0" ],
-			"Entries": {
-				"RequiredItemId": "(O)NCarigon.MoreSensibleJuicesCP_Mash"
-			},
-			"When": {
-				"HasMod": "NCarigon.MoreSensibleJuices"
-			}
 		}
 	]
 }

@@ -76,19 +76,7 @@
 			"Target": "Data/Machines",
 			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "#0" ],
 			"Entries": {
-				"Condition": "!ITEM_ID Input (O)271"
-			}
-		},
-		{
-			"Action": "EditData",
-			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules", "{{ModId}}_Sake", "Triggers", "#0" ],
-			"Entries": {
-				"RequiredItemId": "(O)NCarigon.MoreSensibleJuicesCP_Mash",
-				"RequiredTags": [ "preserve_sheet_index_271" ]
-			},
-			"When": {
-				"HasMod": "NCarigon.MoreSensibleJuices"
+				"Condition": "!ITEM_ID Input (O)271, !ITEM_CONTEXT_TAG Input preserve_sheet_index_271"
 			}
 		}
 	]
