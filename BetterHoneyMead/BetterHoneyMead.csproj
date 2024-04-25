@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ModPatches\ItemConverter.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 
@@ -56,10 +52,6 @@
 
   <ItemGroup>
     <Folder Include="[CP] Better Honey Mead\assets\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="ModPatches\ItemConverter.cs" />
   </ItemGroup>
 
 </Project>

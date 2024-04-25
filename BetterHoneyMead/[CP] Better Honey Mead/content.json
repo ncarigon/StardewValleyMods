@@ -4,6 +4,10 @@
         "EnableColoredSprites": {
             "AllowValues": "true, false",
             "Default": "true"
+        },
+        "MeadRetainsQuality": {
+            "AllowValues": "true, false",
+            "Default": "true"
         }
     },
     "Changes": [
@@ -106,7 +110,19 @@
             "TargetField": [ "(BC)12", "OutputRules", "Default_Honey", "OutputItem", "#0" ],
             "Entries": {
                 "CopyColor": true,
+                "CopyQuality": true,
                 "PreserveId": "DROP_IN_PRESERVE"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [ "(BC)12", "OutputRules", "Default_Honey", "OutputItem", "#0" ],
+            "Entries": {
+                "CopyQuality": true
+            },
+            "When": {
+                "MeadRetainsQuality": "true"
             }
         },
         {
@@ -149,6 +165,17 @@
                     ],
                     "MinutesUntilReady": 600
                 }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "TargetField": [ "(BC)12", "OutputRules", "Flavored_Honey", "OutputItem", "#0" ],
+            "Entries": {
+                "CopyQuality": true
+            },
+            "When": {
+                "MeadRetainsQuality": "true"
             }
         }
     ]

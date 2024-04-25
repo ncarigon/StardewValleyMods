@@ -12,7 +12,7 @@ namespace BetterHoneyMead {
             ModHarmony = new Harmony(helper.ModContent.ModID);
             ModPatches.MachineData.Register();
             //ModPatches.ItemConverter.Register();
-            ModPatches.LookupAnything.Register();
+            ModPatches.ItemSpawner.Register();
         }
     }
 }
