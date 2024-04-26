@@ -1,0 +1,6 @@
+{
+    "config.EnableColoredSprites.name": "色付きスプライトを有効にする",
+    "config.EnableColoredSprites.description": "ハチミツとはちみつ酒に、原料の色に応じたスプライトを使用する。",
+    "config.MeadRetainsQuality.name": "原料と同品質",
+    "config.MeadRetainsQuality.description": "生産されるはちみつ酒の品質が、原料のハチミツと同じ品質になる。"
+}
