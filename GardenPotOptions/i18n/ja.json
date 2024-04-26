@@ -1,0 +1,32 @@
+{
+    "NCarigon.GardenPotOptions/config_name_KeepContents": "作物の保持",
+    "NCarigon.GardenPotOptions/config_desc_KeepContents": "特定のどうぐを使用すれば、作物を破壊せずに持ち上げられる。",
+
+    "NCarigon.GardenPotOptions/config_name_SafeTool": "持ち上げるためのどうぐ",
+    "NCarigon.GardenPotOptions/config_desc_SafeTool": "作物を破壊せずに、植木鉢を持ち上げられるどうぐを選ぶ。",
+
+    "NCarigon.GardenPotOptions/config_name_EnableSprinklers": "スプリンクラーの有効化",
+    "NCarigon.GardenPotOptions/config_desc_EnableSprinklers": "植木鉢にスプリンクラーで水やりをできるようにする。",
+
+    "NCarigon.GardenPotOptions/config_name_AncientSeeds": "古代のタネの有効化",
+    "NCarigon.GardenPotOptions/config_desc_AncientSeeds": "古代のタネを植木鉢で植えられるようにする。",
+
+    "NCarigon.GardenPotOptions/config_name_AllowTransplant": "移植の有効化",
+    "NCarigon.GardenPotOptions/config_desc_AllowTransplant": "植木鉢で作物や茶樹などの茂みを移植できるようにする。作物は耕した土、茂みは耕していない土でないと移植できません。",
+
+    "NCarigon.GardenPotOptions/config_name_HeartsGardenPot": "指定友好度で植木鉢入手",
+    "NCarigon.GardenPotOptions/config_desc_HeartsGardenPot": "指定した友好度に達すると、エブリンがあなたに植木鉢をプレゼントします。値を-1にするとこのオプションは無効になります。",
+
+    "NCarigon.GardenPotOptions/config_name_HeartsRecipe": "指定友好度でレシピ入手",
+    "NCarigon.GardenPotOptions/config_desc_HeartsRecipe": "指定した友好度に達すると、エブリンがあなたに植木鉢のレシピをプレゼントします。値が「指定友好度で植木鉢入手」以上でないと無効になります。",
+
+    "NCarigon.GardenPotOptions/mail_title_pot": "エブリンの贈り物",
+    "NCarigon.GardenPotOptions/mail_text_pot": "こんにちは、@さん。^同じ園芸師としてあなたへちょっとした贈り物があります。この鉢は本当に便利で、室内で季節を問わず作物を育てることができますよ！外での栽培も素晴らしいですが…旬の作物しか栽培できませんからね。楽しんでください！^^-エブリンより",
+
+    "NCarigon.GardenPotOptions/mail_title_recipe": "エブリンの雑誌切り抜き",
+    "NCarigon.GardenPotOptions/mail_text_recipe": "ご機嫌いかがですか、@さん。^以前に贈りました植木鉢は、楽しんでもらえているかしら？もっと必要なら、本当に簡単に作ることができますよ。古い雑誌の切り抜きに作り方が載っていたので、これもあなたにお渡しするわ。^^-エブリンより",
+
+    "NCarigon.GardenPotOptions/event_text_recipe": "continue/64 15/farmer 64 16 2 Evelyn 64 18 0/skippable/pause 1500/speak Evelyn \"おはよう、@さん。\"/pause 500/faceDirection Evelyn 3/pause 500/faceDirection Evelyn 2/speak Evelyn \"この牧場に来るのも久しぶりだわ。素敵な散歩道でしたよ…$s#$b#以前よりいい感じになっているようね！$h\"/pause 500/faceDirection Evelyn 3/faceDirection Evelyn 0/pause 500/speak Evelyn \"以前に贈りました植木鉢は、楽しんでもらえているかしら？\"/pause 500/speak Evelyn \"もっと必要なら、本当に簡単に作ることができますよ。古い雑誌の切り抜きに作り方が載っていたので、これもあなたにお渡しするわ。\"/pause 200/playSound getNewSpecialItem/addCraftingRecipe Garden Pot/pause 500/message \"「植木鉢」のレシピを学んだ。\"/pause 800/speak Evelyn \"さて、そろそろ帰るとします。ジョージはオートミールを時間通りに食べないと不機嫌になるんですよ…#$b#良い一日を！$h\"/pause 500/end",
+
+    "NCarigon.GardenPotOptions/farmhand_placement_error": "ゲストは作物が入った植木鉢を置けない。それができるのはホストのみです。"
+}
