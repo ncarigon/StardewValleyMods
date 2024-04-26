@@ -21,10 +21,10 @@ namespace MoreSensibleJuices {
         private static void Postfix_Item__PopulateContextTags(
             Item __instance, HashSet<string> tags
         ) {
-            if (__instance.Name.Contains("_Juice_Fruit_")) {
-                tags.Add("juice_fruit");
-            } else if (__instance.Name.Contains("_Juice_Vegetable_")) {
-                tags.Add("juice_vegetable");
+            if (__instance?.Name?.Contains("_Juice_Fruit_") ?? false) {
+                tags?.Add("juice_fruit");
+            } else if (__instance?.Name?.Contains("_Juice_Vegetable_") ?? false) {
+                tags?.Add("juice_vegetable");
             }
         }
 
@@ -32,11 +32,11 @@ namespace MoreSensibleJuices {
             ref Item __result,
             MachineItemOutput outputData, Item inputItem
         ) {
-            if ((outputData?.PreserveId ?? "") == "DROP_IN_PRESERVE"
+            if ((outputData?.PreserveId?.Equals("DROP_IN_PRESERVE") ?? false)
                 && __result is SObject item1 && inputItem is SObject item2
-                && item1 is not null & item2 is not null
+                && item1 is not null && item2?.preservedParentSheetIndex?.Value is not null
             ) {
-                item1!.preservedParentSheetIndex.Value = item2!.preservedParentSheetIndex.Value;
+                item1.preservedParentSheetIndex.Value = item2.preservedParentSheetIndex.Value;
             }
         }
     }
