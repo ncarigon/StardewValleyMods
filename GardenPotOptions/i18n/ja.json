@@ -14,6 +14,12 @@
     "NCarigon.GardenPotOptions/config_name_AllowTransplant": "移植の有効化",
     "NCarigon.GardenPotOptions/config_desc_AllowTransplant": "植木鉢で作物や茶樹などの茂みを移植できるようにする。作物は耕した土、茂みは耕していない土でないと移植できません。",
 
+    "NCarigon.GardenPotOptions/config_name_TreeTransplantMax": "樹木の移植制限",
+    "NCarigon.GardenPotOptions/config_desc_TreeTransplantMax": "指定した成長段階を超えた樹木は移植しない。",
+
+    "NCarigon.GardenPotOptions/config_name_FruitTreeTransplantMax": "果樹の移植制限",
+    "NCarigon.GardenPotOptions/config_desc_FruitTreeTransplantMax": "指定した成長段階を超えた果樹は移植しない。",
+
     "NCarigon.GardenPotOptions/config_name_HeartsGardenPot": "指定友好度で植木鉢入手",
     "NCarigon.GardenPotOptions/config_desc_HeartsGardenPot": "指定した友好度に達すると、エブリンがあなたに植木鉢をプレゼントします。値を-1にするとこのオプションは無効になります。",
 
