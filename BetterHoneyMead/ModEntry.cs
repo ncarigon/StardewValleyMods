@@ -11,7 +11,6 @@ namespace BetterHoneyMead {
             Instance = this;
             ModHarmony = new Harmony(helper.ModContent.ModID);
             ModPatches.MachineData.Register();
-            //ModPatches.ItemConverter.Register();
             ModPatches.ItemSpawner.Register();
         }
     }
