@@ -5,10 +5,36 @@
 			"Target": "Data/Machines",
 			"TargetField": [ "(BC)12", "OutputRules" ],
 			"Entries": {
-				"Default_Juice": null
+				"{{ModId}}_Mash": {
+					"Id": "{{ModId}}_Mash",
+					"Triggers": [
+						{
+							"Id": "ItemPlacedInMachine_Vegetable",
+							"RequiredItemId": "(O)350",
+							"RequiredTags": [ "juice_vegetable" ]
+						}
+					],
+					"OutputItem": [
+						{
+							"ItemId": "{{ModId}}_Mash",
+							"ObjectInternalName": "{{ModId}}_Mash_{0}",
+							"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
+							"PreserveId": "DROP_IN_PRESERVE",
+							"CopyColor": true,
+							"CopyPrice": true,
+							"PriceModifiers": [
+								{
+									"Modification": "Multiply",
+									"Amount": 2.0
+								}
+							]
+						}
+					],
+					"MinutesUntilReady": 6000
+				}
 			},
 			"When": {
-				"HasMod": "!NCarigon.CopperStill"
+				"HasMod": "NCarigon.CopperStill"
 			}
 		},
 		{

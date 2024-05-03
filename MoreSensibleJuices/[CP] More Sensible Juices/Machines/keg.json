@@ -68,29 +68,9 @@
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "#0" ],
+			"TargetField": [ "(BC)12", "OutputRules" ],
 			"Entries": {
-				"RequiredItemId": "(O)350",
-				"RequiredTags": [ "juice_vegetable" ]
-			}
-		},
-		{
-			"Action": "EditData",
-			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "OutputItem", "#0" ],
-			"Entries": {
-				"ItemId": "{{ModId}}_Mash",
-				"ObjectInternalName": "{{ModId}}_Mash_{0}",
-				"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
-				"PreserveId": "DROP_IN_PRESERVE",
-				"CopyColor": true,
-				"CopyPrice": true,
-				"PriceModifiers": [
-					{
-						"Modification": "Multiply",
-						"Amount": 2.0
-					}
-				]
+				"Default_Juice": null
 			}
 		}
 	]
