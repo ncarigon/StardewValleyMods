@@ -34,7 +34,7 @@
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules", "Default_Wine", "Triggers", "#0" ],
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Wine", "Triggers", "ItemPlacedInMachine_Fruit" ],
 			"Entries": {
 				"RequiredItemId": "(O)350",
 				"RequiredTags": [ "juice_fruit" ]
@@ -46,7 +46,7 @@
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules", "Default_Wine", "OutputItem", "#0" ],
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Wine", "OutputItem", "Default" ],
 			"Entries": {
 				"ItemId": "(O)348",
 				"ObjectInternalName": "(O)348_{0}",
@@ -68,9 +68,26 @@
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules" ],
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "ItemPlacedInMachine_Vegetable" ],
 			"Entries": {
-				"Default_Juice": null
+				//INFO: keeps compatibility with CopperStill while disabling for general use
+				"Condition": "ITEM_CONTEXT_TAG Input juice_vegetable"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "ItemPlacedInMachine_Forage" ],
+			"Entries": {
+				"Condition": "ITEM_CONTEXT_TAG Input juice_vegetable"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "ItemPlacedInMachine_Juice" ],
+			"Entries": {
+				"Condition": "ITEM_CONTEXT_TAG Input juice_vegetable"
 			}
 		}
 	]
