@@ -74,10 +74,25 @@
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "#0" ],
-			"Entries": {
-				"Condition": "!ITEM_ID Input (O)271, !ITEM_CONTEXT_TAG Input preserve_sheet_index_271"
-			}
+			"TargetField": [ "(BC)12", "OutputRules" ],
+			"MoveEntries": [
+				{
+					"ID": "{{ModId}}_Whiskey",
+					"ToPosition": "Top"
+				},
+				{
+					"ID": "{{ModId}}_TequilaAnejo",
+					"ToPosition": "Top"
+				},
+				{
+					"ID": "{{ModId}}_RumDark",
+					"ToPosition": "Top"
+				},
+				{
+					"ID": "{{ModId}}_Sake",
+					"ToPosition": "Top"
+				}
+			]
 		}
 	]
 }

@@ -53,7 +53,7 @@
 									"PriceModifiers": [
 										{
 											"Modification": "Multiply",
-											"Amount": 1.25
+											"Amount": 1.5
 										}
 									]
 								}

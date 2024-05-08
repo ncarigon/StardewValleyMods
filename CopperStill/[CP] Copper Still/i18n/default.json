@@ -8,6 +8,9 @@
 	"juniper_Name": "Juniper Berry",
 	"juniper_Description": "Not really a berry! Great for making Gin.",
 
+	"mash_Name": "Mash",
+	"mash_Description": "Fermented vegetable juice.",
+
 	"flavor_Name": "{0} {1}",
 
 	"brandy_Name": "Brandy",

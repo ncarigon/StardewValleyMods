@@ -1,5 +1,11 @@
 {
     "Format": "2.0.0",
+    "ConfigSchema": {
+        "UseNormalSakeRecipe": {
+            "AllowValues": "true, false",
+            "Default": "false"
+        }
+    },
     "Changes": [
         {
             "Action": "Include",
@@ -23,10 +29,6 @@
         },
         {
             "Action": "Include",
-            "FromFile": "Mods/bbm.json"
-        },
-        {
-            "Action": "Include",
             "FromFile": "Objects/pina_colada.json"
         },
         {
@@ -36,10 +38,6 @@
         {
             "Action": "Include",
             "FromFile": "Objects/gin.json"
-        },
-        {
-            "Action": "Include",
-            "FromFile": "Objects/juniper_berry.json"
         },
         {
             "Action": "Include",
@@ -76,6 +74,34 @@
         {
             "Action": "Include",
             "FromFile": "Objects/whiskey.json"
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/juniper_berry.json",
+            "When": {
+                "HasMod": "NCarigon.BushBloomMod"
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Mods/BushBloomMod.json",
+            "When": {
+                "HasMod": "NCarigon.BushBloomMod"
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Objects/mash.json",
+            "When": {
+                "HasMod": "NCarigon.MoreSensibleJuices"
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Mods/MoreSensibleJuices.json",
+            "When": {
+                "HasMod": "NCarigon.MoreSensibleJuices"
+            }
         }
     ]
 }

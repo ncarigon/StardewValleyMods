@@ -1,0 +1,39 @@
+{
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "Data/SpecialOrders",
+			"TargetField": [ "Pam", "Objectives", "#0" ],
+			"Entries": {
+				"RequiredCount": "1"
+			},
+			"When": {
+				"{{ModifyPamSpecialOrder}}": "true"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/SpecialOrders",
+			"TargetField": [ "Pam", "Objectives", "#0", "Data" ],
+			"Entries": {
+				"AcceptedContextTags": "item_vodka, preserve_sheet_index_192"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/SpecialOrders",
+			"TargetField": [ "Pam", "Objectives", "#1" ],
+			"Entries": {
+				"RequiredCount": "1"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/SpecialOrders",
+			"TargetField": [ "Pam", "Objectives", "#1", "Data" ],
+			"Entries": {
+				"AcceptedContextTags": "item_vodka, preserve_sheet_index_192"
+			}
+		}
+	]
+}
