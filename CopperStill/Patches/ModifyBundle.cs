@@ -2,7 +2,7 @@
 using StardewModdingAPI;
 using StardewValley;
 
-namespace CopperStill.ModPatches {
+namespace CopperStill.Patches {
     internal static class ModifyBundle {
         public static void Register() {
             if (ModEntry.Instance?.Helper is not null) {

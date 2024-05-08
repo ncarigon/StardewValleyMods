@@ -7,14 +7,14 @@ using SMachineData = StardewValley.GameData.Machines.MachineData;
 using System.Linq;
 using System;
 
-namespace CopperStill.ModPatches {
+namespace CopperStill.Patches {
     internal static class MachineData {
         public static void Register() {
-            ModEntry.ModHarmony?.Patch(
+            ModEntry.Instance?.ModHarmony?.Patch(
                 original: AccessTools.Method(typeof(MachineDataUtility), "GetOutputItem"),
                 postfix: new HarmonyMethod(typeof(MachineData), nameof(Postfix_MachineDataUtility_GetOutputItem))
             );
-            ModEntry.ModHarmony?.Patch(
+            ModEntry.Instance?.ModHarmony?.Patch(
                 original: AccessTools.Method(typeof(SObject), "PlaceInMachine"),
                 prefix: new HarmonyMethod(typeof(MachineData), nameof(Prefix_Object_PlaceInMachine)),
                 postfix: new HarmonyMethod(typeof(MachineData), nameof(Postfix_Object_PlaceInMachine))
@@ -25,11 +25,11 @@ namespace CopperStill.ModPatches {
             ref Item __result,
             MachineItemOutput outputData, Item inputItem
         ) {
-            if ((outputData?.PreserveId ?? "") == "DROP_IN_PRESERVE"
-                && __result is SObject item1 && inputItem is SObject item2
-                && item1 is not null & item2 is not null
+            if ((outputData?.PreserveId?.Equals("DROP_IN_PRESERVE") ?? false)
+                && __result is SObject item1 && item1 is not null
+                && inputItem is SObject item2 && item2?.preservedParentSheetIndex?.Value is not null
             ) {
-                item1!.preservedParentSheetIndex.Value = item2!.preservedParentSheetIndex.Value;
+                item1.preservedParentSheetIndex.Value = item2.preservedParentSheetIndex.Value;
             }
         }
 
@@ -56,7 +56,7 @@ namespace CopperStill.ModPatches {
             // only use our logic if called from base game
             if (__state?.Item1 ?? false) {
                 // search for all machines
-                foreach (var machineOverride in Game1.content.Load<Dictionary<string, SMachineData>>("Data\\Machines")
+                foreach (var machineOverride in Game1.content.Load<Dictionary<string, SMachineData>>("Data/Machines")
                     // which start with 'QualifiedMachineId:' which will be alternate operations
                     .Where(m => m.Key?.StartsWith($"{__instance.QualifiedItemId}:") ?? false)
                     // only need the MachineData

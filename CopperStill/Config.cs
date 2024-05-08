@@ -1,17 +1,18 @@
 using System;
-using CopperStill.ModPatches;
+using CopperStill.Patches;
 using StardewModdingAPI;
 
 namespace CopperStill {
     public class Config {
         public bool ModifyDefaultBundle { get; set; } = true;
+        //public bool ModifyPamSpecialOrder { get; set; } = true;
 
         public static Config? Instance { get; private set; }
 
         internal static void Register() {
             Instance = ModEntry.Instance?.Helper?.ReadConfig<Config>();
-            if (ModEntry.Instance?.Helper is not null && Instance is not null) {
-                ModEntry.Instance.Helper.Events.GameLoop.GameLaunched += (s, e) => {
+            if (Instance is not null) {
+                ModEntry.Instance!.Helper.Events.GameLoop.GameLaunched += (_, _) => {
                     var configMenu = ModEntry.Instance.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
                     if (configMenu is null)
                         return;
@@ -30,6 +31,13 @@ namespace CopperStill {
                             ModifyBundle.UpdateBundle(value);
                         }
                     );
+                    //configMenu.AddBoolOption(
+                    //    mod: ModEntry.Instance.ModManifest,
+                    //    name: () => "Modify Pam's Special Order",
+                    //    tooltip: () => "Require vodka instead of juice, with appropriate quantity.",
+                    //    getValue: () => Instance.ModifyPamSpecialOrder,
+                    //    setValue: value => Instance.ModifyPamSpecialOrder = value
+                    //);
                 };
             }
         }
