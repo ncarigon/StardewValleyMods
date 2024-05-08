@@ -1,20 +1,17 @@
 ﻿using HarmonyLib;
-using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.GameData.Machines;
-using StardewValley.Menus;
-using StardewValley.Objects;
 using StardewValley.ItemTypeDefinitions;
 using SObject = StardewValley.Object;
 
-namespace BetterHoneyMead.ModPatches {
+namespace BetterHoneyMead.Patches {
     internal static class MachineData {
         public static void Register() {
-            ModEntry.ModHarmony?.Patch(
+            ModEntry.Instance?.ModHarmony?.Patch(
                 original: AccessTools.Method(typeof(MachineDataUtility), "GetOutputItem"),
                 postfix: new HarmonyMethod(typeof(MachineData), nameof(Postfix_MachineDataUtility_GetOutputItem))
             );
-            ModEntry.ModHarmony?.Patch(
+            ModEntry.Instance?.ModHarmony?.Patch(
                 original: AccessTools.Method(typeof(ObjectDataDefinition), "CreateFlavoredHoney"),
                 postfix: new HarmonyMethod(typeof(MachineData), nameof(Postfix_ObjectDataDefinition_CreateFlavoredHoney))
             );
