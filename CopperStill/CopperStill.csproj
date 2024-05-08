@@ -82,6 +82,9 @@
 	  <None Update="[CP] Copper Still\assets\still.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="[CP] Copper Still\i18n\ja.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="[CP] Copper Still\i18n\zh.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
