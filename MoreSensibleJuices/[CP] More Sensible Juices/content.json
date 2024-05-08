@@ -16,10 +16,6 @@
         "UseNormalPaleAleRecipe": {
             "AllowValues": "true, false",
             "Default": "false"
-        },
-        "UseNormalSakeRecipe": {
-            "AllowValues": "true, false",
-            "Default": "false"
         }
     },
     "Changes": [
@@ -30,14 +26,6 @@
         {
             "Action": "Include",
             "FromFile": "Machines/keg.json"
-        },
-        {
-            "Action": "Include",
-            "FromFile": "Objects/mash.json"
-        },
-        {
-            "Action": "Include",
-            "FromFile": "Mods/CopperStill.json"
         }
     ]
 }

@@ -2,8 +2,6 @@
 	"press_Name": "ジュースプレス",
 	"press_Description": "くだものや野菜をジュースにする。",
 	"flavor_Name": "{0}{1}",
-	"mash_Name": "酵母",
-	"mash_Description": "野菜ジュースを発酵させたもの。",
 
 	"config.PressRetainsQuality.name": "原料と同品質",
 	"config.PressRetainsQuality.description": "ジュースプレスから生産されるアイテムの品質が、原料と同じ品質になる。",
@@ -12,7 +10,5 @@
 	"config.UseNormalBeerRecipe.name": "通常のビール生産",
 	"config.UseNormalBeerRecipe.description": "有効にすると、コムギを直接醸造ダルに入れてもビールを生産できる。",
 	"config.UseNormalPaleAleRecipe.name": "通常のペールエール生産",
-	"config.UseNormalPaleAleRecipe.description": "有効にすると、ホップを直接醸造ダルに入れてもペールエールを生産できる。",
-	"config.UseNormalSakeRecipe.name": "通常の日本酒生産",
-	"config.UseNormalSakeRecipe.description": "有効にすると、玄米を直接醸造ダルに入れても日本酒を生産できる。Copper Still MODが必要です。"
+	"config.UseNormalPaleAleRecipe.description": "有効にすると、ホップを直接醸造ダルに入れてもペールエールを生産できる。"
 }
