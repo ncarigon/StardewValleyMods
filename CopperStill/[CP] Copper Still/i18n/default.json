@@ -1,6 +1,10 @@
 {
 	"config.UseNormalSakeRecipe.name": "Use Normal Saké Recipe",
 	"config.UseNormalSakeRecipe.description": "When enabled, saké will still be made when unmilled rice is directly placed into kegs.",
+	"config.StillRetainsQuality.name": "Still Retains Quality",
+	"config.StillRetainsQuality.description": "Determines whether the output item's quality from the Still will match the input item's quality.",
+	"config.KegRetainsQuality.name": "Keg Retains Quality",
+	"config.KegRetainsQuality.description": "Determines whether the output item's quality from the Keg will match the input item's quality. Only effects this mod's recipes.",
 
 	"still_Name": "Still",
 	"still_Description": "Turns juices into liquors.",
