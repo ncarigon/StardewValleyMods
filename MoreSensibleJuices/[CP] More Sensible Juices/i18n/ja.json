@@ -1,7 +1,8 @@
 {
 	"press_Name": "ジュースプレス",
 	"press_Description": "くだものや野菜をジュースにする。",
-	"flavor_Name": "{0}{1}",
+	"keg_DescriptionJuice": "フルーツジュースを入れて待てば、何か飲むものが手に入ります。",
+	"keg_DescriptionFruit": "フルーツを入れて待てば、何か飲むものがもらえます。",
 
 	"config.PressRetainsQuality.name": "原料と同品質",
 	"config.PressRetainsQuality.description": "ジュースプレスから生産されるアイテムの品質が、原料と同じ品質になる。",

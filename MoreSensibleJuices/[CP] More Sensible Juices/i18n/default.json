@@ -1,7 +1,8 @@
 {
 	"press_Name": "Juice Press",
 	"press_Description": "Turns fruits and vegetables into juices.",
-	"flavor_Name": "{0} {1}",
+	"keg_DescriptionJuice": "Turns select items into beverages, such as fruit juice into wine.",
+	"keg_DescriptionFruit": "Turns select items into beverages, such as fruit into wine.",
 
 	"config.PressRetainsQuality.name": "Press Retains Quality",
 	"config.PressRetainsQuality.description": "Determines whether the output item's quality from the Juice Press will match the input item's quality.",

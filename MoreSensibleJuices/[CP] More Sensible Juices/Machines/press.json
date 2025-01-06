@@ -32,10 +32,37 @@
 				"(BC){{ModId}}_Press": {
 					"OutputRules": [
 						{
-							"Id": "{{ModId}}_Juice_Fruit",
+							"Id": "Default_Vegetable",
 							"Triggers": [
 								{
-									"Id": "{{ModId}}_Juice_Fruit",
+									"Id": "ItemPlacedInMachine_Vegetable",
+									"RequiredTags": [
+										"category_vegetable"
+									]
+								}
+							],
+							"OutputItem": [
+								{
+									"Id": "Default",
+									"ItemId": "FLAVORED_ITEM Juice DROP_IN_ID",
+									"CopyQuality": "{{PressRetainsQuality}}"
+									//"PriceModifiers": [
+									//	{
+									//		//INFO: lower multiplier to balance original price to newer speed
+									//		//      disabled here in favor of code patch to keep compatibilit with Item Spawner mod
+									//		"Modification": "Multiply",
+									//		"Amount": 0.55
+									//	}
+									//]
+								}
+							],
+							"MinutesUntilReady": 60
+						},
+						{
+							"Id": "Default_Fruit",
+							"Triggers": [
+								{
+									"Id": "ItemPlacedInMachine_Fruit",
 									"RequiredTags": [
 										"category_fruits"
 									]
@@ -44,33 +71,24 @@
 							],
 							"OutputItem": [
 								{
-									"Id": "{{ModId}}_(O)350_Fruit",
+									"Id": "Default",
 									"ItemId": "FLAVORED_ITEM Juice DROP_IN_ID",
-									"ObjectInternalName": "{{ModId}}_Juice_Fruit_{0}",
-									"CopyColor": true,
 									"CopyQuality": "{{PressRetainsQuality}}",
-									"CopyPrice": true,
-									"PriceModifiers": [
-										{
-											"Modification": "Multiply",
-											"Amount": 1.25
-										}
-									]
+									//"PriceModifiers": [
+									//	{
+									//		"Modification": "Multiply",
+									//		"Amount": 0.55
+									//	}
+									//]
 								}
 							],
 							"MinutesUntilReady": 60
 						},
 						{
-							"Id": "{{ModId}}_Juice_Vegetable",
+							"Id": "Default_Vegetable",
 							"Triggers": [
 								{
-									"Id": "{{ModId}}_Juice_Vegetable",
-									"RequiredTags": [
-										"category_vegetable"
-									]
-								},
-								{
-									"Id": "{{ModId}}_Juice_Forage",
+									"Id": "ItemPlacedInMachine_Forage",
 									"RequiredTags": [
 										"category_greens"
 									],
@@ -79,18 +97,15 @@
 							],
 							"OutputItem": [
 								{
-									"Id": "{{ModId}}_(O)350_Vegetable",
+									"Id": "Default",
 									"ItemId": "FLAVORED_ITEM Juice DROP_IN_ID",
-									"ObjectInternalName": "{{ModId}}_Juice_Vegetable_{0}",
-									"CopyColor": true,
 									"CopyQuality": "{{PressRetainsQuality}}",
-									"CopyPrice": true,
-									"PriceModifiers": [
-										{
-											"Modification": "Multiply",
-											"Amount": 1.25
-										}
-									]
+									//"PriceModifiers": [
+									//	{
+									//		"Modification": "Multiply",
+									//		"Amount": 0.55
+									//	}
+									//]
 								}
 							],
 							"MinutesUntilReady": 60

@@ -3,7 +3,7 @@
     "ConfigSchema": {
         "PressRetainsQuality": {
             "AllowValues": "true, false",
-            "Default": "true"
+            "Default": "false"
         },
         "UseNormalWineRecipe": {
             "AllowValues": "true, false",

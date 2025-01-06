@@ -1,43 +1,68 @@
 {
 	"Changes": [
+		// SECTION: Set updated keg description
 		{
 			"Action": "EditData",
-			"Target": "Strings/Objects",
+			"Target": "Strings/BigCraftables",
 			"Entries": {
-				"{{ModId}}_Flavor": "{{i18n: flavor_Name}}"
+				"{{ModId}}.Keg_Description": "{{i18n: keg_DescriptionJuice}}"
+			},
+			"When": {
+				"UseNormalWineRecipe": "false"
 			}
 		},
+		{
+			"Action": "EditData",
+			"Target": "Strings/BigCraftables",
+			"Entries": {
+				"{{ModId}}.Keg_Description": "{{i18n: keg_DescriptionFruit}}"
+			},
+			"When": {
+				"UseNormalWineRecipe": "true"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/BigCraftables",
+			"TargetField": [ "12" ],
+			"Entries": {
+				"Description": "[LocalizedText Strings/BigCraftables:{{ModId}}.Keg_Description]"
+			}
+		},
+		// SECTION: Handle Wheat to Beer
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
 			"TargetField": [ "(BC)12", "OutputRules", "Default_Wheat", "Triggers", "#0" ],
 			"Entries": {
 				"RequiredItemId": "(O)350",
-				"RequiredTags": [ "juice_vegetable", "preserve_sheet_index_262" ]
+				"RequiredTags": [ "juice_vegetable_item", "preserve_sheet_index_262" ]
 			},
 			"When": {
 				"UseNormalBeerRecipe": "false"
 			}
 		},
+		// SECTION: Handle Hops to Pale Ale
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
 			"TargetField": [ "(BC)12", "OutputRules", "Default_Hops", "Triggers", "#0" ],
 			"Entries": {
 				"RequiredItemId": "(O)350",
-				"RequiredTags": [ "juice_vegetable", "preserve_sheet_index_304" ]
+				"RequiredTags": [ "juice_vegetable_item", "preserve_sheet_index_304" ]
 			},
 			"When": {
 				"UseNormalPaleAleRecipe": "false"
 			}
 		},
+		// SECTION: Handle fruit juice to wine
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
 			"TargetField": [ "(BC)12", "OutputRules", "Default_Wine", "Triggers", "ItemPlacedInMachine_Fruit" ],
 			"Entries": {
 				"RequiredItemId": "(O)350",
-				"RequiredTags": [ "juice_fruit" ]
+				"RequiredTags": [ "juice_fruit_item" ]
 			},
 			"When": {
 				"UseNormalWineRecipe": "false"
@@ -48,46 +73,31 @@
 			"Target": "Data/Machines",
 			"TargetField": [ "(BC)12", "OutputRules", "Default_Wine", "OutputItem", "Default" ],
 			"Entries": {
-				"ItemId": "(O)348",
-				"ObjectInternalName": "(O)348_{0}",
-				"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
-				"PreserveId": "DROP_IN_PRESERVE",
-				"CopyColor": true,
-				"CopyPrice": true,
-				"PriceModifiers": [
-					{
-						"Modification": "Multiply",
-						"Amount": 2.5
-					}
-				]
+				//INFO: swap from DROP_IN_ID to DROP_IN_PRESERVE to pull fruit ID from juice
+				"ItemId": "FLAVORED_ITEM Wine DROP_IN_PRESERVE"
 			},
 			"When": {
 				"UseNormalWineRecipe": "false"
 			}
 		},
+		// SECTION: Handle vegetable juice to nothing
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
 			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "ItemPlacedInMachine_Vegetable" ],
 			"Entries": {
-				//INFO: keeps compatibility with CopperStill while disabling for general use
-				"Condition": "ITEM_CONTEXT_TAG Input juice_vegetable"
+				//INFO: disabling for general use due to default RequireTags and custom context tags not existing on the same items
+				//INFO: keeps compatibility with CopperStill mod
+				"Condition": "ITEM_CONTEXT_TAG Input juice_vegetable_item"
 			}
 		},
+		// SECTION: Handle forage juice to nothing
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
 			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "ItemPlacedInMachine_Forage" ],
 			"Entries": {
-				"Condition": "ITEM_CONTEXT_TAG Input juice_vegetable"
-			}
-		},
-		{
-			"Action": "EditData",
-			"Target": "Data/Machines",
-			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "ItemPlacedInMachine_Juice" ],
-			"Entries": {
-				"Condition": "ITEM_CONTEXT_TAG Input juice_vegetable"
+				"Condition": "ITEM_CONTEXT_TAG Input juice_forage_item"
 			}
 		}
 	]

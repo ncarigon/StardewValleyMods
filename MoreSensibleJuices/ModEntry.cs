@@ -11,8 +11,8 @@ namespace MoreSensibleJuices {
         public override void Entry(IModHelper helper) {
             Instance = this;
             ModHarmony = new Harmony(helper.ModContent.ModID);
-            MachineData.Register();
-            ItemSpawner.Register();
+            SDVPatches.Register();
+            ItemSpawnerPatches.Register();
         }
     }
 }
