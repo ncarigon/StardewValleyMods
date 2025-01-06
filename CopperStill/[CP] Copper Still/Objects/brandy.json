@@ -2,18 +2,28 @@
     "Changes": [
         {
             "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}.BrandyName": "{{i18n: brandy_Name}}",
+                "{{ModId}}.BrandyDescription": "{{i18n: brandy_Description}}",
+                "{{ModId}}.BrandyFlavored": "{{i18n: brandy_Flavored}}"
+            }
+        },
+        {
+            "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
                 "{{ModId}}_Brandy": {
                     "Name": "Brandy",
-                    "DisplayName": "{{i18n: brandy_Name}}",
-                    "Description": "{{i18n: brandy_Description}}",
+                    "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}.BrandyName]",
+                    "Description": "[LocalizedText Strings/Objects:{{ModId}}.BrandyDescription]",
                     "Type": "Basic",
                     "Category": -26,
-                    "Price": 1620,
+                    "Price": 1700,
                     "Edibility": 50,
                     "IsDrink": true,
                     "Texture": "Mods/{{ModId}}/Brandy",
+                    "ColorOverlayFromNextIndex": true,
                     "Buffs": [
                         {
                             "Id": "Tipsy",

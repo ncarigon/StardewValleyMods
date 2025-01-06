@@ -1,5 +1,6 @@
 ﻿{
 	"Changes": [
+		//SECTION: Add juniper berry bloom schedule
 		{
 			"Action": "EditData",
 			"Target": "NCarigon.BushBloomMod/Schedules",
@@ -16,6 +17,16 @@
 			"Action": "EditImage",
 			"Target": "NCarigon.BushBloomMod/Textures/{{ModId}}/fall_JuniperBerry",
 			"FromFile": "assets/juniper_bush.png"
+		},
+		//SECTION: Swap holly berry for juniper in gin recipe
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_Gin", "OutputItem", "#0", "CustomData" ],
+			"Entries": {
+				"{{ModId}}_AdditionalConsumedItems.ItemId.1": "(O){{ModId}}_JuniperBerry",
+				"{{ModId}}_AdditionalConsumedItems.InvalidCountMessage.1": "[LocalizedText Strings/Objects:{{ModId}}_StillRequires] 1 [ItemName (O){{ModId}}_JuniperBerry]"
+			}
 		}
 	]
 }

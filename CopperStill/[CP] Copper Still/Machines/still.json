@@ -15,60 +15,8 @@
 					"OutputRules": [],
 					"AdditionalConsumedItems": [
 						{
-							"ItemId": "(O)382",
+							"ItemId": "(O)382", // coal
 							"InvalidCountMessage": "[LocalizedText Strings\\StringsFromCSFiles:Object.cs.12772]"
-						}
-					],
-					"LoadEffects": [
-						{
-							"Sounds": [
-								{
-									"Id": "Ship"
-								}
-							]
-						}
-					],
-					"WobbleWhileWorking": true
-				},
-				"(BC){{ModId}}_Still:Vodka_to_Gin": {
-					"OutputRules": [
-						{
-							"Id": "{{ModId}}_Gin",
-							"Triggers": [
-								{
-									"Id": "{{ModId}}_Gin",
-									"RequiredItemId": "(O){{ModId}}_Vodka"
-								}
-							],
-							"OutputItem": [
-								{
-									"Id": "{{ModId}}_Gin",
-									"ItemId": "{{ModId}}_Gin",
-									"ObjectInternalName": "{{ModId}}_Gin_{0}",
-									"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
-									"PreserveId": "DROP_IN_PRESERVE",
-									"CopyPrice": true,
-									"CopyColor": true,
-									"CopyQuality": true,
-									"PriceModifiers": [
-										{
-											"Modification": "Multiply",
-											"Amount": 1.5
-										}
-									]
-								}
-							],
-							"MinutesUntilReady": 1600
-						}
-					],
-					"AdditionalConsumedItems": [
-						{
-							"ItemId": "(O)382",
-							"InvalidCountMessage": "[LocalizedText Strings\\StringsFromCSFiles:Object.cs.12772]"
-						},
-						{
-							"ItemId": "(O)283",
-							"InvalidCountMessage": "[LocalizedText Strings/Objects:{{ModId}}_StillRequires] 1 [ItemName (O)283]"
 						}
 					],
 					"LoadEffects": [
@@ -86,32 +34,21 @@
 		},
 		{
 			"Action": "EditData",
-			"Target": "Strings/Objects",
-			"Entries": {
-				"{{ModId}}_Flavor": "{{i18n: flavor_Name}}"
-			}
-		},
-		{
-			"Action": "EditData",
 			"Target": "Data/Machines",
 			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules" ],
 			"Entries": {
-				"{{ModId}}_Brandy": {
-					"Id": "{{ModId}}_Brandy",
+				"{{ModId}}_Gin": {
+					"Id": "{{ModId}}_Gin",
 					"Triggers": [
 						{
-							"Id": "{{ModId}}_Brandy",
-							"RequiredItemId": "(O)348",
-							"RequiredTags": [ "!preserve_sheet_index_90" ],
-							"RequiredCount": 4
+							"RequiredItemId": "(O){{ModId}}_Vodka"
 						}
 					],
 					"OutputItem": [
 						{
-							"Id": "{{ModId}}_Brandy",
-							"ItemId": "{{ModId}}_Brandy",
-							"ObjectInternalName": "{{ModId}}_Brandy_{0}",
-							"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
+							"ItemId": "{{ModId}}_Gin",
+							"ObjectInternalName": "{{ModId}}_Gin_{0}",
+							"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}.GinFlavored %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
 							"PreserveId": "DROP_IN_PRESERVE",
 							"CopyPrice": true,
 							"CopyColor": true,
@@ -119,34 +56,36 @@
 							"PriceModifiers": [
 								{
 									"Modification": "Multiply",
-									"Amount": 4.5
+									"Amount": 1.5
 								}
-							]
+							],
+							"CustomData": {
+								"{{ModId}}_AdditionalConsumedItems.ItemId.1": "(O)283", //holly
+								//"{{ModId}}_AdditionalConsumedItems.RequiredCount.1": "1",
+								"{{ModId}}_AdditionalConsumedItems.InvalidCountMessage.1": "[LocalizedText Strings/Objects:{{ModId}}_StillRequires] 1 [ItemName (O)283]"
+							}
 						}
 					],
-					"MinutesUntilReady": 1600,
-					"InvalidCountMessage": "[LocalizedText Strings/Objects:{{ModId}}_StillRequires] 4 [ItemName (O)348]"
+					"MinutesUntilReady": 1600
 				},
 				"{{ModId}}_TequilaBlanco": {
 					"Id": "{{ModId}}_TequilaBlanco",
 					"Triggers": [
 						{
-							"Id": "{{ModId}}_TequilaBlanco",
-							"RequiredItemId": "(O)348",
-							"RequiredTags": [ "preserve_sheet_index_90" ],
+							"RequiredItemId": "(O)348", // wine
+							"RequiredTags": [ "preserve_sheet_index_90" ], // cactus
 							"RequiredCount": 4
 						}
 					],
 					"OutputItem": [
 						{
-							"Id": "{{ModId}}_TequilaBlanco",
 							"ItemId": "(O){{ModId}}_TequilaBlanco",
-							"CopyPrice": true,
-							"CopyQuality": true,
+							"CopyQuality": "{{StillRetainsQuality}}",
+							"CopyPrice": false,
 							"PriceModifiers": [
 								{
 									"Modification": "Multiply",
-									"Amount": 4.5
+									"Amount": 1.0
 								}
 							]
 						}
@@ -154,57 +93,52 @@
 					"MinutesUntilReady": 1600,
 					"InvalidCountMessage": "[LocalizedText Strings/Objects:{{ModId}}_StillRequires] 4 [ItemName (O)90] [ItemName (O)348]"
 				},
-				"{{ModId}}_Vodka": {
-					"Id": "{{ModId}}_Vodka",
+				"{{ModId}}_Brandy": {
+					"Id": "{{ModId}}_Brandy",
 					"Triggers": [
 						{
-							"Id": "{{ModId}}_Vodka",
-							"RequiredItemId": "(O)350",
-							"RequiredTags": [ "!preserve_sheet_index_270", "!preserve_sheet_index_284" ],
+							"RequiredItemId": "(O)348", // wine
 							"RequiredCount": 4
 						}
 					],
 					"OutputItem": [
 						{
-							"Id": "{{ModId}}_Vodka",
-							"ItemId": "{{ModId}}_Vodka",
-							"ObjectInternalName": "{{ModId}}_Vodka_{0}",
-							"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
+							"ItemId": "{{ModId}}_Brandy",
+							"ObjectInternalName": "{{ModId}}_Brandy_{0}",
+							"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}.BrandyFlavored %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
 							"PreserveId": "DROP_IN_PRESERVE",
+							"CopyQuality": "{{StillRetainsQuality}}",
 							"CopyPrice": true,
 							"CopyColor": true,
-							"CopyQuality": true,
 							"PriceModifiers": [
 								{
 									"Modification": "Multiply",
-									"Amount": 4.5
+									"Amount": 4.25 // slightly lower mult to keep prices reasonable
 								}
 							]
 						}
 					],
 					"MinutesUntilReady": 1600,
-					"InvalidCountMessage": "[LocalizedText Strings/Objects:{{ModId}}_StillRequires] 4 [ItemName (O)350]"
+					"InvalidCountMessage": "[LocalizedText Strings/Objects:{{ModId}}_StillRequires] 4 [ItemName (O)348]"
 				},
 				"{{ModId}}_Moonshine": {
 					"Id": "{{ModId}}_Moonshine",
 					"Triggers": [
 						{
-							"Id": "{{ModId}}_Moonshine",
-							"RequiredItemId": "(O)350",
-							"RequiredTags": [ "preserve_sheet_index_270" ],
+							"RequiredItemId": "(O){{ModId}}_Mash",
+							"RequiredTags": [ "preserve_sheet_index_270" ], // corn
 							"RequiredCount": 4
 						}
 					],
 					"OutputItem": [
 						{
-							"Id": "{{ModId}}_Moonshine",
 							"ItemId": "(O){{ModId}}_Moonshine",
-							"CopyPrice": true,
-							"CopyQuality": true,
+							"CopyQuality": "{{StillRetainsQuality}}",
+							"CopyPrice": false,
 							"PriceModifiers": [
 								{
 									"Modification": "Multiply",
-									"Amount": 4.5
+									"Amount": 1.0
 								}
 							]
 						}
@@ -216,22 +150,20 @@
 					"Id": "{{ModId}}_RumWhite",
 					"Triggers": [
 						{
-							"Id": "{{ModId}}_RumWhite",
-							"RequiredItemId": "(O)350",
-							"RequiredTags": [ "preserve_sheet_index_284" ],
+							"RequiredItemId": "(O){{ModId}}_Mash",
+							"RequiredTags": [ "preserve_sheet_index_284" ], // beet
 							"RequiredCount": 4
 						}
 					],
 					"OutputItem": [
 						{
-							"Id": "{{ModId}}_RumWhite",
 							"ItemId": "(O){{ModId}}_RumWhite",
-							"CopyPrice": true,
-							"CopyQuality": true,
+							"CopyQuality": "{{StillRetainsQuality}}",
+							"CopyPrice": false,
 							"PriceModifiers": [
 								{
 									"Modification": "Multiply",
-									"Amount": 4.5
+									"Amount": 1.0
 								}
 							]
 						}
@@ -239,26 +171,51 @@
 					"MinutesUntilReady": 1600,
 					"InvalidCountMessage": "[LocalizedText Strings/Objects:{{ModId}}_StillRequires] 4 [ItemName (O)284] [ItemName (O)350]"
 				},
+				"{{ModId}}_Vodka": {
+					"Id": "{{ModId}}_Vodka",
+					"Triggers": [
+						{
+							"RequiredItemId": "(O){{ModId}}_Mash",
+							"RequiredCount": 4
+						}
+					],
+					"OutputItem": [
+						{
+							"ItemId": "{{ModId}}_Vodka",
+							"ObjectInternalName": "{{ModId}}_Vodka_{0}",
+							"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}.VodkaFlavored %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
+							"PreserveId": "DROP_IN_PRESERVE",
+							"CopyQuality": "{{StillRetainsQuality}}",
+							"CopyColor": true,
+							"CopyPrice": true,
+							"PriceModifiers": [
+								{
+									"Modification": "Multiply",
+									"Amount": 8 // higher multiplier to bring veggie up closer to fruit pricing
+								}
+							]
+						}
+					],
+					"MinutesUntilReady": 1600,
+					"InvalidCountMessage": "[LocalizedText Strings/Objects:{{ModId}}_StillRequires] 4 [ItemName (O)350]"
+				},
 				"{{ModId}}_Soju": {
 					"Id": "{{ModId}}_Soju",
 					"Triggers": [
 						{
-							"Id": "{{ModId}}_Soju",
 							"RequiredItemId": "(O){{ModId}}_Sake",
 							"RequiredCount": 4
 						}
 					],
 					"OutputItem": [
 						{
-							"Id": "{{ModId}}_Soju",
 							"ItemId": "{{ModId}}_Soju",
-							"ObjectInternalName": "{{ModId}}_Soju",
-							"CopyPrice": true,
-							"CopyQuality": true,
+							"CopyQuality": "{{StillRetainsQuality}}",
+							"CopyPrice": false,
 							"PriceModifiers": [
 								{
 									"Modification": "Multiply",
-									"Amount": 4.5
+									"Amount": 1.0
 								}
 							]
 						}
@@ -266,62 +223,6 @@
 					"MinutesUntilReady": 1600,
 					"InvalidCountMessage": "[LocalizedText Strings/Objects:{{ModId}}_StillRequires] 4 [ItemName (O){{ModId}}_Sake]"
 				}
-			}
-		},
-		{
-			"Action": "EditData",
-			"Target": "Data/Machines",
-			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_Moonshine", "OutputItem", "#0", "PriceModifiers", "#0" ],
-			"Entries": {
-				"Amount": 15
-			},
-			"When": {
-				"query: NOT {{NCarigon.CopperStill/ArePricesBalanced}}": true
-			}
-		},
-		{
-			"Action": "EditData",
-			"Target": "Data/Machines",
-			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_RumWhite", "OutputItem", "#0", "PriceModifiers", "#0" ],
-			"Entries": {
-				"Amount": 10
-			},
-			"When": {
-				"query: NOT {{NCarigon.CopperStill/ArePricesBalanced}}": true
-			}
-		},
-		{
-			"Action": "EditData",
-			"Target": "Data/Machines",
-			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_Vodka", "OutputItem", "#0", "PriceModifiers", "#0" ],
-			"Entries": {
-				"Amount": 12
-			},
-			"When": {
-				"query: NOT {{NCarigon.CopperStill/ArePricesBalanced}}": true
-			}
-		},
-		{
-			"Action": "EditData",
-			"Target": "Data/Machines",
-			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_TequilaBlanco", "OutputItem", "#0", "PriceModifiers", "#0" ],
-			"Entries": {
-				"Amount": 8
-			},
-			"When": {
-				"query: NOT {{NCarigon.CopperStill/ArePricesBalanced}}": true
-			}
-		},
-		{
-			"Action": "EditData",
-			"Target": "Data/Machines",
-			"TargetField": [ "(BC){{ModId}}_Still:Vodka_to_Gin", "AdditionalConsumedItems", "#1" ],
-			"Entries": {
-				"ItemId": "(O){{ModId}}_JuniperBerry",
-				"InvalidCountMessage": "[LocalizedText Strings/Objects:{{ModId}}_StillRequires] 1 [ItemName (O){{ModId}}_JuniperBerry]"
-			},
-			"When": {
-				"HasMod": "NCarigon.BushBloomMod"
 			}
 		}
 	]

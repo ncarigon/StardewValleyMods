@@ -1,0 +1,133 @@
+﻿{
+	"Changes": [
+		//SECTION: --STILL-- Change static prices to ingredient-based
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_TequilaBlanco", "OutputItem", "#0" ],
+			"Entries": {
+				"CopyPrice": true,
+				"PriceModifiers": [
+					{
+						"Modification": "Multiply",
+						"Amount": 4.5
+					}
+				]
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_Moonshine", "OutputItem", "#0" ],
+			"Entries": {
+				"CopyPrice": true,
+				"PriceModifiers": [
+					{
+						"Modification": "Multiply",
+						"Amount": 4.5
+					}
+				]
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_RumWhite", "OutputItem", "#0" ],
+			"Entries": {
+				"CopyPrice": true,
+				"PriceModifiers": [
+					{
+						"Modification": "Multiply",
+						"Amount": 4.5
+					}
+				]
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_Soju", "OutputItem", "#0" ],
+			"Entries": {
+				"CopyPrice": true,
+				"PriceModifiers": [
+					{
+						"Modification": "Multiply",
+						"Amount": 4.5
+					}
+				]
+			}
+		},
+		//SECTION: --STILL-- Lower vegetable pricing back to match fruit
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Still", "OutputRules", "{{ModId}}_Vodka", "OutputItem", "#0" ],
+			"Entries": {
+				"CopyPrice": true,
+				"PriceModifiers": [
+					{
+						"Modification": "Multiply",
+						"Amount": 4.5
+					}
+				]
+			}
+		},
+		//SECTION: --KEG--
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "{{ModId}}_Whiskey", "OutputItem", "#0" ],
+			"Entries": {
+				"CopyPrice": true,
+				"PriceModifiers": [
+					{
+						"Modification": "Multiply",
+						"Amount": 2.5
+					}
+				]
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "{{ModId}}_TequilaAnejo", "OutputItem", "#0" ],
+			"Entries": {
+				"CopyPrice": true,
+				"PriceModifiers": [
+					{
+						"Modification": "Multiply",
+						"Amount": 2.5
+					}
+				]
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "{{ModId}}_RumDark", "OutputItem", "#0" ],
+			"Entries": {
+				"CopyPrice": true,
+				"PriceModifiers": [
+					{
+						"Modification": "Multiply",
+						"Amount": 2.5
+					}
+				]
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "{{ModId}}_Sake", "OutputItem", "#0" ],
+			"Entries": {
+				"CopyPrice": true,
+				"PriceModifiers": [
+					{
+						"Modification": "Multiply",
+						"Amount": 3.5 //roughly matching pale ale and beer
+					}
+				]
+			}
+		}
+	]
+}

@@ -1,5 +1,5 @@
 using System;
-using CopperStill.Patches;
+using CopperStill.ModPatches;
 using StardewModdingAPI;
 
 namespace CopperStill {
@@ -11,8 +11,8 @@ namespace CopperStill {
 
         internal static void Register() {
             Instance = ModEntry.Instance?.Helper?.ReadConfig<Config>();
-            if (Instance is not null) {
-                ModEntry.Instance!.Helper.Events.GameLoop.GameLaunched += (_, _) => {
+            if (ModEntry.Instance?.Helper is not null && Instance is not null) {
+                ModEntry.Instance.Helper.Events.GameLoop.GameLaunched += (s, e) => {
                     var configMenu = ModEntry.Instance.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
                     if (configMenu is null)
                         return;

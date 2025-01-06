@@ -2,15 +2,23 @@
     "Changes": [
         {
             "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}.MoonshineName": "{{i18n: moonshine_Name}}",
+                "{{ModId}}.MoonshineDescription": "{{i18n: moonshine_Description}}"
+            }
+        },
+        {
+            "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
                 "{{ModId}}_Moonshine": {
                     "Name": "Moonshine",
-                    "DisplayName": "{{i18n: moonshine_Name}}",
-                    "Description": "{{i18n: moonshine_Description}}",
+                    "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}.MoonshineName]",
+                    "Description": "[LocalizedText Strings/Objects:{{ModId}}.MoonshineDescription]",
                     "Type": "Basic",
                     "Category": -26,
-                    "Price": 1344,
+                    "Price": 1000,
                     "Edibility": 50,
                     "IsDrink": true,
                     "Texture": "Mods/{{ModId}}/Moonshine",

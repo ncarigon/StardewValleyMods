@@ -16,11 +16,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Patches\JuniperBerry.cs" />
+	  <Compile Remove="ModPatches\JuniperBerry.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.3.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -38,7 +38,7 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="[CP] Copper Still\assets\brandy.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="[CP] Copper Still\assets\gin.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -85,22 +85,16 @@
 	  <None Update="[CP] Copper Still\i18n\ja.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="[CP] Copper Still\i18n\zh.json">
+	  <None Update="[CP] Copper Still\i18n\ko.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="[CP] Copper Still\i18n\ko.json">
+	  <None Update="[CP] Copper Still\i18n\zh.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="[CP] Copper Still\Machines\cask.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="[CP] Copper Still\Machines\keg.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="[CP] Copper Still\Mods\MoreSensibleJuices.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="[CP] Copper Still\Mods\BushBloomMod.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="[CP] Copper Still\content.json">
@@ -121,13 +115,19 @@
 	  <None Update="[CP] Copper Still\manifest.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="[CP] Copper Still\Mods\Balancing.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[CP] Copper Still\Mods\BushBloomMod.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="[CP] Copper Still\Objects\brandy.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="[CP] Copper Still\Objects\mash.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="[CP] Copper Still\Objects\pina_colada.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="[CP] Copper Still\Objects\brandy.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="[CP] Copper Still\Objects\rum_dark.json">
@@ -162,9 +162,6 @@
 	  </None>
 	  <None Update="[CP] Copper Still\Objects\rum_white.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="[CP] Copper Still\SpecialOrders\vodka.json">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
 

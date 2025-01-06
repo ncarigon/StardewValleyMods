@@ -2,15 +2,23 @@
     "Changes": [
         {
             "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}.SojuName": "{{i18n: soju_Name}}",
+                "{{ModId}}.SojuDescription": "{{i18n: soju_Description}}"
+            }
+        },
+        {
+            "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
                 "{{ModId}}_Soju": {
                     "Name": "Soju",
-                    "DisplayName": "{{i18n: soju_Name}}",
-                    "Description": "{{i18n: soju_Description}}",
+                    "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}.SojuName]",
+                    "Description": "[LocalizedText Strings/Objects:{{ModId}}.SojuDescription]",
                     "Type": "Basic",
                     "Category": -26,
-                    "Price": 1620,
+                    "Price": 1650,
                     "Edibility": 50,
                     "IsDrink": true,
                     "Texture": "Mods/{{ModId}}/Soju",

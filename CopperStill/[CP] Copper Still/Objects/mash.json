@@ -2,18 +2,28 @@
     "Changes": [
         {
             "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}.MashName": "{{i18n: mash_Name}}",
+                "{{ModId}}.MashDescription": "{{i18n: mash_Description}}",
+                "{{ModId}}.MashFlavored": "{{i18n: mash_Flavored}}"
+            }
+        },
+        {
+            "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
                 "{{ModId}}_Mash": {
                     "Name": "Mash",
-                    "DisplayName": "{{i18n: mash_Name}}",
-                    "Description": "{{i18n: mash_Description}}",
+                    "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}.MashName]",
+                    "Description": "[LocalizedText Strings/Objects:{{ModId}}.MashDescription]",
                     "Type": "Basic",
                     "Category": -26,
-                    "Price": 150,
+                    "Price": 337,
                     "Edibility": -1,
                     "IsDrink": true,
                     "Texture": "Mods/{{ModId}}/Mash",
+                    "ColorOverlayFromNextIndex": true,
                     "Buffs": [
                         {
                             "Id": "Tipsy",

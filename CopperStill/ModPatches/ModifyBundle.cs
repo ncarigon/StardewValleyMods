@@ -2,7 +2,7 @@
 using StardewModdingAPI;
 using StardewValley;
 
-namespace CopperStill.Patches {
+namespace CopperStill.ModPatches {
     internal static class ModifyBundle {
         public static void Register() {
             if (ModEntry.Instance?.Helper is not null) {
@@ -25,7 +25,8 @@ namespace CopperStill.Patches {
                         } else {
                             ModEntry.Instance?.Monitor?.Log("Found default bundle, nothing to do.", LogLevel.Info);
                         }
-                    } else if (val == "The Missing//(O)Brandy 1 1 807 1 0 74 1 0 454 5 2 795 1 2 445 1 0/1/5//The Missing" // older item IDs
+                    } else
+                    if (val == "The Missing//(O)Brandy 1 1 807 1 0 74 1 0 454 5 2 795 1 2 445 1 0/1/5//The Missing" // older item IDs
                         || val == "The Missing//(O)NCarigon.CopperStillJA_Brandy 1 1 807 1 0 74 1 0 454 5 2 795 1 2 445 1 0/1/5//The Missing"
                     ) {
                         if (include) {

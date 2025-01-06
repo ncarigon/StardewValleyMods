@@ -9,13 +9,11 @@ namespace CopperStill {
 
         public override void Entry(IModHelper helper) {
             Instance = this;
-            ModHarmony = new Harmony(helper.ModContent.ModID);
+            this.ModHarmony = new Harmony(helper.ModContent.ModID);
             Config.Register();
-            Patches.ModifyBundle.Register();
-            Patches.MachineData.Register();
-            Patches.ItemSpawner.Register();
-            Patches.LegacyItemConverter.Register();
-            Patches.ContentPatcherTokens.Register();
+            ModPatches.ModifyBundle.Register();
+            ModPatches.SDVPatches.Register();
+            ModPatches.ItemSpawner.Register();
         }
     }
 }

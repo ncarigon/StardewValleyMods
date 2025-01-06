@@ -2,18 +2,28 @@
     "Changes": [
         {
             "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}.VodkaName": "{{i18n: vodka_Name}}",
+                "{{ModId}}.VodkaDescription": "{{i18n: vodka_Description}}",
+                "{{ModId}}.VodkaFlavored": "{{i18n: vodka_Flavored}}"
+            }
+        },
+        {
+            "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
                 "{{ModId}}_Vodka": {
                     "Name": "Vodka",
-                    "DisplayName": "{{i18n: vodka_Name}}",
-                    "Description": "{{i18n: vodka_Description}}",
+                    "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}.VodkaName]",
+                    "Description": "[LocalizedText Strings/Objects:{{ModId}}.VodkaDescription]",
                     "Type": "Basic",
                     "Category": -26,
-                    "Price": 1440,
+                    "Price": 750,
                     "Edibility": 50,
                     "IsDrink": true,
                     "Texture": "Mods/{{ModId}}/Vodka",
+                    "ColorOverlayFromNextIndex": true,
                     "Buffs": [
                         {
                             "Id": "Tipsy",

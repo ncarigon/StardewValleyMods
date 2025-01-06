@@ -1,6 +1,9 @@
 {
+	"config.UseNormalSakeRecipe.name": "Use Normal Saké Recipe",
+	"config.UseNormalSakeRecipe.description": "When enabled, saké will still be made when unmilled rice is directly placed into kegs.",
+
 	"still_Name": "Still",
-	"still_Description": "Turns wines and juices into liquors.",
+	"still_Description": "Turns juices into liquors.",
 	"still_Mail_Title": "Still Recipe",
 	"still_Mail_Text": "Dear @,^^I'm looking to expand my drinks menu, but I need more options. Here's a blueprint I had laying around. Maybe you can find it useful and help us both out.^^- Gus",
 	"still_Requires": "Requires",
@@ -10,11 +13,11 @@
 
 	"mash_Name": "Mash",
 	"mash_Description": "Fermented vegetable juice.",
-
-	"flavor_Name": "{0} {1}",
+	"mash_Flavored": "{0} Mash",
 
 	"brandy_Name": "Brandy",
 	"brandy_Description": "Aromatic, fresh, and fruity with a semi-sweet finish. Drink in moderation.",
+	"brandy_Flavored": "{0} Brandy",
 
 	"tequilaBlanco_Name": "Tequila Blanco",
 	"tequilaBlanco_Description": "Earthy, semi-sweet, and distinctly agave flavored. Drink in moderation.",
@@ -24,9 +27,11 @@
 
 	"vodka_Name": "Vodka",
 	"vodka_Description": "Pure and clean with a very subtle flavor. Drink in moderation.",
+	"vodka_Flavored": "{0} Vodka",
 
 	"gin_Name": "Gin",
 	"gin_Description": "Bright and botanical with a dry finish. Drink in moderation.",
+	"gin_Flavored": "{0} Gin",
 
 	"moonshine_Name": "Moonshine",
 	"moonshine_Description": "Lots of burn and very little flavor. Drink in moderation.",

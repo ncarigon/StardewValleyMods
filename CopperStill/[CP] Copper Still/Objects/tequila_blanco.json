@@ -2,15 +2,23 @@
     "Changes": [
         {
             "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}.TequilaBlancoName": "{{i18n: tequilaBlanco_Name}}",
+                "{{ModId}}.TequilaBlancoDescription": "{{i18n: tequilaBlanco_Description}}"
+            }
+        },
+        {
+            "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
                 "{{ModId}}_TequilaBlanco": {
                     "Name": "Tequila Blanco",
-                    "DisplayName": "{{i18n: tequilaBlanco_Name}}",
-                    "Description": "{{i18n: tequilaBlanco_Description}}",
+                    "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}.TequilaBlancoName]",
+                    "Description": "[LocalizedText Strings/Objects:{{ModId}}.TequilaBlancoDescription]",
                     "Type": "Basic",
                     "Category": -26,
-                    "Price": 1012,
+                    "Price": 1300,
                     "Edibility": 50,
                     "IsDrink": true,
                     "Texture": "Mods/{{ModId}}/TequilaBlanco",

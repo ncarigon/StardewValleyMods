@@ -2,12 +2,20 @@
     "Changes": [
         {
             "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}.JuniperName": "{{i18n: juniper_Name}}",
+                "{{ModId}}.JuniperDescription": "{{i18n: juniper_Description}}"
+            }
+        },
+        {
+            "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
                 "{{ModId}}_JuniperBerry": {
                     "Name": "Juniper Berry",
-                    "DisplayName": "{{i18n: juniper_Name}}",
-                    "Description": "{{i18n: juniper_Description}}",
+                    "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}.JuniperName]",
+                    "Description": "[LocalizedText Strings/Objects:{{ModId}}.JuniperDescription]",
                     "Type": "Basic",
                     "Category": -81,
                     "Price": 30,

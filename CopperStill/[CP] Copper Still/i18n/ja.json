@@ -8,10 +8,13 @@
 	"juniper_Name": "ジュニパー",
 	"juniper_Description": "厳密にはベリーではない。ジン作りに最適。",
 
-	"flavor_Name": "{0}{1}",
+	"mash_Name": "酵母",
+	"mash_Description": "発酵野菜ジュース",
+	"mash_Flavored": "{0} 酵母",
 
 	"brandy_Name": "ブランデー",
 	"brandy_Description": "華やかな香りとまろやかな味わい。お酒はほどほどに。",
+	"brandy_Flavored": "{0}ブランデー",
 
 	"tequilaBlanco_Name": "ブランコ",
 	"tequilaBlanco_Description": "サボテンの若さ際立つフレッシュな香り。お酒はほどほどに。",
@@ -21,9 +24,11 @@
 
 	"vodka_Name": "ウォッカ",
 	"vodka_Description": "不純物をほとんど含まず雑味がない。お酒はほどほどに。",
+	"vodka_Flavored": "{0}ウォッカ",
 
 	"gin_Name": "ジン",
 	"gin_Description": "フルーツやスパイスなどで香り付けされ、味わいはさっぱり。お酒はほどほどに。",
+	"gin_Flavored": "{0}ジン",
 
 	"moonshine_Name": "密造酒",
 	"moonshine_Description": "度数は高いが風味はほとんどない。お酒はほどほどに。",

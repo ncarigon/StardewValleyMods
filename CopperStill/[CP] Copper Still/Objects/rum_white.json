@@ -2,15 +2,23 @@
     "Changes": [
         {
             "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}.RumWhiteName": "{{i18n: rumWhite_Name}}",
+                "{{ModId}}.RumWhiteDescription": "{{i18n: rumWhite_Description}}"
+            }
+        },
+        {
+            "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
                 "{{ModId}}_RumWhite": {
                     "Name": "White Rum",
-                    "DisplayName": "{{i18n: rumWhite_Name}}",
-                    "Description": "{{i18n: rumWhite_Description}}",
+                    "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}.RumWhiteName]",
+                    "Description": "[LocalizedText Strings/Objects:{{ModId}}.RumWhiteDescription]",
                     "Type": "Basic",
                     "Category": -26,
-                    "Price": 1800,
+                    "Price": 1500,
                     "Edibility": 50,
                     "IsDrink": true,
                     "Texture": "Mods/{{ModId}}/RumWhite",

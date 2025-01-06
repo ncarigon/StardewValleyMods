@@ -2,15 +2,23 @@
     "Changes": [
         {
             "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}.WhiskeyName": "{{i18n: whiskey_Name}}",
+                "{{ModId}}.WhiskeyDescription": "{{i18n: whiskey_Description}}"
+            }
+        },
+        {
+            "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
                 "{{ModId}}_Whiskey": {
                     "Name": "Whiskey",
-                    "DisplayName": "{{i18n: whiskey_Name}}",
-                    "Description": "{{i18n: whiskey_Description}}",
+                    "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}.WhiskeyName]",
+                    "Description": "[LocalizedText Strings/Objects:{{ModId}}.WhiskeyDescription]",
                     "Type": "Basic",
                     "Category": -26,
-                    "Price": 5040,
+                    "Price": 4200,
                     "Edibility": 50,
                     "IsDrink": true,
                     "Texture": "Mods/{{ModId}}/Whiskey",

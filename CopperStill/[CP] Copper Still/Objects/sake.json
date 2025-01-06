@@ -2,12 +2,20 @@
     "Changes": [
         {
             "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}.SakeName": "{{i18n: sake_Name}}",
+                "{{ModId}}.SakeDescription": "{{i18n: sake_Description}}"
+            }
+        },
+        {
+            "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
                 "{{ModId}}_Sake": {
                     "Name": "Sake",
-                    "DisplayName": "{{i18n: sake_Name}}",
-                    "Description": "{{i18n: sake_Description}}",
+                    "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}.SakeName]",
+                    "Description": "[LocalizedText Strings/Objects:{{ModId}}.SakeDescription]",
                     "Type": "Basic",
                     "Category": -26,
                     "Price": 360,

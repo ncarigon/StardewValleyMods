@@ -2,18 +2,28 @@
     "Changes": [
         {
             "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}.GinName": "{{i18n: gin_Name}}",
+                "{{ModId}}.GinDescription": "{{i18n: gin_Description}}",
+                "{{ModId}}.GinFlavored": "{{i18n: gin_Flavored}}"
+            }
+        },
+        {
+            "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
                 "{{ModId}}_Gin": {
                     "Name": "Gin",
-                    "DisplayName": "{{i18n: gin_Name}}",
-                    "Description": "{{i18n: gin_Description}}",
+                    "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}.GinName]",
+                    "Description": "[LocalizedText Strings/Objects:{{ModId}}.GinDescription]",
                     "Type": "Basic",
                     "Category": -26,
-                    "Price": 2880,
+                    "Price": 1125,
                     "Edibility": 50,
                     "IsDrink": true,
                     "Texture": "Mods/{{ModId}}/Gin",
+                    "ColorOverlayFromNextIndex": true,
                     "Buffs": [
                         {
                             "Id": "Tipsy",

@@ -1,9 +1,21 @@
 {
     "Format": "2.0.0",
     "ConfigSchema": {
+        "KegRetainsQuality": {
+            "AllowValues": "true, false",
+            "Default": "false"
+        },
+        "StillRetainsQuality": {
+            "AllowValues": "true, false",
+            "Default": "false"
+        },
         "UseNormalSakeRecipe": {
             "AllowValues": "true, false",
             "Default": "false"
+        },
+        "BalancePrices": {
+            "AllowValues": "auto, true, false",
+            "Default": "auto"
         }
     },
     "Changes": [
@@ -77,10 +89,7 @@
         },
         {
             "Action": "Include",
-            "FromFile": "Objects/juniper_berry.json",
-            "When": {
-                "HasMod": "NCarigon.BushBloomMod"
-            }
+            "FromFile": "Objects/juniper_berry.json"
         },
         {
             "Action": "Include",
@@ -93,14 +102,46 @@
             "Action": "Include",
             "FromFile": "Objects/mash.json",
             "When": {
-                "HasMod": "NCarigon.MoreSensibleJuices"
+                "HasMod": "NCarigon.MoreSensibleJuicesCP"
             }
         },
         {
             "Action": "Include",
-            "FromFile": "Mods/MoreSensibleJuices.json",
+            "FromFile": "Mods/Balancing.json",
             "When": {
-                "HasMod": "NCarigon.MoreSensibleJuices"
+                "HasMod": "Theoddon.BalanceOverhaul",
+                "BalancePrices": "auto"
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Mods/Balancing.json",
+            "When": {
+                "HasMod": "npeck.BalanceOverhaulUnoffical",
+                "BalancePrices": "auto"
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Mods/Balancing.json",
+            "When": {
+                "HasMod": "Xen0nex.BetterBalance",
+                "BalancePrices": "auto"
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Mods/Balancing.json",
+            "When": {
+                "HasMod": "jeWel.ImprovedBalance",
+                "BalancePrices": "auto"
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "Mods/Balancing.json",
+            "When": {
+                "BalancePrices": "true"
             }
         }
     ]

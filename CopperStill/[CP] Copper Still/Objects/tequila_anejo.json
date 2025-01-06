@@ -2,15 +2,23 @@
     "Changes": [
         {
             "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{ModId}}.TequilaAnejoName": "{{i18n: tequilaAnejo_Name}}",
+                "{{ModId}}.TequilaAnejoDescription": "{{i18n: tequilaAnejo_Description}}"
+            }
+        },
+        {
+            "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
                 "{{ModId}}_TequilaAnejo": {
                     "Name": "Tequila Anejo",
-                    "DisplayName": "{{i18n: tequilaAnejo_Name}}",
-                    "Description": "{{i18n: tequilaAnejo_Description}}",
+                    "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}.TequilaAnejoName]",
+                    "Description": "[LocalizedText Strings/Objects:{{ModId}}.TequilaAnejoDescription]",
                     "Type": "Basic",
                     "Category": -26,
-                    "Price": 3036,
+                    "Price": 3200,
                     "Edibility": 50,
                     "IsDrink": true,
                     "Texture": "Mods/{{ModId}}/TequilaAnejo",

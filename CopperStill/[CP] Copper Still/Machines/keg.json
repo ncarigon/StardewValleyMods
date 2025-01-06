@@ -1,5 +1,6 @@
 {
 	"Changes": [
+		//SECTION: Aging
 		{
 			"Action": "EditData",
 			"Target": "Data/Machines",
@@ -9,14 +10,20 @@
 					"Id": "{{ModId}}_Whiskey",
 					"Triggers": [
 						{
-							"Id": "{{ModId}}_Whiskey",
 							"RequiredItemId": "(O){{ModId}}_Moonshine"
 						}
 					],
 					"OutputItem": [
 						{
-							"Id": "{{ModId}}_Whiskey",
-							"ItemId": "(O){{ModId}}_Whiskey"
+							"ItemId": "(O){{ModId}}_Whiskey",
+							"CopyQuality": "{{KegRetainsQuality}}",
+							"CopyPrice": false,
+							"PriceModifiers": [
+								{
+									"Modification": "Multiply",
+									"Amount": 1.0
+								}
+							]
 						}
 					],
 					"MinutesUntilReady": 10000
@@ -25,14 +32,20 @@
 					"Id": "{{ModId}}_TequilaAnejo",
 					"Triggers": [
 						{
-							"Id": "{{ModId}}_TequilaAnejo",
 							"RequiredItemId": "(O){{ModId}}_TequilaBlanco"
 						}
 					],
 					"OutputItem": [
 						{
-							"Id": "{{ModId}}_TequilaAnejo",
-							"ItemId": "(O){{ModId}}_TequilaAnejo"
+							"ItemId": "(O){{ModId}}_TequilaAnejo",
+							"CopyQuality": "{{KegRetainsQuality}}",
+							"CopyPrice": false,
+							"PriceModifiers": [
+								{
+									"Modification": "Multiply",
+									"Amount": 1.0
+								}
+							]
 						}
 					],
 					"MinutesUntilReady": 10000
@@ -41,34 +54,94 @@
 					"Id": "{{ModId}}_RumDark",
 					"Triggers": [
 						{
-							"Id": "{{ModId}}_RumDark",
 							"RequiredItemId": "(O){{ModId}}_RumWhite"
 						}
 					],
 					"OutputItem": [
 						{
-							"Id": "{{ModId}}_RumDark",
-							"ItemId": "(O){{ModId}}_RumDark"
+							"ItemId": "(O){{ModId}}_RumDark",
+							"CopyQuality": "{{KegRetainsQuality}}",
+							"CopyPrice": false,
+							"PriceModifiers": [
+								{
+									"Modification": "Multiply",
+									"Amount": 1.0
+								}
+							]
 						}
 					],
 					"MinutesUntilReady": 10000
-				},
+				}
+			}
+		}, //SECTION: Sake
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules" ],
+			"Entries": {
 				"{{ModId}}_Sake": {
 					"Id": "{{ModId}}_Sake",
 					"Triggers": [
 						{
-							"Id": "{{ModId}}_Sake",
-							"RequiredItemId": "(O)271"
+							"RequiredItemId": "(O)271" // unmilled rice
 						}
 					],
 					"OutputItem": [
 						{
-							"Id": "{{ModId}}_Sake",
-							"ItemId": "(O){{ModId}}_Sake"
+							"ItemId": "(O){{ModId}}_Sake",
+							"CopyQuality": "{{KegRetainsQuality}}",
+							"CopyPrice": false,
+							"PriceModifiers": [
+								{
+									"Modification": "Multiply",
+									"Amount": 1.0
+								}
+							]
 						}
 					],
 					"MinutesUntilReady": 2250
 				}
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "{{ModId}}_Sake", "Triggers", "#0" ],
+			"Entries": {
+				"RequiredItemId": "(O)350", // swap unmilled rice for juice
+				"RequiredTags": [ "juice_vegetable_item", "preserve_sheet_index_271" ]
+			},
+			"When": {
+				"UseNormalSakeRecipe": "false"
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "Triggers", "ItemPlacedInMachine_Vegetable" ],
+			"Entries": {
+				"RequiredTags": [ "juice_item" ], // swap category_vegetable for juice_item
+				"Condition": "ITEM_CONTEXT_TAG Input juice_vegetable_item" // with vegetable tag
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC)12", "OutputRules", "Default_Juice", "OutputItem", "Default" ],
+			"Entries": {
+				"ItemId": "{{ModId}}_Mash", // swap juice for mash
+				"ObjectInternalName": "{{ModId}}_Mash_{0}",
+				"ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}.MashFlavored %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
+				"PreserveId": "DROP_IN_PRESERVE",
+				"CopyQuality": "{{KegRetainsQuality}}",
+				"CopyPrice": true,
+				"CopyColor": true,
+				"PriceModifiers": [
+					{
+						"Modification": "Multiply",
+						"Amount": 2.25
+					}
+				]
 			}
 		},
 		{
