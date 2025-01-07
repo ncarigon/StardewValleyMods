@@ -9,9 +9,9 @@ namespace BetterHoneyMead {
 
         public override void Entry(IModHelper helper) {
             Instance = this;
-            ModHarmony = new Harmony(helper.ModContent.ModID);
-            Patches.MachineData.Register();
-            Patches.ItemSpawner.Register();
+            this.ModHarmony = new Harmony(helper.ModContent.ModID);
+            Patches.MachineDataPatches.Register();
+            Patches.ItemSpawnerPatches.Register();
         }
     }
 }

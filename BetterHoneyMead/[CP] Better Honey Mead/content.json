@@ -11,13 +11,7 @@
         }
     },
     "Changes": [
-        {
-            "Action": "EditData",
-            "Target": "Strings/Objects",
-            "Entries": {
-                "{{ModId}}_Flavor": "{0} {1}"
-            }
-        },
+        // SECTION: Load color sprites
         {
             "Action": "Load",
             "Target": "Mods/{{ModId}}/HoneyNoColor",
@@ -38,6 +32,15 @@
             "Target": "Mods/{{ModId}}/MeadColored",
             "FromFile": "assets/mead_colored.png"
         },
+        // SECTION: Determine colored or non-colored sprites
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "340" ],
+            "Entries": {
+                "ColorOverlayFromNextIndex": true
+            }
+        },
         {
             "Action": "EditData",
             "Target": "Data/Objects",
@@ -46,7 +49,7 @@
                 "Texture": "Mods/{{ModId}}/HoneyNoColor"
             },
             "When": {
-                "EnableColoredSprites": "false"
+                "EnableColoredSprites": false
             }
         },
         {
@@ -57,7 +60,15 @@
                 "Texture": "Mods/{{ModId}}/HoneyColored"
             },
             "When": {
-                "EnableColoredSprites": "true"
+                "EnableColoredSprites": true
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "459" ],
+            "Entries": {
+                "ColorOverlayFromNextIndex": true
             }
         },
         {
@@ -68,7 +79,7 @@
                 "Texture": "Mods/{{ModId}}/MeadNoColor"
             },
             "When": {
-                "EnableColoredSprites": "false"
+                "EnableColoredSprites": false
             }
         },
         {
@@ -79,29 +90,23 @@
                 "Texture": "Mods/{{ModId}}/MeadColored"
             },
             "When": {
-                "EnableColoredSprites": "true"
+                "EnableColoredSprites": true
+            }
+        }, // SECTION: Keg creates flavored, colored mead
+
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "TargetField": [ "459", "ContextTags" ],
+            "Entries": {
+                "use_reverse_name_for_sorting": "use_reverse_name_for_sorting"
             }
         },
         {
             "Action": "EditData",
-            "Target": "Data/Objects",
-            "TargetField": [ "340" ],
+            "Target": "Strings/Objects",
             "Entries": {
-                "ContextTags": [
-                    "honey_item",
-                    "use_reverse_name_for_sorting"
-                ]
-            }
-        },
-        {
-            "Action": "EditData",
-            "Target": "Data/Objects",
-            "TargetField": [ "459" ],
-            "Entries": {
-                "ContextTags": [
-                    "alcohol_item",
-                    "use_reverse_name_for_sorting"
-                ]
+                "{{ModId}}.FlavoredMead": "{{i18n: mead_Flavored}}"
             }
         },
         {
@@ -109,16 +114,23 @@
             "Target": "Data/Machines",
             "TargetField": [ "(BC)12", "OutputRules", "Default_Honey", "OutputItem", "(O)459" ],
             "Entries": {
-                "ObjectInternalName": "(O)459_{0}",
-                "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Flavor %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]",
+                "CopyQuality": "{{MeadRetainsQuality}}",
+                "OutputMethod": "BetterHoneyMead.CreateItems, BetterHoneyMead: OutputFlavoredMead",
+                "CustomData": {
+                    "FlavoredDisplayName": "[LocalizedText Strings\\Objects:{{ModId}}.FlavoredMead %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]"
+                },
                 "PreserveId": "DROP_IN_PRESERVE",
                 "CopyPrice": true,
-                "CopyColor": true,
-                "CopyQuality": "{{MeadRetainsQuality}}",
                 "PriceModifiers": [
+                    //INFO: skewing high-priced flower honey down to keep profits reasonable while maintaining good profits for cheaper flower honey
+                    //FORMULA: price = input_honey_price * 1.5 + base_honey_price / 2
                     {
                         "Modification": "Multiply",
-                        "Amount": 2.0
+                        "Amount": 1.5
+                    },
+                    {
+                        "Modification": "Add",
+                        "Amount": 150
                     }
                 ]
             }

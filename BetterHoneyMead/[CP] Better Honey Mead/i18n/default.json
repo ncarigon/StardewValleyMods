@@ -2,5 +2,7 @@
     "config.EnableColoredSprites.name": "Enable Colored Sprites",
     "config.EnableColoredHoney.description": "Use a color-aware sprite for honey and mead, based on the ingredient color.",
     "config.MeadRetainsQuality.name": "Mead Retains Quality",
-    "config.MeadRetainsQuality.description": "Output mead quality will match input honey quality."
+    "config.MeadRetainsQuality.description": "Output mead quality will match input honey quality.",
+
+    "mead_Flavored": "{0} {1}"
 }

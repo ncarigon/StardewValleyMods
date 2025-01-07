@@ -1,35 +1,27 @@
-﻿using StardewValley.Menus;
+﻿using StardewValley;
+using StardewValley.Menus;
 using StardewValley.Objects;
-using StardewValley;
-using SObject = StardewValley.Object;
 using Microsoft.Xna.Framework;
+using StardewValley.GameData.Machines;
+using SObject = StardewValley.Object;
 
 namespace BetterHoneyMead {
     internal static class CreateItems {
-        public static SObject CreateFlavoredHoney(SObject? ingredient, int stack = 1, int quality = 0) {
-            var color = TailoringMenu.GetDyeColor(ingredient) ?? Color.Yellow;
-            return new ColoredObject("340", stack, color) {
-                Quality = quality
-            };
-        }
-
-        public static SObject CreateFlavoredMead(SObject? ingredient, int stack = 1, int quality = 0) {
-            var color = TailoringMenu.GetDyeColor(ingredient) ?? Color.Gold;
-            var item = new ColoredObject("459", stack, color) {
-                Quality = quality
-            };
-            if (ingredient?.ItemId is not null) {
-                item.displayNameFormat = "%PRESERVED_DISPLAY_NAME %DISPLAY_NAME";
-                item.preservedParentSheetIndex.Value = ingredient.ItemId;
-                var price = ((Game1.objectData.FirstOrDefault(o => o.Key.Equals("340")).Value?.Price ?? 0) + (ingredient.Price * 2)) * 2;
-                if (price > 0) {
-                    item.Price = price;
+        public static Item OutputFlavoredMead(SObject machine, Item? ingredient, bool probe, MachineItemOutput outputData, Farmer player, out int? overrideMinutesUntilReady) {
+            overrideMinutesUntilReady = null;
+            var mead = new SObject("459", 1);
+            var preservedItem = ItemRegistry.GetDataOrErrorItem((ingredient as SObject)?.preservedParentSheetIndex.Value);
+            if (!(preservedItem?.InternalName?.Equals("ErrorItem") ?? true)) {
+                var color = TailoringMenu.GetDyeColor(ingredient) ?? TailoringMenu.GetDyeColor(mead) ?? Color.Gold;
+                if (ColoredObject.TrySetColor(mead, color, out var co)) {
+                    mead = co;
                 }
-                if (ingredient?.Name is not null) {
-                    item.Name = $"{item.QualifiedItemId}_{ingredient.Name}";
+                mead.Name = preservedItem.InternalName + " Mead";
+                if ((outputData?.CustomData?.TryGetValue("FlavoredDisplayName", out var name) ?? false) && !string.IsNullOrWhiteSpace(name)) {
+                    mead.displayNameFormat = name;
                 }
             }
-            return item;
+            return mead;
         }
     }
 }

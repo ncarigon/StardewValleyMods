@@ -7,11 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Patches\ItemSpawner2.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.3.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,7 +22,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="[CP] Better Honey Mead\assets\honey.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="[CP] Better Honey Mead\assets\honey_colored.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -35,7 +31,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="[CP] Better Honey Mead\assets\mead.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="[CP] Better Honey Mead\assets\mead_colored.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -59,10 +55,6 @@
 
   <ItemGroup>
     <Folder Include="[CP] Better Honey Mead\assets\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Patches\ItemSpawner2.cs" />
   </ItemGroup>
 
 </Project>
