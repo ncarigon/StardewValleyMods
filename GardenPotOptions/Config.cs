@@ -28,15 +28,15 @@ namespace GardenPotOptions {
                     );
                     configMenu.AddBoolOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_KeepContents") ?? "null",
-                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_KeepContents") ?? "null",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_name_KeepContents") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_desc_KeepContents") ?? "null",
                         getValue: () => ModEntry.Instance!.ModConfig.KeepContents,
                         setValue: value => ModEntry.Instance!.ModConfig.KeepContents = value
                     );
                     configMenu.AddTextOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_SafeTool") ?? "null",
-                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_SafeTool") ?? "null",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_name_SafeTool") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_desc_SafeTool") ?? "null",
                         getValue: () => ModEntry.Instance!.ModConfig.SafeTool,
                         setValue: value => ModEntry.Instance!.ModConfig.SafeTool = value,
                         allowedValues: new string[] { "Pickaxe", "Axe", "Hoe" },
@@ -44,29 +44,29 @@ namespace GardenPotOptions {
                     );
                     configMenu.AddBoolOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_EnableSprinklers") ?? "null",
-                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_EnableSprinklers") ?? "null",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_name_EnableSprinklers") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_desc_EnableSprinklers") ?? "null",
                         getValue: () => ModEntry.Instance!.ModConfig.EnableSprinklers,
                         setValue: value => ModEntry.Instance!.ModConfig.EnableSprinklers = value
                     );
                     configMenu.AddBoolOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_AncientSeeds") ?? "null",
-                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_AncientSeeds") ?? "null",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_name_AncientSeeds") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_desc_AncientSeeds") ?? "null",
                         getValue: () => ModEntry.Instance!.ModConfig.AllowAncientSeeds,
                         setValue: value => ModEntry.Instance!.ModConfig.AllowAncientSeeds = value
                     );
                     configMenu.AddBoolOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_AllowTransplant") ?? "null",
-                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_AllowTransplant") ?? "null",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_name_AllowTransplant") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_desc_AllowTransplant") ?? "null",
                         getValue: () => ModEntry.Instance!.ModConfig.AllowTransplant,
                         setValue: value => ModEntry.Instance!.ModConfig.AllowTransplant = value
                     );
                     configMenu.AddNumberOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_TreeTransplantMax") ?? "null",
-                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_TreeTransplantMax") ?? "null",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_name_TreeTransplantMax") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_desc_TreeTransplantMax") ?? "null",
                         getValue: () => config.TreeTransplantMax,
                         setValue: value => config.TreeTransplantMax = value,
                         min: -1,
@@ -74,8 +74,8 @@ namespace GardenPotOptions {
                     );
                     configMenu.AddNumberOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_FruitTreeTransplantMax") ?? "null",
-                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_FruitTreeTransplantMax") ?? "null",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_name_FruitTreeTransplantMax") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_desc_FruitTreeTransplantMax") ?? "null",
                         getValue: () => config.FruitTreeTransplantMax,
                         setValue: value => config.FruitTreeTransplantMax = value,
                         min: -1,
@@ -83,8 +83,8 @@ namespace GardenPotOptions {
                     );
                     configMenu.AddNumberOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_HeartsGardenPot") ?? "null",
-                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_HeartsGardenPot") ?? "null",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_name_HeartsGardenPot") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_desc_HeartsGardenPot") ?? "null",
                         getValue: () => config.HeartsForGardenPot,
                         setValue: value => config.HeartsForGardenPot = value,
                         min: -1,
@@ -92,8 +92,8 @@ namespace GardenPotOptions {
                     );
                     configMenu.AddNumberOption(
                         mod: ModEntry.Instance!.ModManifest,
-                        name: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_name_HeartsRecipe") ?? "null",
-                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/config_desc_HeartsRecipe") ?? "null",
+                        name: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_name_HeartsRecipe") ?? "null",
+                        tooltip: () => ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModManifest?.UniqueID}/config_desc_HeartsRecipe") ?? "null",
                         getValue: () => config.HeartsForRecipe,
                         setValue: value => config.HeartsForRecipe = value,
                         min: -1,

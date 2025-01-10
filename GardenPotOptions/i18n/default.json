@@ -1,5 +1,5 @@
 ﻿{
-    "NCarigon.GardenPotOptions/config_name_KeepContents": "Keep Contents",
+    "{{ModId}}/config_name_KeepContents": "Keep Contents",
     "NCarigon.GardenPotOptions/config_desc_KeepContents": "Prevents garden pot contents from being destroyed when picked up.",
 
     "NCarigon.GardenPotOptions/config_name_SafeTool": "Safe Tool",
@@ -32,7 +32,11 @@
     "NCarigon.GardenPotOptions/mail_title_recipe": "Evelyn's Magazine Clipping",
     "NCarigon.GardenPotOptions/mail_text_recipe": "Hello dear... @,^I hope you have enjoyed the garden pot I gave you. If you need more, they're really easy to make. Here is an old magazine clipping with instructions. ^   -Evelyn",
 
-    "NCarigon.GardenPotOptions/event_text_recipe": "continue/64 15/farmer 64 16 2 Evelyn 64 18 0/skippable/pause 1500/speak Evelyn \"Good morning, dear.\"/pause 500/faceDirection Evelyn 3/pause 500/faceDirection Evelyn 2/speak Evelyn \"It was a lovely walk out here... I haven't seen this old farm in a long time.$s#$b#It looks even better than I remember!$h\"/pause 500/faceDirection Evelyn 3/faceDirection Evelyn 0/pause 500/speak Evelyn \"I hope you have enjoyed the garden pot I gave you.\"/pause 500/speak Evelyn \"If you need more, they're really easy to make, too... here, I've got an old magazine clipping with instructions.\"/pause 200/playSound getNewSpecialItem/addCraftingRecipe Garden Pot/pause 500/message \"Learned how to craft a 'Garden Pot'\"/pause 800/speak Evelyn \"Well, I'd better go. George gets grumpy if he doesn't have his oatmeal on time...#$b#You have a great day, honey!$h\"/pause 500/end",
+    "NCarigon.GardenPotOptions/event_text_recipe": "continue/64 15/farmer 64 16 2 Evelyn 64 18 0/skippable/pause 1500/speak Evelyn \"Good morning, dear.\"/pause 500/faceDirection Evelyn 3/pause 500/faceDirection Evelyn 2/speak Evelyn \"It was a lovely walk out here... I haven't seen this old farm in a long time.$s#$b#It looks even better than I remember!$h\"/pause 500/faceDirection Evelyn 3/faceDirection Evelyn 0/pause 500/speak Evelyn \"I hope you have enjoyed the garden pot I gave you.\"/pause 500/speak Evelyn \"If you need more, they're really easy to make, too... here, I've got an old magazine clipping with instructions.\"/pause 200/playSound getNewSpecialItem/addCraftingRecipe Garden Pot/pause 500/message \"Learned how to craft a 'Garden Pot'\"/pause 800/speak Evelyn \"Well, I'd better go. George gets grumpy if he doesn't have his oatmeal on time...#$b#You have a great day, honey!$h\"/pause 500/end"
 
-    "NCarigon.GardenPotOptions/farmhand_placement_error": "Farmhands are unable to place down filled garden pots. Only the host farmer can do so."
+    //"NCarigon.GardenPotOptions/existing_crop": "Existing crop in both dirt and garden pot.",
+    //"NCarigon.GardenPotOptions/existing_fertilizer": "Existing fertilizer in both dirt and garden pot.",
+    //"NCarigon.GardenPotOptions/tree_too_large": "This tree too large to transplant.",
+    //"NCarigon.GardenPotOptions/fruittree_too_large": "This fruit tree is too large to transplant.",
+    //"NCarigon.GardenPotOptions/bush_cant_transplant": "This bush can not be transplanted."
 }

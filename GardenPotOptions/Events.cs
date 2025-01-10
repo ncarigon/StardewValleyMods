@@ -13,8 +13,8 @@ namespace GardenPotOptions {
             if (e.NameWithoutLocale.Name.Equals("Data/Mail", StringComparison.InvariantCultureIgnoreCase)) {
                 e.Edit(a => {
                     var d = a.AsDictionary<string, string>().Data;
-                    d["NCarigon.GardenPotOptions_Pot"] = $"{ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/mail_text_pot") ?? "null"}%item id (BC)62 %%[#]{ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/mail_title_pot") ?? "null"}";
-                    d["NCarigon.GardenPotOptions_Recipe"] = $"{ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/mail_text_recipe") ?? "null"}%item craftingRecipe Garden_Pot %%[#]{ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/mail_title_recipe") ?? "null"}";
+                    d[$"{ModEntry.Instance?.ModHarmony?.Id}_Pot"] = $"{ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModHarmony?.Id}/mail_text_pot") ?? "null"}%item id (BC)62 %%[#]{ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModHarmony?.Id}/mail_title_pot") ?? "null"}";
+                    d[$"{ModEntry.Instance?.ModHarmony?.Id}_Recipe"] = $"{ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModHarmony?.Id}/mail_text_recipe") ?? "null"}%item craftingRecipe Garden_Pot %%[#]{ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModHarmony?.Id}/mail_title_recipe") ?? "null"}";
                 });
             } else if (e.NameWithoutLocale.Name.Equals("Data/Events/Farm", StringComparison.InvariantCultureIgnoreCase)) {
                 e.Edit(a => {
@@ -22,18 +22,19 @@ namespace GardenPotOptions {
                     var hp = ModEntry.Instance?.ModConfig?.HeartsForGardenPot ?? -1;
                     var hr = ModEntry.Instance?.ModConfig?.HeartsForRecipe ?? -1;
                     if (hp > -1) {
-                        d[$"NCarigon.GardenPotOptions_Pot_Send/f Evelyn {hp * 250}/k 900553/sendmail NCarigon.GardenPotOptions_Pot"] = "null";
+                        d[$"{ModEntry.Instance?.ModHarmony?.Id}_Pot_Send/f Evelyn {hp * 250}/k 900553/sendmail {ModEntry.Instance?.ModHarmony?.Id}_Pot"] = "null";
                         if (hr >= hp) {
-                            d[$"NCarigon.GardenPotOptions_Recipe_Send/f Evelyn {hr * 250}/k 900553/e NCarigon.GardenPotOptions_Pot_Send/sendmail NCarigon.GardenPotOptions_Recipe"] = "null";
+                            d[$"{ModEntry.Instance?.ModHarmony?.Id}_Recipe_Send/f Evelyn {hr * 250}/k 900553/e {ModEntry.Instance?.ModHarmony?.Id}_Pot_Send/sendmail {ModEntry.Instance?.ModHarmony?.Id}_Recipe"] = "null";
                         }
                         // add new default with requirement
-                        d["900553/t 600 1130/Hn ccPantry/A cc_Greenhouse/w sunny/k NCarigon.GardenPotOptions_Pot_Send"] = d["900553/t 600 1130/Hn ccPantry/A cc_Greenhouse/w sunny"];
+                        d[$"900553/t 600 1130/Hn ccPantry/A cc_Greenhouse/w sunny/k {ModEntry.Instance?.ModHarmony?.Id}_Pot_Send"] = d["900553/t 600 1130/Hn ccPantry/A cc_Greenhouse/w sunny"];
                         // add only recipe event
-                        d["900553/t 600 1130/Hn ccPantry/A cc_Greenhouse/w sunny/e NCarigon.GardenPotOptions_Pot_Send/k NCarigon.GardenPotOptions_Recipe_Send"] = ModEntry.Instance?.Helper.Translation.Get("NCarigon.GardenPotOptions/event_text_recipe") ?? "null";
+                        d[$"900553/t 600 1130/Hn ccPantry/A cc_Greenhouse/w sunny/e {ModEntry.Instance?.ModHarmony?.Id}_Pot_Send/k {ModEntry.Instance?.ModHarmony?.Id}_Recipe_Send"] = ModEntry.Instance?.Helper.Translation.Get($"{ModEntry.Instance?.ModHarmony?.Id}/event_text_recipe") ?? "null";
                         // remove default
                         d.Remove("900553/t 600 1130/Hn ccPantry/A cc_Greenhouse/w sunny");
                     }
                 });
+            //} else if (e.NameWithoutLocale.Name.Equals("Strings/Objects", StringComparison.InvariantCultureIgnoreCase)) {
             }
         }
     }
