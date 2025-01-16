@@ -2,12 +2,20 @@
 	"Changes": [
 		{
 			"Action": "EditData",
+			"Target": "Strings/Objects",
+			"Entries": {
+				"{{ModId}}.PressName": "{{i18n: press_Name}}",
+				"{{ModId}}.PressDescription": "{{i18n: press_Description}}"
+			}
+		},
+		{
+			"Action": "EditData",
 			"Target": "Data/BigCraftables",
 			"Entries": {
 				"{{ModId}}_Press": {
 					"Name": "Juice Press",
-					"DisplayName": "{{i18n: press_Name}}",
-					"Description": "{{i18n: press_Description}}",
+					"DisplayName": "[LocalizedText Strings\\Objects:{{ModId}}.PressName]",
+					"Description": "[LocalizedText Strings\\Objects:{{ModId}}.PressDescription]",
 					"Price": 0,
 					"Texture": "Mods/{{ModId}}/Press"
 				}
@@ -22,7 +30,7 @@
 			"Action": "EditData",
 			"Target": "Data/CraftingRecipes",
 			"Entries": {
-				"{{ModId}}_Press": "388 45 390 45 709 10 335 1/Home/{{ModId}}_Press/true/Farming 4/{{i18n: press_Name}}"
+				"{{ModId}}_Press": "388 45 390 45 709 10 335 1/Home/{{ModId}}_Press/true/Farming 4/[LocalizedText Strings\\Objects:{{ModId}}.PressName]"
 			}
 		},
 		{
@@ -31,33 +39,6 @@
 			"Entries": {
 				"(BC){{ModId}}_Press": {
 					"OutputRules": [
-						{
-							"Id": "Default_Vegetable",
-							"Triggers": [
-								{
-									"Id": "ItemPlacedInMachine_Vegetable",
-									"RequiredTags": [
-										"category_vegetable"
-									]
-								}
-							],
-							"OutputItem": [
-								{
-									"Id": "Default",
-									"ItemId": "FLAVORED_ITEM Juice DROP_IN_ID",
-									"CopyQuality": "{{PressRetainsQuality}}"
-									//"PriceModifiers": [
-									//	{
-									//		//INFO: lower multiplier to balance original price to newer speed
-									//		//      disabled here in favor of code patch to keep compatibilit with Item Spawner mod
-									//		"Modification": "Multiply",
-									//		"Amount": 0.55
-									//	}
-									//]
-								}
-							],
-							"MinutesUntilReady": 60
-						},
 						{
 							"Id": "Default_Fruit",
 							"Triggers": [
@@ -73,7 +54,7 @@
 								{
 									"Id": "Default",
 									"ItemId": "FLAVORED_ITEM Juice DROP_IN_ID",
-									"CopyQuality": "{{PressRetainsQuality}}",
+									"CopyQuality": false
 									//"PriceModifiers": [
 									//	{
 									//		"Modification": "Multiply",
@@ -88,6 +69,33 @@
 							"Id": "Default_Vegetable",
 							"Triggers": [
 								{
+									"Id": "ItemPlacedInMachine_Vegetable",
+									"RequiredTags": [
+										"category_vegetable"
+									]
+								}
+							],
+							"OutputItem": [
+								{
+									"Id": "Default",
+									"ItemId": "FLAVORED_ITEM Juice DROP_IN_ID",
+									"CopyQuality": false
+									//"PriceModifiers": [
+									//	{
+									//		//INFO: lower multiplier to balance original price to newer speed
+									//		//      disabled here in favor of code patch to keep compatibilit with Item Spawner mod
+									//		"Modification": "Multiply",
+									//		"Amount": 0.55
+									//	}
+									//]
+								}
+							],
+							"MinutesUntilReady": 60
+						},
+						{
+							"Id": "Default_Forage",
+							"Triggers": [
+								{
 									"Id": "ItemPlacedInMachine_Forage",
 									"RequiredTags": [
 										"category_greens"
@@ -99,7 +107,7 @@
 								{
 									"Id": "Default",
 									"ItemId": "FLAVORED_ITEM Juice DROP_IN_ID",
-									"CopyQuality": "{{PressRetainsQuality}}",
+									"CopyQuality": false
 									//"PriceModifiers": [
 									//	{
 									//		"Modification": "Multiply",
@@ -113,6 +121,90 @@
 					]
 				}
 			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Press", "OutputRules", "Default_Fruit", "OutputItem", "Default" ],
+			"Entries": {
+				"CopyQuality": true
+			},
+			"When": { "PressRetainsQuality": "true" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Press", "OutputRules", "Default_Vegetable", "OutputItem", "Default" ],
+			"Entries": {
+				"CopyQuality": true
+			},
+			"When": { "PressRetainsQuality": "true" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Press", "OutputRules", "Default_Forage", "OutputItem", "Default" ],
+			"Entries": {
+				"CopyQuality": true
+			},
+			"When": { "PressRetainsQuality": "true" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Press", "OutputRules", "Default_Fruit", "OutputItem", "Default" ],
+			"Entries": {
+				"CopyQuality": false,
+				"Quality": "0",
+				"StackModifiers": [
+					{
+						"Id": "DoubleQuality",
+						"Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.30\" \"ITEM_QUALITY Input 4 4, RANDOM 0.50\"",
+						"Modification": "Multiply",
+						"Amount": "2",
+						"RandomAmount": null
+					}
+				]
+			},
+			"When": { "PressRetainsQuality": "quantity" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Press", "OutputRules", "Default_Vegetable", "OutputItem", "Default" ],
+			"Entries": {
+				"CopyQuality": false,
+				"Quality": "0",
+				"StackModifiers": [
+					{
+						"Id": "DoubleQuality",
+						"Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.30\" \"ITEM_QUALITY Input 4 4, RANDOM 0.50\"",
+						"Modification": "Multiply",
+						"Amount": "2",
+						"RandomAmount": null
+					}
+				]
+			},
+			"When": { "PressRetainsQuality": "quantity" }
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [ "(BC){{ModId}}_Press", "OutputRules", "Default_Forage", "OutputItem", "Default" ],
+			"Entries": {
+				"CopyQuality": false,
+				"Quality": "0",
+				"StackModifiers": [
+					{
+						"Id": "DoubleQuality",
+						"Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.30\" \"ITEM_QUALITY Input 4 4, RANDOM 0.50\"",
+						"Modification": "Multiply",
+						"Amount": "2",
+						"RandomAmount": null
+					}
+				]
+			},
+			"When": { "PressRetainsQuality": "quantity" }
 		}
 	]
 }

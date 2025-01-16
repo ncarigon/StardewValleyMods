@@ -5,7 +5,7 @@
 	"keg_DescriptionFruit": "フルーツを入れて待てば、何か飲むものがもらえます。",
 
 	"config.PressRetainsQuality.name": "原料と同品質",
-	"config.PressRetainsQuality.description": "ジュースプレスから生産されるアイテムの品質が、原料と同じ品質になる。",
+	"config.PressRetainsQuality.description": "Juice Press output quality will match the input quality, or the output quantity has a chance to double based on input quality.", // TODO
 	"config.UseNormalWineRecipe.name": "通常のワイン生産",
 	"config.UseNormalWineRecipe.description": "有効にすると、くだものを直接醸造ダルに入れてもワインを生産できる。",
 	"config.UseNormalBeerRecipe.name": "通常のビール生産",

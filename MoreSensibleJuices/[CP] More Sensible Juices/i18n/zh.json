@@ -5,7 +5,7 @@
 	"keg_DescriptionFruit": "包括水果。最终，它会变成一种饮料。",
 
 	"config.PressRetainsQuality.name": "与原料相同品质",
-	"config.PressRetainsQuality.description": "由果汁机生产的物品质量与原料相同",
+	"config.PressRetainsQuality.description": "Juice Press output quality will match the input quality, or the output quantity has a chance to double based on input quality.", // TODO
 	"config.UseNormalWineRecipe.name": "正常葡萄酒生产",
 	"config.UseNormalWineRecipe.description": "启用后，将水果直接放入酿造机中也能生产葡萄酒。",
 	"config.UseNormalBeerRecipe.name": "正常啤酒生产",
