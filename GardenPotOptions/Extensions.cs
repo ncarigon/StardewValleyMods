@@ -75,14 +75,19 @@ namespace GardenPotOptions {
     public static class TerrainFeatureExtensions {
         private static SObject? GetTreeSeed(this TerrainFeature? terrainFeature) {
             if (terrainFeature is Tree tree) {
-                return new SObject(Tree.GetWildTreeSeedLookup().FirstOrDefault(d => d.Value?.Any(v => v?.Equals(tree?.treeType?.Value) == true) == true).Key?.Replace("(O)", ""), 1);
+                var id = Tree.GetWildTreeSeedLookup().FirstOrDefault(d => d.Value?.Any(v => v?.Equals(tree?.treeType?.Value) == true) == true).Key?.Replace("(O)", "");
+                if (id is not null) {
+                    return new SObject(id, 1);
+                }
             }
             return null;
         }
 
         private static SObject? GetFruitTreeSapling(this TerrainFeature? terrainFeature) {
             if (terrainFeature is FruitTree fruitTree) {
-                return new SObject(fruitTree?.treeId?.Value, 1);
+                if (fruitTree?.treeId?.Value is not null) {
+                    return new SObject(fruitTree?.treeId?.Value, 1);
+                }
             }
             return null;
         }
