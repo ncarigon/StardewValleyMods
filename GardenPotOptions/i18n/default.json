@@ -1,5 +1,5 @@
 ﻿{
-    "{{ModId}}/config_name_KeepContents": "Keep Contents",
+    "NCarigon.GardenPotOptions/config_name_KeepContents": "Keep Contents",
     "NCarigon.GardenPotOptions/config_desc_KeepContents": "Prevents garden pot contents from being destroyed when picked up.",
 
     "NCarigon.GardenPotOptions/config_name_SafeTool": "Safe Tool",
