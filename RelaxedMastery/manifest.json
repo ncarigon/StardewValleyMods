@@ -1,0 +1,20 @@
+﻿{
+    "Name": "Relaxed Mastery",
+    "Author": "NCarigon",
+    "Version": "1.0.0",
+    "MinimumApiVersion": "4.0.0",
+    "Description": "Reworks mastery requirements.",
+    "UniqueID": "NCarigon.RelaxedMastery",
+    "EntryDll": "RelaxedMastery.dll",
+    "UpdateKeys": [ "nexus:31739" ],
+    "Dependencies": [
+        {
+            "UniqueID": "DaLion.Professions",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "KediDili.VanillaPlusProfessions",
+            "IsRequired": false
+        }
+    ]
+}
