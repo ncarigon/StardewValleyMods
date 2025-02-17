@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Adjustable Sprinklers",
     "Author": "NCarigon",
-    "Version": "1.0.2",
+    "Version": "1.2.0",
     "MinimumApiVersion": "4.0.0",
     "Description": "Modify the watering radius of sprinklers.",
     "UniqueID": "NCarigon.AdjustableSprinklers",
