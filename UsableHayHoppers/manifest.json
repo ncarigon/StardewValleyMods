@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Usable Hay Hoppers",
+    "Author": "NCarigon",
+    "Version": "1.0.0",
+    "Description": "Hay hoppers will always allow taking hay",
+    "UniqueID": "NCarigon.UsableHayHoppers",
+    "UpdateKeys": [ "nexus:31760" ],
+    "EntryDll": "UsableHayHoppers.dll",
+    "MinimumApiVersion": "4.0.0"
+}
