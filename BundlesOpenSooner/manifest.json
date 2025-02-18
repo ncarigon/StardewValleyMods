@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Bundles Open Sooner",
+    "Author": "NCarigon",
+    "Version": "1.0.0",
+    "Description": "All Community Center bundles open after the first bundles is completed.",
+    "UniqueID": "NCarigon.OpenBundlesSooner",
+    "UpdateKeys": [ "nexus:31756" ],
+    "EntryDll": "BundlesOpenSooner.dll",
+    "MinimumApiVersion": "4.0.0"
+}
