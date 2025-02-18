@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Better Fish Ponds",
+    "Author": "NCarigon",
+    "Version": "1.0.0",
+    "MinimumApiVersion": "4.0.0",
+    "Description": "Reworks fish pond operations.",
+    "UniqueID": "NCarigon.BetterFishPonds",
+    "EntryDll": "BetterFishPonds.dll",
+    "UpdateKeys": [ "nexus:31753" ]
+}
