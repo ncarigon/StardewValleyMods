@@ -1,0 +1,16 @@
+﻿{
+    "Name": "Rabbits Have Babies",
+    "Author": "NCarigon",
+    "Version": "1.0.0",
+    "Description": "Allows rabbits to reproduce",
+    "UniqueID": "NCarigon.RabbitsHaveBabies",
+    "UpdateKeys": [ "nexus:31757" ],
+    "EntryDll": "RabbitsHaveBabies.dll",
+    "MinimumApiVersion": "4.0.0",
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        }
+    ]
+}
