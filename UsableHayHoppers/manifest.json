@@ -1,8 +1,8 @@
 ﻿{
     "Name": "Usable Hay Hoppers",
     "Author": "NCarigon",
-    "Version": "1.0.0",
-    "Description": "Hay hoppers will always allow taking hay",
+    "Version": "1.1.0",
+    "Description": "Reworks hay hoppers into normal farm equipment",
     "UniqueID": "NCarigon.UsableHayHoppers",
     "UpdateKeys": [ "nexus:31760" ],
     "EntryDll": "UsableHayHoppers.dll",
