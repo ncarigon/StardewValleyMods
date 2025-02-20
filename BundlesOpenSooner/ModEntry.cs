@@ -10,6 +10,10 @@ namespace BundlesOpenSooner {
                 original: AccessTools.Method(typeof(CommunityCenter), "shouldNoteAppearInArea"),
                 transpiler: new HarmonyMethod(typeof(ModEntry), nameof(Transpile_CommunityCenter_shouldNoteAppearInArea))
             );
+            new Harmony(helper.ModContent.ModID).Patch(
+                original: AccessTools.Method(typeof(CommunityCenter), "checkAction"),
+                transpiler: new HarmonyMethod(typeof(ModEntry), nameof(Transpile_CommunityCenter_checkAction))
+            );
         }
 		
 		private static IEnumerable<CodeInstruction> Transpile_CommunityCenter_shouldNoteAppearInArea(IEnumerable<CodeInstruction> instructions) {
@@ -23,6 +27,19 @@ namespace BundlesOpenSooner {
                     || instruction.opcode == OpCodes.Ldc_I4_2
                     || instruction.opcode == OpCodes.Ldc_I4_3
                 )) {
+                    found = false;
+                    instruction.opcode = OpCodes.Ldc_I4_0;
+                }
+                yield return instruction;
+            }
+        }
+
+        private static IEnumerable<CodeInstruction> Transpile_CommunityCenter_checkAction(IEnumerable<CodeInstruction> instructions) {
+            var found = false;
+            foreach (var instruction in instructions) {
+                if (!found && instruction.opcode == OpCodes.Call && instruction.operand?.ToString()?.Contains("numberOfCompleteBundles()") == true) {
+                    found = true;
+                } else if (found && instruction.opcode == OpCodes.Ldc_I4_2) { // secondary check for bulletin board
                     found = false;
                     instruction.opcode = OpCodes.Ldc_I4_0;
                 }
