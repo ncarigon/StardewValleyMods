@@ -52,7 +52,7 @@ namespace BetterFishPonds {
         }
 
         #region Read/Write FishData
-        private static List<int> GetFishData(FishPond pond) {
+        private static List<int> GetFishData(FishPond pond, bool addingFish = false) {
             if (!pond.modData.TryGetValue($"{ModEntry.Instance?.ModManifest.UniqueID}/FishData", out var data)) {
                 var convert = new int[] { 0, 0, 0, 0, 0 };
                 if (pond.modData.TryGetValue($"DaLion.Ponds/PondFish", out data)) {
@@ -63,7 +63,7 @@ namespace BetterFishPonds {
                     ) {
                         convert[q]++;
                     }
-                } else {
+                } else if (!addingFish) {
                     convert[0] = pond.FishCount;
                 }
                 SetFishData(pond, convert);
@@ -82,7 +82,7 @@ namespace BetterFishPonds {
         }
 
         private static void AddFish(FishPond pond, int quality) {
-            var data = GetFishData(pond);
+            var data = GetFishData(pond, true);
             while (data.Count < quality + 1) {
                 data.Add(0);
             }
