@@ -34,6 +34,7 @@ namespace BetterFishPonds {
 
         internal static void Register() {
             if (ModEntry.Instance?.Helper is not null) {
+                Instance = ModEntry.Instance.Helper.ReadConfig<Config>();
                 ModEntry.Instance.Helper.Events.GameLoop.GameLaunched += (s, e) => {
                     var configMenu = ModEntry.Instance.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
                     if (configMenu is null)
@@ -43,7 +44,6 @@ namespace BetterFishPonds {
                         reset: () => Instance = new Config(),
                         save: () => ModEntry.Instance.Helper.WriteConfig(Instance)
                     );
-
 
                     configMenu.AddSectionTitle(
                         mod: ModEntry.Instance.ModManifest,
@@ -71,7 +71,6 @@ namespace BetterFishPonds {
                         getValue: () => Instance.DontRemoveExistingProduce,
                         setValue: value => Instance.DontRemoveExistingProduce = value
                     );
-
 
                     configMenu.AddSectionTitle(
                         mod: ModEntry.Instance.ModManifest,
@@ -108,7 +107,6 @@ namespace BetterFishPonds {
                         max: 25,
                         interval: 1
                     );
-
 
                     configMenu.AddSectionTitle(
                         mod: ModEntry.Instance.ModManifest,
@@ -192,7 +190,6 @@ namespace BetterFishPonds {
                         getValue: () => Instance.AllowQualityOther,
                         setValue: value => Instance.AllowQualityOther = value
                     );
-
 
                     configMenu.AddSectionTitle(
                         mod: ModEntry.Instance.ModManifest,
