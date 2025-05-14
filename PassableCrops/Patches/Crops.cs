@@ -27,9 +27,9 @@ namespace PassableCrops.Patches {
             Character c
         ) {
             try {
-                if (Mod?.Config?.PassableCrops ?? false) {
+                if (Mod?.Config?.PassableCrops == true) {
                     var farmer = c as Farmer;
-                    if (farmer is not null || (Mod?.Config?.PassableByAll ?? false)) {
+                    if (farmer is not null || Mod?.Config?.PassableByAll == true) {
                         __result |= __instance?.crop is not null;
                     }
                 }
@@ -40,9 +40,9 @@ namespace PassableCrops.Patches {
             HoeDirt __instance
         ) {
             try {
-                if (Mod?.Config?.PassableCrops ?? false) {
+                if (Mod?.Config?.PassableCrops == true) {
                     // only handle raised seed crops, which should still shake when newly planted
-                    if (__instance?.crop?.raisedSeeds?.Value ?? false) {
+                    if (__instance?.crop?.raisedSeeds?.Value == true) {
                         switch (__instance.crop.currentPhase.Value) {
                             case 0: // if newly planted, set to invalid phase to allow shake
                                 __instance.crop.currentPhase.Value = -1;

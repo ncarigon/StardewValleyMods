@@ -17,7 +17,7 @@ namespace PassableCrops {
         }
 
         public void PlayRustleSound(Vector2 tile, GameLocation location) {
-            if ((Config?.ShakeWhenPassing ?? false) && (Config?.PlaySoundWhenPassing ?? false) && Utility.isOnScreen(new Point((int)tile.X, (int)tile.Y), 2, location)) {
+            if (Config?.ShakeWhenPassing == true && Config?.PlaySoundWhenPassing == true && Utility.isOnScreen(new Point((int)tile.X, (int)tile.Y), 2, location)) {
                 Grass.PlayGrassSound();
             }
         }
