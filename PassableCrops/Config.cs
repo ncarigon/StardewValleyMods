@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using StardewModdingAPI;
 
 namespace PassableCrops {
@@ -16,6 +17,8 @@ namespace PassableCrops {
         public bool ShakeWhenPassing { get; set; } = true;
         public bool PlaySoundWhenPassing { get; set; } = true;
         public bool UseCustomDrawing { get; set; } = true;
+        public string[] IncludeObjects { get; set; } = new string[0];
+        public string[] ExcludeObjects { get; set; } = new string[0];
 
         internal static Config Register(IModHelper helper) {
             var config = helper.ReadConfig<Config>();
@@ -124,6 +127,20 @@ namespace PassableCrops {
                     tooltip: () => "Some objects require custom drawing logic in order to shake and calculate the correct layer depth. This logic may be incompatible with other mods. This option disables the custom drawing and may prevent errors that could arise. It is not recommended to disable custom drawing if no issues are present.",
                     getValue: () => config.UseCustomDrawing,
                     setValue: value => config.UseCustomDrawing = value
+                );
+                configMenu.AddTextOption(
+                    mod: manifest,
+                    name: () => "Include Names",
+                    tooltip: () => "Specify individual objects that are passable, using either base name or qualified item ID, such as Twig or (O)294. Comma-separated.",
+                    getValue: () => string.Join(", ", config.IncludeObjects),
+                    setValue: value => config.IncludeObjects = value.Split(',').Select(v => v.Trim()).ToArray()
+                );
+                configMenu.AddTextOption(
+                    mod: manifest,
+                    name: () => "Exclude Names",
+                    tooltip: () => "Specify individual objects that are NOT passable, using either base name or qualified item ID, such as Twig or (O)294. Comma-separated.",
+                    getValue: () => string.Join(", ", config.ExcludeObjects),
+                    setValue: value => config.ExcludeObjects = value.Split(',').Select(v => v.Trim()).ToArray()
                 );
             };
             return config;

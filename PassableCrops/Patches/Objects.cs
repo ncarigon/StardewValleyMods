@@ -63,21 +63,28 @@ namespace PassableCrops.Patches {
             Scarecrow = 1,
             Sprinkler = 2,
             Forage = 3,
-            Weed = 4
+            Weed = 4,
+            Custom = 5
         }
 
         private static ObjType GetObjType(SObject o) {
-            if ((Mod?.Config?.PassableSprinklers ?? false) && (o?.IsSprinkler() ?? false))
+            if (o is null || Mod?.Config is null || Mod.Config.ExcludeObjects?.Any(i => string.Compare(i, o.Name, true) == 0) == true || Mod.Config.ExcludeObjects?.Any(i => string.Compare(i, o.QualifiedItemId, true) == 0) == true) {
+                return ObjType.None;
+            }
+            if (Mod.Config.PassableSprinklers && o.IsSprinkler())
                 return ObjType.Sprinkler;
-            if ((Mod?.Config?.PassableScarecrows ?? false) && (o?.IsScarecrow() ?? false))
+            if (Mod.Config.PassableScarecrows && o.IsScarecrow())
                 return ObjType.Scarecrow;
-            if ((Mod?.Config?.PassableForage ?? false) && (o?.isForage() ?? false) && (o?.Category != -9) && (o?.ParentSheetIndex != 590))
+            if (Mod.Config.PassableForage && o.isForage() && o.Category != -9 && o.ParentSheetIndex != 590)
                 return ObjType.Forage;
-            if ((Mod?.Config?.PassableWeeds ?? false)
-                && (o?.GetContextTags()?.Any(c => c.Contains("item_weeds") || c.Contains("item_greenrainweeds")) ?? false)
-                && !(new int[] { 319,320,321 }.Any(c => c == (o?.ParentSheetIndex ?? 0))) //Ice Crystals are labeled as weeds so ignore them
+            if (Mod.Config.PassableWeeds
+                && (o.GetContextTags()?.Any(c => c.Contains("item_weeds") || c.Contains("item_greenrainweeds")) == true)
+                && !(new int[] { 319,320,321 }.Any(c => c == o.ParentSheetIndex)) //Ice Crystals are labeled as weeds so ignore them
             ) {
                 return ObjType.Weed;
+            }
+            if (Mod.Config.IncludeObjects?.Any(i => string.Compare(i, o.Name, true) == 0) == true || Mod.Config.IncludeObjects?.Any(i => string.Compare(i, o.QualifiedItemId, true) == 0) == true) {
+                return ObjType.Custom;
             }
             return ObjType.None;
         }
@@ -88,13 +95,14 @@ namespace PassableCrops.Patches {
             public float MaxShake, ShakeRotation;
             public bool ShakeLeft;
             public Character Character;
+            public SObject Object;
         }
 
         private static TempShakeData LastShakeData;
 
         private static bool AnyPassable() =>
             Mod?.Config is not null
-            && (Mod.Config.PassableScarecrows || Mod.Config.PassableSprinklers || Mod.Config.PassableForage || Mod.Config.PassableWeeds);
+            && (Mod.Config.PassableScarecrows || Mod.Config.PassableSprinklers || Mod.Config.PassableForage || Mod.Config.PassableWeeds || Mod.Config.IncludeObjects.Any());
 
         private static void Prefix_Character_MovePosition(
             Character __instance
@@ -125,13 +133,13 @@ namespace PassableCrops.Patches {
             if (!AnyPassable())
                 return;
             var ot = GetObjType(__instance);
-            if (ot != ObjType.None) {
-                var c = LastShakeData.Character ?? Game1.player;
-                var bb = c.GetBoundingBox();
+            if (ot != ObjType.None && LastShakeData.Character is not null) {
+                LastShakeData.Object = __instance;
+                var bb = LastShakeData.Character.GetBoundingBox();
                 var ib = __instance.GetBoundingBoxAt((int)__instance.TileLocation.X, (int)__instance.TileLocation.Y);
-                if (Mod?.Config?.PassableByAll ?? false) {
+                if (Mod?.Config?.PassableByAll == true) {
                     __result = true;
-                } else {
+                } else if (LastShakeData.Character is Farmer) {
                     // slightly larger box to allow intersection before actually touching it
                     var eb = bb.Clone();
                     eb.Inflate(16, 16);
@@ -139,13 +147,12 @@ namespace PassableCrops.Patches {
                 }
                 LastShakeData.Passable = __result;
                 if (bb.Intersects(ib)) {
-                    if ((Mod?.Config?.SlowDownWhenPassing ?? false) && c == Game1.player) {
+                    if (Mod?.Config?.SlowDownWhenPassing == true && LastShakeData.Character == Game1.player) {
                         Game1.player.temporarySpeedBuff = Game1.player.stats.Get("Book_Grass") == 0 ? -1f : -0.33f;
                     }
-                    if (LastShakeData.Character is not null // only trigger if something moved
-                        && (!__instance!.modData.TryGetValue(KeyDataShake, out var data)
+                    if (!__instance!.modData.TryGetValue(KeyDataShake, out var data)
                         || !float.TryParse((data ?? "").Split(';')[0], out var maxShake)
-                        || maxShake <= 0f)
+                        || maxShake <= 0f
                     ) {
                         maxShake = ot == ObjType.Scarecrow || ot == ObjType.Sprinkler ? maxShake_stiff : maxShake_normal;
                         var shakeLeft = bb.Center.X > __instance.TileLocation.X * 64f + 32f;
@@ -160,7 +167,7 @@ namespace PassableCrops.Patches {
         private static void Prefix_Object_draw(
             SObject __instance
         ) {
-            if (!(Mod?.Config?.UseCustomDrawing ?? false) || !AnyPassable()) {
+            if (!Mod?.Config?.UseCustomDrawing == true || !AnyPassable()) {
                 return;
             }
             var ot = GetObjType(__instance);
@@ -195,6 +202,7 @@ namespace PassableCrops.Patches {
                     }
                     // update tracking values
                     __instance.modData[KeyDataShake] = $"{maxShake};{shakeRotation};{shakeLeft}";
+                    LastShakeData.Object = __instance;
                     LastShakeData.ObjType = ot;
                     LastShakeData.MaxShake = maxShake;
                     LastShakeData.ShakeRotation = shakeRotation;
@@ -219,14 +227,15 @@ namespace PassableCrops.Patches {
             ref Rectangle destinationRectangle, ref float rotation, ref Vector2 origin
         ) {
             if (LastShakeData.ObjType != ObjType.None) {
-                if ((Mod?.Config?.ShakeWhenPassing ?? true)) {
+                if (Mod?.Config?.ShakeWhenPassing == true) {
                     rotation = LastShakeData.ShakeRotation;
                 }
-                switch (LastShakeData.ObjType) {
-                    case ObjType.Scarecrow:
-                        // move rotation to bottom of post
-                        MoveRotation(ref destinationRectangle, ref origin, new Vector2(8f, 30f));
-                        break;
+                if (LastShakeData.ObjType == ObjType.Scarecrow) {
+                    // move rotation to center bottom of post
+                    MoveRotation(ref destinationRectangle, ref origin, new Vector2(8f, 30f));
+                } else if (LastShakeData.Object?.TypeDefinitionId?.Equals("(BC)") == true) {
+                    // move rotation to center bottom-ish of object
+                    MoveRotation(ref destinationRectangle, ref origin, new Vector2(8f, 24f));
                 }
             }
         }
@@ -235,7 +244,7 @@ namespace PassableCrops.Patches {
             ref Vector2 position, ref float rotation, ref Vector2 origin, ref float layerDepth
         ) {
             if (LastShakeData.ObjType != ObjType.None) {
-                if ((Mod?.Config?.ShakeWhenPassing ?? true)) {
+                if (Mod?.Config?.ShakeWhenPassing == true) {
                     rotation = LastShakeData.ShakeRotation;
                 }
                 switch (LastShakeData.ObjType) {
