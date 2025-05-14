@@ -8,8 +8,8 @@ namespace PassableCrops {
         public bool PassableSprinklers { get; set; } = true;
         public bool PassableForage { get; set; } = true;
         public bool PassableTeaBushes { get; set; } = true;
-        public int PassableTreeGrowth { get; set; } = 4;
-        public int PassableFruitTreeGrowth { get; set; } = 1;
+        public int PassableTreeGrowth { get; set; } = 3;
+        public int PassableFruitTreeGrowth { get; set; } = 2;
         public bool PassableWeeds { get; set; } = true;
         public bool PassableByAll { get; set; } = false;
         public bool SlowDownWhenPassing { get; set; } = true;
@@ -72,7 +72,7 @@ namespace PassableCrops {
                     getValue: () => config.PassableTreeGrowth,
                     setValue: value => config.PassableTreeGrowth = value,
                     min: 0,
-                    max: 4
+                    max: 5
                 );
                 configMenu.AddNumberOption(
                     mod: manifest,
@@ -81,7 +81,7 @@ namespace PassableCrops {
                     getValue: () => config.PassableFruitTreeGrowth,
                     setValue: value => config.PassableFruitTreeGrowth = value,
                     min: -1,
-                    max: 3
+                    max: 5
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
@@ -109,24 +109,14 @@ namespace PassableCrops {
                     name: () => "Shake when passing",
                     tooltip: () => "Makes non-crop objects shake when passing by (crops automatically shake).",
                     getValue: () => config.ShakeWhenPassing,
-                    setValue: value => {
-                        config.ShakeWhenPassing = value;
-                        if (!value) {
-                            config.PlaySoundWhenPassing = value;
-                        }
-                    }
+                    setValue: value => config.ShakeWhenPassing = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
                     name: () => "Also make rustling sound",
                     tooltip: () => "Passing through objects also makes the rustling sound.",
                     getValue: () => config.PlaySoundWhenPassing,
-                    setValue: value => {
-                        config.PlaySoundWhenPassing = value;
-                        if (value) {
-                            config.ShakeWhenPassing = value;
-                        }
-                    }
+                    setValue: value => config.PlaySoundWhenPassing = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
@@ -146,5 +136,7 @@ namespace PassableCrops {
         void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null!, string fieldId = null!);
 
         void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null!, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null!, string fieldId = null!);
+
+        void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string>? tooltip = null, string[]? allowedValues = null, Func<string, string>? formatAllowedValue = null, string? fieldId = null);
     }
 }

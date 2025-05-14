@@ -30,7 +30,7 @@ namespace PassableCrops.Patches {
         }
 
         private static bool AnyPassable(FruitTree tree) {
-            return Mod?.Config is not null && !(tree?.stump.Value ?? true) && Mod.Config.PassableFruitTreeGrowth >= (tree?.growthStage.Value ?? 0);
+            return Mod?.Config is not null && Mod.Config.PassableFruitTreeGrowth >= (tree?.growthStage?.Value >= 5 ? 5 : tree?.growthStage?.Value);
         }
 
         private static void Postfix_FruitTree_isPassable(
@@ -41,12 +41,12 @@ namespace PassableCrops.Patches {
             try {
                 if (AnyPassable(__instance)) {
                     var farmer = c as Farmer;
-                    if (farmer is not null || (Mod?.Config?.PassableByAll ?? false)) {
+                    if (farmer is not null || Mod?.Config?.PassableByAll == true) {
                         __result = true;
-                        if (farmer is not null && (Mod?.Config?.SlowDownWhenPassing ?? false)) {
+                        if (farmer is not null && Mod?.Config?.SlowDownWhenPassing == true) {
                             farmer.temporarySpeedBuff = farmer.stats.Get("Book_Grass") == 0 ? -1f : -0.33f;
                         }
-                        if ((Mod?.Config?.ShakeWhenPassing ?? true) && c is not null && ___maxShake == 0f) {
+                        if (Mod?.Config?.ShakeWhenPassing == true && c is not null && ___maxShake == 0f) {
                             ___shakeLeft.Value = c.StandingPixel.X > (__instance.Tile.X + 0.5f) * 64f || (c.Tile.X == __instance.Tile.X && Game1.random.NextBool());
                             ___maxShake = (float)(Math.PI / 64.0);
                             Mod?.PlayRustleSound(__instance.Tile, __instance.Location);
@@ -73,8 +73,12 @@ namespace PassableCrops.Patches {
             if (isDrawing) {
                 isDrawing = false;
                 var skew = __instance.growthStage.Value switch {
-                    0 => -36,
-                    _ => 0
+                    0 => -46,
+                    1 => -46,
+                    2 => -34,
+                    3 => -30,
+                    4 => -30,
+                    _ => -30
                 };
                 __result = new Rectangle(__result.X, __result.Y + skew, __result.Width, __result.Height);
             }
