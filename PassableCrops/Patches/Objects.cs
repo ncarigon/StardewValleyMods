@@ -79,7 +79,7 @@ namespace PassableCrops.Patches {
                 return ObjType.Forage;
             if (Mod.Config.PassableWeeds
                 && (o.GetContextTags()?.Any(c => c.Contains("item_weeds") || c.Contains("item_greenrainweeds")) == true)
-                && !(new int[] { 319,320,321 }.Any(c => c == o.ParentSheetIndex)) //Ice Crystals are labeled as weeds so ignore them
+                && !(new int[] { 319, 320, 321 }.Any(c => c == o.ParentSheetIndex)) //Ice Crystals are labeled as weeds so ignore them
             ) {
                 return ObjType.Weed;
             }
@@ -133,9 +133,9 @@ namespace PassableCrops.Patches {
             if (!AnyPassable())
                 return;
             var ot = GetObjType(__instance);
-            if (ot != ObjType.None && LastShakeData.Character is not null) {
+            if (ot != ObjType.None) {
                 LastShakeData.Object = __instance;
-                var bb = LastShakeData.Character.GetBoundingBox();
+                var bb = (LastShakeData.Character ?? Game1.player).GetBoundingBox();
                 var ib = __instance.GetBoundingBoxAt((int)__instance.TileLocation.X, (int)__instance.TileLocation.Y);
                 if (Mod?.Config?.PassableByAll == true) {
                     __result = true;
