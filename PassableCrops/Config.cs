@@ -17,8 +17,8 @@ namespace PassableCrops {
         public bool ShakeWhenPassing { get; set; } = true;
         public bool PlaySoundWhenPassing { get; set; } = true;
         public bool UseCustomDrawing { get; set; } = true;
-        public string[] IncludeObjects { get; set; } = new string[0];
-        public string[] ExcludeObjects { get; set; } = new string[0];
+        public string[] IncludeObjects { get; set; } = Array.Empty<string>();
+        public string[] ExcludeObjects { get; set; } = Array.Empty<string>();
 
         internal static Config Register(IModHelper helper) {
             var config = helper.ReadConfig<Config>();
@@ -35,43 +35,43 @@ namespace PassableCrops {
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
-                    name: () => "Crops",
-                    tooltip: () => "Allow farmers to walk through all crops.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_Crops") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Crops") ?? "null",
                     getValue: () => config.PassableCrops,
                     setValue: value => config.PassableCrops = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
-                    name: () => "Scarecrows",
-                    tooltip: () => "Allow farmers to walk through scarecrows.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_Scarecrows") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Scarecrows") ?? "null",
                     getValue: () => config.PassableScarecrows,
                     setValue: value => config.PassableScarecrows = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
-                    name: () => "Sprinklers",
-                    tooltip: () => "Allow farmers to walk through sprinklers.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_Sprinklers") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Sprinklers") ?? "null",
                     getValue: () => config.PassableSprinklers,
                     setValue: value => config.PassableSprinklers = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
-                    name: () => "Forage",
-                    tooltip: () => "Allow farmers to walk through forage items.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_Forage") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Forage") ?? "null",
                     getValue: () => config.PassableForage,
                     setValue: value => config.PassableForage = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
-                    name: () => "Tea Bushes",
-                    tooltip: () => "Allow farmers to walk through tea bushes.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_Tea") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Tea") ?? "null",
                     getValue: () => config.PassableTeaBushes,
                     setValue: value => config.PassableTeaBushes = value
                 );
                 configMenu.AddNumberOption(
                     mod: manifest,
-                    name: () => "Trees - Growth Stage",
-                    tooltip: () => "Allow farmers to walk through tree saplings, up to the given growth stage.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_TreeGrowth") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_TreeGrowth") ?? "null",
                     getValue: () => config.PassableTreeGrowth,
                     setValue: value => config.PassableTreeGrowth = value,
                     min: 0,
@@ -79,8 +79,8 @@ namespace PassableCrops {
                 );
                 configMenu.AddNumberOption(
                     mod: manifest,
-                    name: () => "Fruit Trees - Growth Stage",
-                    tooltip: () => "Allow farmers to walk through fruit tree saplings, up to the given growth stage.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_FruitGrowth") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_FruitGrowth") ?? "null",
                     getValue: () => config.PassableFruitTreeGrowth,
                     setValue: value => config.PassableFruitTreeGrowth = value,
                     min: -1,
@@ -88,57 +88,57 @@ namespace PassableCrops {
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
-                    name: () => "Weeds",
-                    tooltip: () => "Allow farmers to walk through weeds.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_Weeds") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Weeds") ?? "null",
                     getValue: () => config.PassableWeeds,
                     setValue: value => config.PassableWeeds = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
-                    name: () => "Passable by all",
-                    tooltip: () => "Makes selected obstacles passable to all entities, not just farmers. This notably effects monsters walking through weeds.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_AllPass") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_AllPass") ?? "null",
                     getValue: () => config.PassableByAll,
                     setValue: value => config.PassableByAll = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
-                    name: () => "Slow down when passing",
-                    tooltip: () => "Farmers will walk slightly slower through objects, just like in tall grass.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_SlowDown") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_SlowDown") ?? "null",
                     getValue: () => config.SlowDownWhenPassing,
                     setValue: value => config.SlowDownWhenPassing = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
-                    name: () => "Shake when passing",
-                    tooltip: () => "Makes non-crop objects shake when passing by (crops automatically shake).",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_Shake") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Shake") ?? "null",
                     getValue: () => config.ShakeWhenPassing,
                     setValue: value => config.ShakeWhenPassing = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
-                    name: () => "Also make rustling sound",
-                    tooltip: () => "Passing through objects also makes the rustling sound.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_Rustle") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Rustle") ?? "null",
                     getValue: () => config.PlaySoundWhenPassing,
                     setValue: value => config.PlaySoundWhenPassing = value
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
-                    name: () => "Use custom object drawing",
-                    tooltip: () => "Some objects require custom drawing logic in order to shake and calculate the correct layer depth. This logic may be incompatible with other mods. This option disables the custom drawing and may prevent errors that could arise. It is not recommended to disable custom drawing if no issues are present.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_CustomDraw") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_CustomDraw") ?? "null",
                     getValue: () => config.UseCustomDrawing,
                     setValue: value => config.UseCustomDrawing = value
                 );
                 configMenu.AddTextOption(
                     mod: manifest,
-                    name: () => "Include Names",
-                    tooltip: () => "Specify individual objects that are passable, using either base name or qualified item ID, such as Twig or (O)294. Comma-separated.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_Include") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Include") ?? "null",
                     getValue: () => string.Join(", ", config.IncludeObjects),
                     setValue: value => config.IncludeObjects = value.Split(',').Select(v => v.Trim()).ToArray()
                 );
                 configMenu.AddTextOption(
                     mod: manifest,
-                    name: () => "Exclude Names",
-                    tooltip: () => "Specify individual objects that are NOT passable, using either base name or qualified item ID, such as Twig or (O)294. Comma-separated.",
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_Exclude") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Exclude") ?? "null",
                     getValue: () => string.Join(", ", config.ExcludeObjects),
                     setValue: value => config.ExcludeObjects = value.Split(',').Select(v => v.Trim()).ToArray()
                 );

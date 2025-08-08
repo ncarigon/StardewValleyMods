@@ -1,0 +1,46 @@
+﻿{
+    "NCarigon.PassableCrops/config_name_Crops": "Crops",
+    "NCarigon.PassableCrops/config_desc_Crops": "Allow farmers to walk through all crops.",
+
+    "NCarigon.PassableCrops/config_name_Scarecrows": "Scarecrows",
+    "NCarigon.PassableCrops/config_desc_Scarecrows": "Allow farmers to walk through scarecrows.",
+
+    "NCarigon.PassableCrops/config_name_Sprinklers": "Sprinklers",
+    "NCarigon.PassableCrops/config_desc_Sprinklers": "Allow farmers to walk through sprinklers.",
+
+    "NCarigon.PassableCrops/config_name_Forage": "Forage",
+    "NCarigon.PassableCrops/config_desc_Forage": "Allow farmers to walk through forage items.",
+
+    "NCarigon.PassableCrops/config_name_Tea": "Tea Bushes",
+    "NCarigon.PassableCrops/config_desc_Tea": "Allow farmers to walk through tea bushes.",
+
+    "NCarigon.PassableCrops/config_name_TreeGrowth": "Trees - Growth Stage",
+    "NCarigon.PassableCrops/config_desc_TreeGrowth": "Allow farmers to walk through tree saplings, up to the given growth stage.",
+
+    "NCarigon.PassableCrops/config_name_FruitGrowth": "Fruit Trees - Growth Stage",
+    "NCarigon.PassableCrops/config_desc_FruitGrowth": "Allow farmers to walk through fruit tree saplings, up to the given growth stage.",
+
+    "NCarigon.PassableCrops/config_name_Weeds": "Weeds",
+    "NCarigon.PassableCrops/config_desc_Weeds": "Allow farmers to walk through weeds.",
+
+    "NCarigon.PassableCrops/config_name_AllPass": "Passable by all",
+    "NCarigon.PassableCrops/config_desc_AllPass": "Makes selected obstacles passable to all entities, not just farmers. This notably effects monsters walking through weeds.",
+
+    "NCarigon.PassableCrops/config_name_SlowDown": "Slow down when passing",
+    "NCarigon.PassableCrops/config_desc_SlowDown": "Farmers will walk slightly slower through objects, just like in tall grass.",
+
+    "NCarigon.PassableCrops/config_name_Shake": "Shake when passing",
+    "NCarigon.PassableCrops/config_desc_Shake": "Makes non-crop objects shake when passing by (crops automatically shake).",
+
+    "NCarigon.PassableCrops/config_name_Rustle": "Also make rustling sound",
+    "NCarigon.PassableCrops/config_desc_Rustle": "Passing through objects also makes the rustling sound.",
+
+    "NCarigon.PassableCrops/config_name_CustomDraw": "Use custom object drawing",
+    "NCarigon.PassableCrops/config_desc_CustomDraw": "Some objects require custom drawing logic in order to shake and calculate the correct layer depth. This logic may be incompatible with other mods. This option disables the custom drawing and may prevent errors that could arise. It is not recommended to disable custom drawing if no issues are present.",
+
+    "NCarigon.PassableCrops/config_name_Include": "Include Names",
+    "NCarigon.PassableCrops/config_desc_Include": "Specify individual objects that are passable, using either base name or qualified item ID, such as Twig or (O)294. Comma-separated.",
+
+    "NCarigon.PassableCrops/config_name_Exclude": "Exclude Names",
+    "NCarigon.PassableCrops/config_desc_Exclude": "Specify individual objects that are NOT passable, using either base name or qualified item ID, such as Twig or (O)294. Comma-separated."
+}
