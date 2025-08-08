@@ -1,11 +1,11 @@
-﻿using System;
-using HarmonyLib;
-using StardewValley.TerrainFeatures;
-using StardewValley;
-using Microsoft.Xna.Framework.Graphics;
+﻿using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Netcode;
+using StardewValley;
 using StardewValley.Extensions;
+using StardewValley.TerrainFeatures;
+using System;
 
 namespace PassableCrops.Patches {
     internal static class FruitTrees {
@@ -49,7 +49,9 @@ namespace PassableCrops.Patches {
                         if (Mod?.Config?.ShakeWhenPassing == true && c is not null && ___maxShake == 0f) {
                             ___shakeLeft.Value = c.StandingPixel.X > (__instance.Tile.X + 0.5f) * 64f || (c.Tile.X == __instance.Tile.X && Game1.random.NextBool());
                             ___maxShake = (float)(Math.PI / 64.0);
-                            Mod?.PlayRustleSound(__instance.Tile, __instance.Location);
+                            if (c is not FarmAnimal && Utility.isOnScreen(new Point((int)__instance.Tile.X, (int)__instance.Tile.Y), 2, __instance.Location)) {
+                                Mod?.PlayRustleSound(__instance.Tile, __instance.Location);
+                            }
                         }
                     }
                 }

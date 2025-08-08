@@ -57,7 +57,9 @@ namespace PassableCrops.Patches {
                         if (Mod?.Config?.ShakeWhenPassing == true && c is not null && ___maxShake == 0f && __instance.growthStage.Value > 0) {
                             ___shakeLeft.Value = c.StandingPixel.X > (__instance.Tile.X + 0.5f) * 64f || (c.Tile.X == __instance.Tile.X && Game1.random.NextBool());
                             ___maxShake = (float)(Math.PI / 64.0);
-                            Mod?.PlayRustleSound(__instance.Tile, __instance.Location);
+                            if (c is not FarmAnimal && Utility.isOnScreen(new Point((int)__instance.Tile.X, (int)__instance.Tile.Y), 2, __instance.Location)) {
+                                Mod?.PlayRustleSound(__instance.Tile, __instance.Location);
+                            }
                         }
                     }
                 }

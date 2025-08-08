@@ -52,7 +52,9 @@ namespace PassableCrops.Patches {
                             ___maxShake = (float)Math.PI / 40f;
                             __instance.shakeTimer = 1000f;
                             __instance.NeedsUpdate= true;
-                            Mod?.PlayRustleSound(__instance.Tile, __instance.Location);
+                            if (c is not FarmAnimal && Utility.isOnScreen(new Point((int)__instance.Tile.X, (int)__instance.Tile.Y), 2, __instance.Location)) {
+                                Mod?.PlayRustleSound(__instance.Tile, __instance.Location);
+                            }
                         }
                     }
                 }
