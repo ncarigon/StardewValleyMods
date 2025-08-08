@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using HarmonyLib;
 using StardewValley;
+using System;
+using System.Linq;
 using SObject = StardewValley.Object;
-using StardewValley.Extensions;
-using StardewValley.Monsters;
 
 namespace PassableCrops.Patches {
     internal static class Objects {
@@ -16,28 +14,16 @@ namespace PassableCrops.Patches {
 
         public static void Register(ModEntry mod) {
             Mod = mod;
-
             KeyDataShake = $"{Mod?.ModManifest?.UniqueID}/shake";
-
             var harmony = new Harmony(Mod?.ModManifest?.UniqueID);
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), "isCollidingPosition", new Type[] { typeof(Rectangle), typeof(xTile.Dimensions.Rectangle), typeof(bool), typeof(int), typeof(bool), typeof(Character), typeof(bool), typeof(bool), typeof(bool), typeof(bool) }),
+                prefix: new HarmonyMethod(typeof(Objects), nameof(Prefix_GameLocation_isCollidingPosition)),
+                postfix: new HarmonyMethod(typeof(Objects), nameof(Postfix_GameLocation_isCollidingPosition))
+            );
             harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), "isPassable"),
                 postfix: new HarmonyMethod(typeof(Objects), nameof(Postfix_Object_isPassable))
-            );
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Character), "MovePosition"),
-                prefix: new HarmonyMethod(typeof(Objects), nameof(Prefix_Character_MovePosition)),
-                postfix: new HarmonyMethod(typeof(Objects), nameof(Postfix_Character_MovePosition))
-            );
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Farmer), "MovePosition"),
-                prefix: new HarmonyMethod(typeof(Objects), nameof(Prefix_Farmer_MovePosition)),
-                postfix: new HarmonyMethod(typeof(Objects), nameof(Postfix_Character_MovePosition))
-            );
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Monster), "MovePosition"),
-                prefix: new HarmonyMethod(typeof(Objects), nameof(Prefix_Monster_MovePosition)),
-                postfix: new HarmonyMethod(typeof(Objects), nameof(Postfix_Character_MovePosition))
             );
             harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), "draw", new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
@@ -52,6 +38,18 @@ namespace PassableCrops.Patches {
                 original: AccessTools.Method(typeof(SpriteBatch), "Draw", new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(Vector2), typeof(SpriteEffects), typeof(float) }),
                 prefix: new HarmonyMethod(typeof(Objects), nameof(Prefix_SpriteBatch_Draw2))
             );
+        }
+
+        private static Character? LastCharacter = null;
+
+        private static void Prefix_GameLocation_isCollidingPosition(
+            Character character
+        ) {
+            LastCharacter = character;
+        }
+
+        private static void Postfix_GameLocation_isCollidingPosition() {
+            LastCharacter = null;
         }
 
         private const float shakeRate = (float)Math.PI / 100f;
@@ -92,10 +90,8 @@ namespace PassableCrops.Patches {
         private struct TempShakeData {
             public bool Passable;
             public ObjType ObjType;
-            public float MaxShake, ShakeRotation;
-            public bool ShakeLeft;
-            public Character Character;
-            public SObject Object;
+            public string TypeDef;
+            public float ShakeRotation;
         }
 
         private static TempShakeData LastShakeData;
@@ -103,28 +99,6 @@ namespace PassableCrops.Patches {
         private static bool AnyPassable() =>
             Mod?.Config is not null
             && (Mod.Config.PassableScarecrows || Mod.Config.PassableSprinklers || Mod.Config.PassableForage || Mod.Config.PassableWeeds || Mod.Config.IncludeObjects.Any());
-
-        private static void Prefix_Character_MovePosition(
-            Character __instance
-        ) {
-            LastShakeData.Character = __instance;
-        }
-
-        private static void Prefix_Farmer_MovePosition(
-            Farmer __instance
-        ) {
-            LastShakeData.Character = __instance;
-        }
-
-        private static void Prefix_Monster_MovePosition(
-            Monster __instance
-        ) {
-            LastShakeData.Character = __instance;
-        }
-
-        private static void Postfix_Character_MovePosition() {
-            LastShakeData.Character = null!;
-        }
 
         private static void Postfix_Object_isPassable(
             SObject __instance,
@@ -134,31 +108,32 @@ namespace PassableCrops.Patches {
                 return;
             var ot = GetObjType(__instance);
             if (ot != ObjType.None) {
-                LastShakeData.Object = __instance;
-                var bb = (LastShakeData.Character ?? Game1.player).GetBoundingBox();
-                var ib = __instance.GetBoundingBoxAt((int)__instance.TileLocation.X, (int)__instance.TileLocation.Y);
-                if (Mod?.Config?.PassableByAll == true) {
+                var farmer = LastCharacter as Farmer;
+                if (farmer is not null || Mod?.Config?.PassableByAll == true) {
                     __result = true;
-                } else if (LastShakeData.Character is Farmer) {
-                    // slightly larger box to allow intersection before actually touching it
-                    var eb = bb.Clone();
-                    eb.Inflate(16, 16);
-                    __result = eb.Intersects(ib);
-                }
-                LastShakeData.Passable = __result;
-                if (bb.Intersects(ib)) {
-                    if (Mod?.Config?.SlowDownWhenPassing == true && LastShakeData.Character == Game1.player) {
-                        Game1.player.temporarySpeedBuff = Game1.player.stats.Get("Book_Grass") == 0 ? -1f : -0.33f;
+                    if (Mod?.Config?.SlowDownWhenPassing == true && farmer is not null) {
+                        farmer.temporarySpeedBuff = farmer.stats.Get("Book_Grass") == 0 ? -1f : -0.33f;
                     }
-                    if (!__instance!.modData.TryGetValue(KeyDataShake, out var data)
-                        || !float.TryParse((data ?? "").Split(';')[0], out var maxShake)
-                        || maxShake <= 0f
-                    ) {
-                        maxShake = ot == ObjType.Scarecrow || ot == ObjType.Sprinkler ? maxShake_stiff : maxShake_normal;
-                        var shakeLeft = bb.Center.X > __instance.TileLocation.X * 64f + 32f;
-                        var shakeRotation = 0f;
-                        __instance.modData[KeyDataShake] = $"{maxShake};{shakeRotation};{shakeLeft}";
-                        Mod?.PlayRustleSound(__instance.TileLocation, __instance.Location);
+                    LastShakeData.Passable = __result;
+                    if (LastCharacter is not null) {
+                        var location = __instance.Location;
+                        if (location != Game1.currentLocation) {
+                            return;
+                        }
+                        var positionOfCollider = LastCharacter.GetBoundingBox();
+                        var speedOfCollision = LastCharacter.speed + LastCharacter.addedSpeed;
+                        if (speedOfCollision > 0f
+                            && (!__instance.modData.TryGetValue(KeyDataShake, out var data) || !float.TryParse((data ?? "").Split(';')[0], out var maxShake) || maxShake == 0f)
+                            && positionOfCollider.Intersects(__instance.GetBoundingBox())
+                        ) {
+                            maxShake = (ot == ObjType.Scarecrow || ot == ObjType.Sprinkler ? maxShake_stiff : maxShake_normal) / Math.Min(1f, 5f / speedOfCollision);
+                            var shakeLeft = positionOfCollider.Center.X > __instance.TileLocation.X * 64f + 32f;
+                            var shakeRotation = 0f;
+                            __instance.modData[KeyDataShake] = $"{maxShake};{shakeRotation};{shakeLeft}";
+                            if (LastCharacter is not FarmAnimal && Utility.isOnScreen(new Point((int)__instance.TileLocation.X, (int)__instance.TileLocation.Y), 2, location)) {
+                                Mod?.PlayRustleSound(__instance.TileLocation, __instance.Location);
+                            }
+                        }
                     }
                 }
             }
@@ -202,11 +177,9 @@ namespace PassableCrops.Patches {
                     }
                     // update tracking values
                     __instance.modData[KeyDataShake] = $"{maxShake};{shakeRotation};{shakeLeft}";
-                    LastShakeData.Object = __instance;
+                    LastShakeData.TypeDef = __instance.TypeDefinitionId;
                     LastShakeData.ObjType = ot;
-                    LastShakeData.MaxShake = maxShake;
                     LastShakeData.ShakeRotation = shakeRotation;
-                    LastShakeData.ShakeLeft = shakeLeft;
                 }
             }
         }
@@ -233,7 +206,7 @@ namespace PassableCrops.Patches {
                 if (LastShakeData.ObjType == ObjType.Scarecrow) {
                     // move rotation to center bottom of post
                     MoveRotation(ref destinationRectangle, ref origin, new Vector2(8f, 30f));
-                } else if (LastShakeData.Object?.TypeDefinitionId?.Equals("(BC)") == true) {
+                } else if (LastShakeData.TypeDef?.Equals("(BC)") == true) {
                     // move rotation to center bottom-ish of object
                     MoveRotation(ref destinationRectangle, ref origin, new Vector2(8f, 24f));
                 }
