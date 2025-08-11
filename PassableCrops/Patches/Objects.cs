@@ -22,6 +22,11 @@ namespace PassableCrops.Patches {
                 postfix: new HarmonyMethod(typeof(Objects), nameof(Postfix_GameLocation_isCollidingPosition))
             );
             harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), "checkAction"),
+                prefix: new HarmonyMethod(typeof(Objects), nameof(Prefix_GameLocation_checkAction)),
+                postfix: new HarmonyMethod(typeof(Objects), nameof(Postfix_GameLocation_checkAction))
+            );
+            harmony.Patch(
                 original: AccessTools.Method(typeof(SObject), "isPassable"),
                 postfix: new HarmonyMethod(typeof(Objects), nameof(Postfix_Object_isPassable))
             );
@@ -42,15 +47,13 @@ namespace PassableCrops.Patches {
 
         private static Character? LastCharacter = null;
 
-        private static void Prefix_GameLocation_isCollidingPosition(
-            Character character
-        ) {
-            LastCharacter = character;
-        }
+        private static void Prefix_GameLocation_isCollidingPosition(Character character) => LastCharacter = character;
 
-        private static void Postfix_GameLocation_isCollidingPosition() {
-            LastCharacter = null;
-        }
+        private static void Postfix_GameLocation_isCollidingPosition() => LastCharacter = null;
+
+        private static void Prefix_GameLocation_checkAction(Farmer who) => LastCharacter = who;
+
+        private static void Postfix_GameLocation_checkAction() => LastCharacter = null;
 
         private const float shakeRate = (float)Math.PI / 100f;
         private const float maxShake_normal = (float)Math.PI / 12f;
@@ -101,9 +104,9 @@ namespace PassableCrops.Patches {
             && (Mod.Config.PassableScarecrows || Mod.Config.PassableSprinklers || Mod.Config.PassableForage || Mod.Config.PassableWeeds || Mod.Config.IncludeObjects.Any());
 
         private static void Postfix_Object_isPassable(
-            SObject __instance,
-            ref bool __result
-        ) {
+           SObject __instance,
+           ref bool __result
+       ) {
             if (!AnyPassable())
                 return;
             var ot = GetObjType(__instance);
