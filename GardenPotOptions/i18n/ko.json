@@ -1,0 +1,32 @@
+{
+    "NCarigon.GardenPotOptions/config_name_KeepContents": "내용물 유지",
+    "NCarigon.GardenPotOptions/config_desc_KeepContents": "식물 통의 내용물이 주워질 때 파괴되지 않도록 합니다.",
+
+    "NCarigon.GardenPotOptions/config_name_SafeTool": "안전 도구",
+    "NCarigon.GardenPotOptions/config_desc_SafeTool": "식물 통을 깨지 않고 주워낼 수 있는 도구를 선택합니다.",
+
+    "NCarigon.GardenPotOptions/config_name_EnableSprinklers": "스프링클러 활성화",
+    "NCarigon.GardenPotOptions/config_desc_EnableSprinklers": "스프링클러를 사용하여 식물 통에 물을 줄 수 있도록 합니다.",
+
+    "NCarigon.GardenPotOptions/config_name_AncientSeeds": "고대 씨앗 허용",
+    "NCarigon.GardenPotOptions/config_desc_AncientSeeds": "고대 씨앗을 식물 통에 심을 수 있도록 합니다.",
+
+    "NCarigon.GardenPotOptions/config_name_AllowTransplant": "이동 허용",
+    "NCarigon.GardenPotOptions/config_desc_AllowTransplant": "농경지로부터 작물을 주워 식물 통에 심거나, 비경작된 토양에서 덤불을 주워 식물 통에 심을 수 있도록 합니다.",
+
+    "NCarigon.GardenPotOptions/config_name_HeartsGardenPot": "식물 통을 위한 하트",
+    "NCarigon.GardenPotOptions/config_desc_HeartsGardenPot": "지정된 우정 레벨에 도달하면 에블린이 당신에게 식물 통을 선물합니다. 값이 -1이면 이 옵션이 비활성화됩니다.",
+
+    "NCarigon.GardenPotOptions/config_name_HeartsRecipe": "식물 통 레시피를 위한 하트",
+    "NCarigon.GardenPotOptions/config_desc_HeartsRecipe": "지정된 우정 레벨에 도달하면 에블린이 당신에게 식물 통 레시피를 선물합니다. 값은 '식물 통을 위한 하트'와 동일하거나 더 커야 합니다. 그렇지 않으면 비활성화됩니다.",
+
+    "NCarigon.GardenPotOptions/mail_title_pot": "에블린의 선물",
+    "NCarigon.GardenPotOptions/mail_text_pot": "소중한 @,^ 이걸 주려고 한단다. 선물이야... 한 정원사로부터 다른 정원사에게로. 이 화분은 정말 유용하단다. 이걸로 모든 계절 작물을 실내에서 기를 수 있어! 밖에다 둬도 예쁘지... 하지만 밖에서는 계절에 맞는 식물만 키울 수 있어. 잘 쓰렴! ^   -에블린",
+
+    "NCarigon.GardenPotOptions/mail_title_recipe": "에블린의 잡지 클리핑",
+    "NCarigon.GardenPotOptions/mail_text_recipe": "소중한 @,^ 내가 건네 준 화분을 유용하게 사용하면 좋겠구나. 더 만들고 싶다면, 만들기도 쉽단다... 여기, 예전에 잡지에서 오려낸 설명서야. ^   -에블린",
+
+    "NCarigon.GardenPotOptions/event_text_recipe": "continue/64 15/farmer 64 16 2 Evelyn 64 18 0/skippable/pause 1500/speak Evelyn \"좋은 아침이네, 아가야.\"/pause 500/faceDirection Evelyn 3/pause 500/faceDirection Evelyn 2/speak Evelyn \"여기를 산책하는 건 항상 좋았지... 오랫동안 이 농장을 못 봤구나.$s#$b#내가 기억하는 것보다 훨씬 멋진걸!$h\"/pause 500/faceDirection Evelyn 3/faceDirection Evelyn 0/pause 500/speak Evelyn \"내가 건네 준 화분을 유용하게 사용하면 좋겠구나.\"/pause 500/speak Evelyn \"더 만들고 싶다면, 만들기도 쉽단다... 여기, 예전에 잡지에서 오려낸 설명서야.\"/pause 200/playSound getNewSpecialItem/addCraftingRecipe Garden Pot/pause 500/message \"정원용 화분 제작법을 배웠습니다.\"/pause 800/speak Evelyn \"그럼, 난 가봐야겠구나. 오트밀을 제때 못 먹으면 조지가 마음이 상하거든...#$b#멋진 하루 되렴, 아가야!$h\"/pause 500/end",
+
+    "NCarigon.GardenPotOptions/farmhand_placement_error": "농부는 가득 찬 식물 통을 내려놓을 수 없습니다. 호스트 농부만이 이 작업을 수행할 수 있습니다."
+}
