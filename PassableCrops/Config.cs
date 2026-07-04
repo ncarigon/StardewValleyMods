@@ -9,6 +9,7 @@ namespace PassableCrops {
         public bool PassableSprinklers { get; set; } = true;
         public bool PassableForage { get; set; } = true;
         public bool PassableTeaBushes { get; set; } = true;
+        public bool PassableBushes { get; set; } = true;
         public int PassableTreeGrowth { get; set; } = 3;
         public int PassableFruitTreeGrowth { get; set; } = 2;
         public bool PassableWeeds { get; set; } = true;
@@ -67,6 +68,13 @@ namespace PassableCrops {
                     tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Tea") ?? "null",
                     getValue: () => config.PassableTeaBushes,
                     setValue: value => config.PassableTeaBushes = value
+                );
+                configMenu.AddBoolOption(
+                    mod: manifest,
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_Bushes") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Bushes") ?? "null",
+                    getValue: () => config.PassableBushes,
+                    setValue: value => config.PassableBushes = value
                 );
                 configMenu.AddNumberOption(
                     mod: manifest,

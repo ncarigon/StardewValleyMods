@@ -1,4 +1,4 @@
-﻿{
+{
     "NCarigon.PassableCrops/config_name_Crops": "Crops",
     "NCarigon.PassableCrops/config_desc_Crops": "Allow farmers to walk through all crops.",
 
@@ -13,6 +13,9 @@
 
     "NCarigon.PassableCrops/config_name_Tea": "Tea Bushes",
     "NCarigon.PassableCrops/config_desc_Tea": "Allow farmers to walk through tea bushes.",
+
+    "NCarigon.PassableCrops/config_name_Bushes": "Small Bushes",
+    "NCarigon.PassableCrops/config_desc_Bushes": "Allow farmers to walk through small (single-tile) bushes.",
 
     "NCarigon.PassableCrops/config_name_TreeGrowth": "Trees - Growth Stage",
     "NCarigon.PassableCrops/config_desc_TreeGrowth": "Allow farmers to walk through tree saplings, up to the given growth stage.",

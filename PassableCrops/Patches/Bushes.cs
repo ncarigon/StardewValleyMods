@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using HarmonyLib;
 using StardewValley.TerrainFeatures;
 using StardewValley;
@@ -26,10 +26,38 @@ namespace PassableCrops.Patches {
                 original: AccessTools.Method(typeof(Bush), nameof(Bush.getBoundingBox)),
                 postfix: new HarmonyMethod(typeof(Bushes), nameof(Postfix_Bush_getBoundingBox))
             );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), "isCollidingPosition", new Type[] { typeof(Rectangle), typeof(xTile.Dimensions.Rectangle), typeof(bool), typeof(int), typeof(bool), typeof(Character), typeof(bool), typeof(bool), typeof(bool), typeof(bool) }),
+                prefix: new HarmonyMethod(typeof(Bushes), nameof(Prefix_GameLocation_isCollidingPosition)),
+                finalizer: new HarmonyMethod(typeof(Bushes), nameof(Finalizer_GameLocation_isCollidingPosition))
+            );
+        }
+
+        private static bool TeaPassable(Bush bush) {
+            return Mod?.Config is not null && Mod.Config.PassableTeaBushes && bush?.size.Value == Bush.greenTeaBush && bush?.inPot.Value != true;
+        }
+
+        private static bool SmallPassable(Bush bush) {
+            return Mod?.Config is not null && Mod.Config.PassableBushes && bush?.size.Value == Bush.smallBush && bush?.inPot.Value != true;
         }
 
         private static bool AnyPassable(Bush bush) {
-            return Mod?.Config is not null && Mod.Config.PassableTeaBushes && bush?.size.Value == 3 && bush?.inPot.Value != true;
+            return TeaPassable(bush) || SmallPassable(bush);
+        }
+
+        private static void ApplyPassingEffects(Bush bush, Character? c, ref float maxShake, ref bool shakeLeft) {
+            if (c is Farmer farmer && Mod?.Config?.SlowDownWhenPassing == true) {
+                farmer.temporarySpeedBuff = farmer.stats.Get("Book_Grass") == 0 ? -1f : -0.33f;
+            }
+            if (Mod?.Config?.ShakeWhenPassing == true && c is not null && maxShake == 0f) {
+                shakeLeft = c.Tile.X > bush.Tile.X || (c.Tile.X == bush.Tile.X && Game1.random.NextBool());
+                maxShake = (float)Math.PI / 40f;
+                bush.shakeTimer = 1000f;
+                bush.NeedsUpdate = true;
+                if (c is not FarmAnimal && Utility.isOnScreen(new Point((int)bush.Tile.X, (int)bush.Tile.Y), 2, bush.Location)) {
+                    Mod?.PlayRustleSound(bush.Tile, bush.Location);
+                }
+            }
         }
 
         private static void Postfix_Bush_isPassable(
@@ -38,24 +66,9 @@ namespace PassableCrops.Patches {
             Character c) {
             try {
                 if (AnyPassable(__instance)) {
-                    var farmer = c as Farmer;
-                    if (farmer is not null || Mod?.Config?.PassableByAll == true) {
+                    if (c is Farmer || Mod?.Config?.PassableByAll == true) {
                         __result = true;
-                        if (farmer is not null && Mod?.Config?.SlowDownWhenPassing == true) {
-                            farmer.temporarySpeedBuff = farmer.stats.Get("Book_Grass") == 0 ? -1f : -0.33f;
-                        }
-                        // need to manually set shake info or it won't happen
-                        if (Mod?.Config?.ShakeWhenPassing == true && c is not null && ___maxShake == 0f) {
-                            ___shakeLeft = c.Tile.X > __instance!.Tile.X || (c.Tile.X == __instance.Tile.X && Game1.random.NextBool());
-                            // using a wider, longer shake to seem less rigid
-                            // compared to bush.shake()
-                            ___maxShake = (float)Math.PI / 40f;
-                            __instance.shakeTimer = 1000f;
-                            __instance.NeedsUpdate= true;
-                            if (c is not FarmAnimal && Utility.isOnScreen(new Point((int)__instance.Tile.X, (int)__instance.Tile.Y), 2, __instance.Location)) {
-                                Mod?.PlayRustleSound(__instance.Tile, __instance.Location);
-                            }
-                        }
+                        ApplyPassingEffects(__instance, c, ref ___maxShake, ref ___shakeLeft);
                     }
                 }
             } catch { }
@@ -71,15 +84,56 @@ namespace PassableCrops.Patches {
             }
         }
 
+        private struct CollisionContext {
+            public bool Active;
+            public Rectangle Position;
+            public Character? Character;
+            public bool Pathfinding;
+            public bool Projectile;
+        }
+
+        private static CollisionContext collision;
+
+        private static void Prefix_GameLocation_isCollidingPosition(
+            Rectangle position, bool glider, Character? character, bool pathfinding, bool projectile,
+            out CollisionContext __state
+        ) {
+            __state = collision;
+            collision = new CollisionContext {
+                Active = !glider,
+                Position = position,
+                Character = character,
+                Pathfinding = pathfinding,
+                Projectile = projectile,
+            };
+        }
+        private static void Finalizer_GameLocation_isCollidingPosition(CollisionContext __state) {
+            collision = __state;
+        }
+
         private static void Postfix_Bush_getBoundingBox(
-            ref Rectangle __result
+            Bush __instance,
+            ref Rectangle __result, ref float ___maxShake, ref bool ___shakeLeft
         ) {
             if (isDrawing) {
                 isDrawing = false;
                 var skew = -46;
                 __result = new Rectangle(__result.X, __result.Y + skew, __result.Width, __result.Height);
+                return;
             }
+            try {
+                if (collision.Active && SmallPassable(__instance)) {
+                    var c = collision.Character;
+                    if (c is Farmer || Mod?.Config?.PassableByAll == true) {
+                        if (!collision.Pathfinding && !collision.Projectile && c is not null
+                            && __result.Intersects(collision.Position)
+                            && !__result.Intersects(c.GetBoundingBox())) {
+                            ApplyPassingEffects(__instance, c, ref ___maxShake, ref ___shakeLeft);
+                        }
+                        __result = Rectangle.Empty;
+                    }
+                }
+            } catch { }
         }
     }
 }
-
