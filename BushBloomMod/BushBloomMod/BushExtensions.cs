@@ -2,11 +2,10 @@
 
 namespace BushBloomMod {
     public static class BushExtensions {
-        // exists, not a town bush, medium size, not an island bush
+        // exists, not a town bush and not an island bush
         public static bool IsAbleToBloom(this Bush bush) =>
             bush is not null
             && !bush.townBush.Value
-            && bush.size.Value == 1
             && !(bush.Location?.InIslandContext() ?? false);
 
         public static bool IsBloomingToday(this Bush bush) => Schedule.GetSchedule(bush) is not null;

@@ -14,7 +14,7 @@ namespace BushBloomMod {
             Bushes.Register();
             //Almanac.Register(this.ModManifest);
             helper.Events.GameLoop.GameLaunched += (_, _) => Schedule.ReloadSchedules();
-            helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
+            helper.Events.GameLoop.DayStarted += this.GameLoop_DayStarted;
             helper.Events.Content.AssetRequested += Schedule.Content_AssetRequested;
         }
 
@@ -22,10 +22,9 @@ namespace BushBloomMod {
         // content updates which would normally only happen after the base game has already
         // called that function.
         [EventPriority(EventPriority.Low)]
-        private void GameLoop_DayStarted(object sender, DayStartedEventArgs e) {
+        private void GameLoop_DayStarted(object sender, DayStartedEventArgs e) =>
             // find all bushes and update for real
             Bushes.UpdateAllBushes();
-        }
 
         public override object GetApi() => new Api();
     }

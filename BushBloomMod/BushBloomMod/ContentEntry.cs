@@ -12,21 +12,23 @@ namespace BushBloomMod {
         public string StartSeason, EndSeason;
         public int? StartDay, EndDay;
         public int? StartYear, EndYear;
-        public string Texture;
+        public string Texture, TextureSmall, TextureLarge;
         public double? Chance;
         public string[] Locations, ExcludeLocations;
         public string[] Weather, ExcludeWeather, DestroyWeather;
         public Vector2[] Tiles;
+        public int[] BushSizes;
 #pragma warning restore CS0649
 
-        public bool CanBloomToday(int year, int dayOfYear, bool ignoreWeather, bool allowExisting, GameLocation location = null, Vector2? tile = null) {
+        public bool CanBloomToday(int year, int dayOfYear, bool ignoreWeather, bool allowExisting, int size, GameLocation location = null, Vector2? tile = null) {
             if (!(this.Enabled ?? true)) {
                 return false;
             }
             var firstDayOfYear = Helpers.GetDayOfYear(this.StartSeason, this.StartDay);
             var lastDayOfYear = Helpers.GetDayOfYear(this.EndSeason, this.EndDay);
             var weather = location?.GetWeather().Weather;
-            var bloom = ((this.Locations?.Length ?? 0) < 1 || location is null || this.Locations.Contains(location?.NameOrUniqueName, StringComparer.OrdinalIgnoreCase))
+            var bloom = (this.BushSizes?.Contains(size) ?? false)
+                && ((this.Locations?.Length ?? 0) < 1 || location is null || this.Locations.Contains(location?.NameOrUniqueName, StringComparer.OrdinalIgnoreCase))
                 && ((this.ExcludeLocations?.Length ?? 0) < 1 || location is null || !this.ExcludeLocations.Contains(location?.NameOrUniqueName, StringComparer.OrdinalIgnoreCase))
                 && !(location?.InIslandContext() ?? false)
                 && ((firstDayOfYear <= dayOfYear && dayOfYear <= lastDayOfYear)  // xxxxF----D----Lxxxxx, on a day between first and last day of same year, or same day
@@ -36,7 +38,7 @@ namespace BushBloomMod {
                 && (!this.EndYear.HasValue || year <= this.EndYear.Value)
                 && ((this.Tiles?.Length ?? 0) < 1 || tile is null || this.Tiles.Contains(tile.Value));// tile.Value.X + "," + tile.Value.Y)));
             if (bloom && weather is not null && !ignoreWeather) {
-                bloom = ((this.DestroyWeather?.Length ?? 0) < 1 || !this.DestroyWeather.Contains(weather, StringComparer.OrdinalIgnoreCase));
+                bloom = (this.DestroyWeather?.Length ?? 0) < 1 || !this.DestroyWeather.Contains(weather, StringComparer.OrdinalIgnoreCase);
                 if (bloom && !allowExisting) {
                     bloom = ((this.Weather?.Length ?? 0) < 1 || this.Weather.Contains(weather, StringComparer.OrdinalIgnoreCase))
                         && ((this.ExcludeWeather?.Length ?? 0) < 1 || !this.ExcludeWeather.Contains(weather, StringComparer.OrdinalIgnoreCase));
@@ -51,6 +53,7 @@ namespace BushBloomMod {
             this.EndDay ??= this.StartDay;
             this.StartYear ??= 1;
             this.Chance ??= 0.2;
+            this.BushSizes ??= new int[] { 1 };
             return this.FirstDay is not null
                 && this.LastDay is not null
                 && Helpers.IsValidDayOfYear(this.StartSeason, this.StartDay)
@@ -61,9 +64,8 @@ namespace BushBloomMod {
             get {
                 try {
                     return new(this.StartYear ?? Game1.year, this.StartSeason, this.StartDay ?? 0);
-                } catch {
-                    return null;
-                }
+                } catch { }
+                return null;
             }
         }
 
@@ -75,9 +77,8 @@ namespace BushBloomMod {
                         ld.Year++;
                     }
                     return ld;
-                } catch {
-                    return null;
-                }
+                } catch { }
+                return null;
             }
         }
     }

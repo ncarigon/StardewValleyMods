@@ -2,11 +2,24 @@
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace BushBloomMod {
     public class Api {
 #pragma warning disable CA1822 // Mark members as static
+        /// <summary>
+        /// Returns an array of (item_id, first_day, last_day) for all possible active blooming
+        /// schedules of the given bush size, on the given season and day,
+        /// optionally within the given year and/or location.
+        /// </summary>
+        public (string, WorldDate, WorldDate)[] GetActiveSchedules(
+            int size, string season, int dayofMonth, int? year = null,
+            GameLocation location = null, Vector2? tile = null
+        ) =>
+            Schedule.GetAllCandidates(year ?? Game1.year, Helpers.GetDayOfYear(season, dayofMonth), true, false, size, location, tile)
+                .Where(c => c.ShakeOffId is not null && c.Entry.IsValid())
+                .Select(c => (c.ShakeOffId, c.Entry.FirstDay, c.Entry.LastDay))
+                .ToArray();
+
         /// <summary>
         /// Returns an array of (item_id, first_day, last_day) for all possible active blooming
         /// schedules on the given season and day, optionally within the given year and/or location.
@@ -15,7 +28,7 @@ namespace BushBloomMod {
             string season, int dayofMonth, int? year = null,
             GameLocation location = null, Vector2? tile = null
         ) =>
-            Schedule.GetAllCandidates(year ?? Game1.year, Helpers.GetDayOfYear(season, dayofMonth), true, false, location, tile)
+            Schedule.GetAllCandidates(year ?? Game1.year, Helpers.GetDayOfYear(season, dayofMonth), true, false, 1, location, tile)
                 .Where(c => c.ShakeOffId is not null && c.Entry.IsValid())
                 .Select(c => (c.ShakeOffId, c.Entry.FirstDay, c.Entry.LastDay))
                 .ToArray();

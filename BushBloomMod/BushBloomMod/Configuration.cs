@@ -23,7 +23,8 @@ namespace BushBloomMod {
                     save: () => {
                         helper.WriteConfig(config);
                         Schedule.ReloadSchedules();
-                    }
+                    },
+                    titleScreenOnly: true
                 );
 
                 configMenu.AddBoolOption(

@@ -8,7 +8,7 @@ namespace BushBloomMod {
 
         public static int GetDayOfYear(string season, int? dayOfMonth) =>
             (dayOfMonth ?? 0)
-            + (int)(Enum.TryParse<Season>(season?.Trim(), true, out var s) ? s : Invalid) * 28;
+            + ((int)(Enum.TryParse<Season>(season?.Trim(), true, out var s) ? s : Invalid) * 28);
 
         public static bool IsValidDayOfYear(string season, int? dayOfMonth) =>
             Enum.TryParse<Season>(season?.Trim(), true, out _)
@@ -24,13 +24,12 @@ namespace BushBloomMod {
                 if (!(item?.Exists() ?? false)) {
                     item = ItemRegistry.GetMetadata($"(O){name}");
                 }
-                if ((item?.Exists() ?? false) && item.QualifiedItemId.Contains(')')) {
-                    return item.QualifiedItemId[(item.QualifiedItemId.IndexOf(')') + 1)..];
-                }
-                return Game1.objectData
-                    .Where(d => string.Compare(d.Value.Name, name, true) == 0)
-                    .Select(d => d.Key)
-                    .FirstOrDefault();
+                return (item?.Exists() ?? false) && item.QualifiedItemId.Contains(')')
+                    ? item.QualifiedItemId[(item.QualifiedItemId.IndexOf(')') + 1)..]
+                    : Game1.objectData
+                        .Where(d => string.Compare(d.Value.Name, name, true) == 0)
+                        .Select(d => d.Key)
+                        .FirstOrDefault();
             }
             return null;
         }

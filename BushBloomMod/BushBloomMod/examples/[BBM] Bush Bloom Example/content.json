@@ -29,8 +29,18 @@
 		// Optional: Default is no year
 		"EndYear": 2,
 
+		// Optional: Bush size(s) that can bloom with this schedule. Default is 1 (medium).
+		//           Values: 0 = small, 1 = medium, 2 = large
+		"BushSizes": [ 1 ],
+
 		// Optional; Default is built-in texture if missing
 		"Texture": "assets/berry.png",
+
+		// Optional; Default is none
+		"TextureSmall": "assets/berry_small.png",
+
+		// Optional; Default is none
+		"TextureLarge": "assets/berry_large.png",
 
 		// Optional; Default is 0.2 if missing; Values between 0.0 and 1.0 (inclusive)
 		//           determine the overall probability. A value greater than 1.0 will
@@ -57,8 +67,14 @@
 		//           Most effective when combined with a specific "Locations" setting
 		//           in order to bloom a *very* specific set of bushes.
 		"Tiles": [
-			{ "X": 10, "Y": 20 },
-			{ "X": 23, "Y": 32 }
+			{
+				"X": 10,
+				"Y": 20
+			},
+			{
+				"X": 23,
+				"Y": 32
+			}
 		]
 	}
 ]
