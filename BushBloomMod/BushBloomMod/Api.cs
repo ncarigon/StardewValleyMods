@@ -21,8 +21,7 @@ namespace BushBloomMod {
                 .ToArray();
 
         /// <summary>
-        /// Returns an array of (item_id, first_day, last_day) for all possible active blooming
-        /// schedules on the given season and day, optionally within the given year and/or location.
+        /// Legacy version of the function, without the 'size' parameter which will default to value 1.
         /// </summary>
         public (string, WorldDate, WorldDate)[] GetActiveSchedules(
             string season, int dayofMonth, int? year = null,
