@@ -9,14 +9,14 @@ namespace PassableCrops {
         public bool PassableSprinklers { get; set; } = true;
         public bool PassableForage { get; set; } = true;
         public bool PassableTeaBushes { get; set; } = true;
-        public int PassableTreeGrowth { get; set; } = 3;
+        public int PassableTreeGrowth { get; set; } = 4;
         public int PassableFruitTreeGrowth { get; set; } = 2;
         public bool PassableWeeds { get; set; } = true;
         public bool PassableByAll { get; set; } = false;
         public bool SlowDownWhenPassing { get; set; } = true;
+        public bool SlowDownMore { get; set; } = true;
         public bool ShakeWhenPassing { get; set; } = true;
         public bool PlaySoundWhenPassing { get; set; } = true;
-        public bool UseCustomDrawing { get; set; } = true;
         public string[] IncludeObjects { get; set; } = Array.Empty<string>();
         public string[] ExcludeObjects { get; set; } = Array.Empty<string>();
 
@@ -109,6 +109,13 @@ namespace PassableCrops {
                 );
                 configMenu.AddBoolOption(
                     mod: manifest,
+                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_SlowDownMore") ?? "null",
+                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_SlowDownMore") ?? "null",
+                    getValue: () => config.SlowDownMore,
+                    setValue: value => config.SlowDownMore = value
+                );
+                configMenu.AddBoolOption(
+                    mod: manifest,
                     name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_Shake") ?? "null",
                     tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Shake") ?? "null",
                     getValue: () => config.ShakeWhenPassing,
@@ -120,13 +127,6 @@ namespace PassableCrops {
                     tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_Rustle") ?? "null",
                     getValue: () => config.PlaySoundWhenPassing,
                     setValue: value => config.PlaySoundWhenPassing = value
-                );
-                configMenu.AddBoolOption(
-                    mod: manifest,
-                    name: () => helper.Translation.Get($"{manifest?.UniqueID}/config_name_CustomDraw") ?? "null",
-                    tooltip: () => helper.Translation.Get($"{manifest?.UniqueID}/config_desc_CustomDraw") ?? "null",
-                    getValue: () => config.UseCustomDrawing,
-                    setValue: value => config.UseCustomDrawing = value
                 );
                 configMenu.AddTextOption(
                     mod: manifest,
