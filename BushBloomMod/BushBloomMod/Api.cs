@@ -28,10 +28,7 @@ namespace BushBloomMod {
             string season, int dayofMonth, int? year = null,
             GameLocation location = null, Vector2? tile = null
         ) =>
-            Schedule.GetAllCandidates(year ?? Game1.year, Helpers.GetDayOfYear(season, dayofMonth), true, false, 1, location, tile)
-                .Where(c => c.ShakeOffId is not null && c.Entry.IsValid())
-                .Select(c => (c.ShakeOffId, c.Entry.FirstDay, c.Entry.LastDay))
-                .ToArray();
+            this.GetActiveSchedules(1, season, dayofMonth, year, location, tile);
 
         /// <summary>
         /// Returns an array of (item_id, first_day, last_day) for all blooming schedules.

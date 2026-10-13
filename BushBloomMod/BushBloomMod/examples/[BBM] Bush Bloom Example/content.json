@@ -31,7 +31,7 @@
 
 		// Optional: Bush size(s) that can bloom with this schedule. Default is 1 (medium).
 		//           Values: 0 = small, 1 = medium, 2 = large
-		"BushSizes": [ 1 ],
+		"BushSizes": [ 0, 1, 2 ],
 
 		// Optional; Default is built-in texture if missing
 		"Texture": "assets/berry.png",
@@ -46,6 +46,11 @@
 		//           determine the overall probability. A value greater than 1.0 will
 		//           guarantee that item will bloom, regardless of any existing bloom
 		//           or other possible schedules unless they are also greater than 1.0.
+		//           While not required in any way, it is recommended to keep in mind
+		//           that smaller bushes tend to produce slightly less and larger 
+		//           bushes will produce slightly more yields than the normal medium
+		//           bush so it may be best to use separate entries for each size if 
+		//           you want to retain a relative balance.
 		"Chance": 0.2,
 
 		// Optional; Default is all locations if missing or empty
