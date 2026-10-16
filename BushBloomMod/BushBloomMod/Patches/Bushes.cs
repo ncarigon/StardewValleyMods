@@ -148,12 +148,12 @@ namespace BushBloomMod.Patches {
 
         private static void Prefix_Bush_shake(
             Bush __instance
-        ) => LastShakeSize = __instance?.size?.Value ?? 1;
+        ) => LastShakeSize = __instance?.size?.Value ?? -1;
 
         private static void Postfix_Bush_shake(
             Bush __instance
         ) {
-            LastShakeSize = 1;
+            LastShakeSize = -1;
             if (__instance.IsAbleToBloom()) {
                 // clear schedule after shaking
                 __instance.DataSetSchedule(null);
@@ -165,9 +165,9 @@ namespace BushBloomMod.Patches {
         private static void Postfix_Farmer_ForagingLevel(
             ref int __result
         ) {
-            if (LastShakeSize == 0) {
+            if (LastShakeSize == Bush.smallBush) {
                 __result /= 2;
-            } else if (LastShakeSize == 2) {
+            } else if (LastShakeSize == Bush.largeBush) {
                 __result *= 2;
             }
         }
@@ -186,43 +186,46 @@ namespace BushBloomMod.Patches {
                     var size = __instance.size.Value;
                     // if blooming, cache any custom blooming texture
                     var t = (Schedule.TryGetExistingSchedule(__instance, out var schedule) ? (
-                        size == 1 ? schedule.Texture
-                        : size == 0 ? schedule.TextureSmall
+                        size == Bush.mediumBush ? schedule.Texture
+                        : size == Bush.smallBush ? schedule.TextureSmall
                         : schedule.TextureLarge)
                         : null)
                         // use our default winter berry if no other is specified
                         ?? (season == Season.Winter && ModEntry.Instance.Config.UseCustomWinterBerrySprite ? (
-                            size == 1 ? Schedule.WinterBerry
-                            : size == 0 ? Schedule.WinterBerrySmall
+                            size == Bush.mediumBush ? Schedule.WinterBerry
+                            : size == Bush.smallBush ? Schedule.WinterBerrySmall
                             : Schedule.WinterBerryLarge)
                         : null)
                         // use our default small/large spring/summer berry
                         ?? (season == Season.Spring || season == Season.Summer ? (
-                            size == 1 ? null
-                            : size == 0 ? Schedule.SpringBerrySmall
+                            size == Bush.mediumBush ? null
+                            : size == Bush.smallBush ? Schedule.SpringBerrySmall
                             : Schedule.SpringBerryLarge)
                         : null)
                         // use our default small/large fall berry
                         ?? (season == Season.Fall ? (
-                            size == 1 ? null
-                            : size == 0 ? Schedule.FallBerrySmall
+                            size == Bush.mediumBush ? null
+                            : size == Bush.smallBush ? Schedule.FallBerrySmall
                             : Schedule.FallBerryLarge)
                         : null);
                     // switch to non-blooming texture if using a custom texture or small/large bushes
                     var hasTexture = false;
-                    if (t is not null || size == 0 || size == 2) {
+                    if (t is not null || size == Bush.smallBush || size == Bush.largeBush) {
                         hasTexture = true;
                         sheetOffset = 0;
                     }
                     __instance.DataSetTexture(hasTexture);
                 }
-                var xOffset = ((int)season * 64) + (sheetOffset * 32);
-                if (__instance.size.Value == 0) {
-                    var sr = __instance.sourceRect.Value;
-                    xOffset = __instance.tileSheetOffset.Value == 1 ? 16 : 0;
-                    __instance.sourceRect.Value = new Rectangle(sr.X - xOffset, sr.Y, sr.Width, sr.Height);
-                } else if (__instance.size.Value == 1) {
-                    __instance.sourceRect.Value = new Rectangle(xOffset % Bush.texture.Value.Bounds.Width, xOffset / Bush.texture.Value.Bounds.Width * 3 * 16, 32, 48);
+                switch (__instance.size.Value) {
+                    case Bush.mediumBush:
+                        var xOffset = ((int)season * 64) + (sheetOffset * 32);
+                        __instance.sourceRect.Value = new Rectangle(xOffset % Bush.texture.Value.Bounds.Width, xOffset / Bush.texture.Value.Bounds.Width * 3 * 16, 32, 48);
+                        break;
+                    case Bush.smallBush:
+                        var sr = __instance.sourceRect.Value;
+                        xOffset = __instance.tileSheetOffset.Value == 1 ? 16 : 0;
+                        __instance.sourceRect.Value = new Rectangle(sr.X - xOffset, sr.Y, sr.Width, sr.Height);
+                        break;
                 }
             }
         }
@@ -236,16 +239,20 @@ namespace BushBloomMod.Patches {
                 var size = __instance.size.Value;
                 // if blooming and using a custom texture
                 if (__instance.tileSheetOffset.Value == 1
-                    && (__instance.DataHasTexture() || size != 1)
+                    && (__instance.DataHasTexture() || size != Bush.mediumBush)
                     && Schedule.TryGetExistingSchedule(__instance, out var schedule)
                 ) {
                     var season = __instance.Location.GetSeason();
-                    if (size == 1) {
-                        CustomBerryDraw(spriteBatch, schedule.Texture ?? Schedule.WinterBerry, __instance.Tile.X, __instance.Tile.Y, 32, 48, __instance.getBoundingBox().Center.Y, ___yDrawOffset, ___shakeRotation, __instance.flipped.Value);
-                    } else if (size == 0) {
-                        CustomBerryDraw(spriteBatch, schedule.TextureSmall ?? (season == Season.Spring || season == Season.Summer ? Schedule.SpringBerrySmall : season == Season.Fall ? Schedule.FallBerrySmall : Schedule.WinterBerrySmall), __instance.Tile.X, __instance.Tile.Y, 16, 32, __instance.getBoundingBox().Center.Y, ___yDrawOffset + 64, ___shakeRotation, __instance.flipped.Value);
-                    } else if (size == 2) {
-                        CustomBerryDraw(spriteBatch, schedule.TextureLarge ?? (season == Season.Spring || season == Season.Summer ? Schedule.SpringBerryLarge : season == Season.Fall ? Schedule.FallBerryLarge : Schedule.WinterBerryLarge), __instance.Tile.X, __instance.Tile.Y, 48, 48, __instance.getBoundingBox().Center.Y, ___yDrawOffset, ___shakeRotation, __instance.flipped.Value);
+                    switch (size) {
+                        case Bush.mediumBush:
+                            CustomBerryDraw(spriteBatch, schedule.Texture ?? Schedule.WinterBerry, __instance.Tile.X, __instance.Tile.Y, 32, 48, __instance.getBoundingBox().Center.Y, ___yDrawOffset, ___shakeRotation, __instance.flipped.Value);
+                            break;
+                        case Bush.smallBush:
+                            CustomBerryDraw(spriteBatch, schedule.TextureSmall ?? (season == Season.Spring || season == Season.Summer ? Schedule.SpringBerrySmall : season == Season.Fall ? Schedule.FallBerrySmall : Schedule.WinterBerrySmall), __instance.Tile.X, __instance.Tile.Y, 16, 32, __instance.getBoundingBox().Center.Y, ___yDrawOffset + 64, ___shakeRotation, __instance.flipped.Value);
+                            break;
+                        case Bush.largeBush:
+                            CustomBerryDraw(spriteBatch, schedule.TextureLarge ?? (season == Season.Spring || season == Season.Summer ? Schedule.SpringBerryLarge : season == Season.Fall ? Schedule.FallBerryLarge : Schedule.WinterBerryLarge), __instance.Tile.X, __instance.Tile.Y, 48, 48, __instance.getBoundingBox().Center.Y, ___yDrawOffset, ___shakeRotation, __instance.flipped.Value);
+                            break;
                     }
                 }
             }

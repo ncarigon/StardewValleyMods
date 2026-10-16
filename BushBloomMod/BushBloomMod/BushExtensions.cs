@@ -6,6 +6,7 @@ namespace BushBloomMod {
         public static bool IsAbleToBloom(this Bush bush) =>
             bush is not null
             && !bush.townBush.Value
+            && (bush.size.Value == Bush.mediumBush || bush.size.Value == Bush.smallBush || bush.size.Value == Bush.largeBush)
             && !(bush.Location?.InIslandContext() ?? false);
 
         public static bool IsBloomingToday(this Bush bush) => Schedule.GetSchedule(bush) is not null;
