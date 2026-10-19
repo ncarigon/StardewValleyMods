@@ -34,7 +34,7 @@ namespace RelaxedMastery {
                         || __instance.stats.Get(StatKeys.Mastery(which)) == 0) // not mastered
                 ) {
                     // duplicate of base game mastery accumulation logic
-                    int old = MasteryTrackerMenu.getCurrentMasteryLevel();
+                    var old = MasteryTrackerMenu.getCurrentMasteryLevel();
                     Game1.stats.Increment("MasteryExp", Math.Max(1, (which == 0) ? (howMuch / 2) : howMuch));
                     if (MasteryTrackerMenu.getCurrentMasteryLevel() > old) {
                         Game1.showGlobalMessage(Game1.content.LoadString("Strings\\1_6_Strings:Mastery_newlevel"));
@@ -46,21 +46,22 @@ namespace RelaxedMastery {
 
         [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.performAction), new Type[] { typeof(string[]), typeof(Farmer), typeof(Location) })]
         private static class GameLocation_performAction {
-            private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
-                var found = 0;
-                foreach (var instruction in instructions) {
-                    switch (found) {
-                        case 0 when instruction.operand?.ToString()?.Contains("MasteryRoom") == true: // interacting with Mastery Room entrance
-                        case 1 when instruction.operand?.ToString()?.Contains("combatLevel") == true: // checked all skill levels
-                            found++;
-                            break;
-                        case 2 when instruction.opcode == OpCodes.Ldc_I4_5: // checking if at least "5" skills are level 10
-                            found++;
-                            instruction.opcode = OpCodes.Ldc_I4_0; // replace with at least "0" levels are 10
-                            break;
-                    }
-                    yield return instruction;
+            private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) => MasteryRoom_Transpiler(instructions);
+        }
+
+        private static IEnumerable<CodeInstruction> MasteryRoom_Transpiler(IEnumerable<CodeInstruction> instructions) {
+            var found = 0;
+            foreach (var instruction in instructions) {
+                switch (found) {
+                    case 0 when instruction.opcode == OpCodes.Ldstr && instruction.operand?.ToString()?.Equals("MasteryRoom") == true: // interacting with Mastery Room entrance
+                        found++;
+                        break;
+                    case 1 when instruction.opcode == OpCodes.Ldc_I4_5: // checking if at least "5" skills are level 10
+                        found++;
+                        instruction.opcode = OpCodes.Ldc_I4_0; // replace with at least "0" levels are 10
+                        break;
                 }
+                yield return instruction;
             }
         }
 
@@ -105,9 +106,7 @@ namespace RelaxedMastery {
             private static int? LastWhich = null;
 
             [HarmonyPatch(nameof(MasteryTrackerMenu.draw))]
-            private static void Prefix(int ___which) {
-                LastWhich = ___which;
-            }
+            private static void Prefix(int ___which) => LastWhich = ___which;
 
             [HarmonyPatch(nameof(MasteryTrackerMenu.getCurrentMasteryLevel))]
             private static void Postfix(ref int __result) {
@@ -127,10 +126,10 @@ namespace RelaxedMastery {
         }
 
         [HarmonyPatch]
-        private static class WalkOfLife_Patches {
+        private static class WalkOfLife_Patches_Legacy {
             private static IEnumerable<MethodBase> TargetMethods() {
                 var methods = new List<MethodBase>() {
-                    AccessTools.Method(typeof(WalkOfLife_Patches), nameof(WalkOfLife_Patches.Empty))
+                    AccessTools.Method(typeof(WalkOfLife_Patches_Legacy), nameof(Empty))
                 };
                 try {
                     // patch out its custom mastery room message
@@ -146,18 +145,42 @@ namespace RelaxedMastery {
                 return methods;
             }
 
-            private static bool Empty() {
+            private static bool Empty() =>
                 // empty method to ensure TargetMethods() does not return empty and crash Harmony
-                return false;
-            }
+                false;
 
             private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> _) {
                 // this is a generic code replacement to skip out of a patch method and run the original code
                 return new CodeInstruction[] {
-                    new CodeInstruction(OpCodes.Ldc_I4_1),
-                    new CodeInstruction(OpCodes.Ret)
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Ret)
                 };
             }
+        }
+
+        [HarmonyPatch]
+        private static class WalkOfLife_Patches_Modern {
+            private static IEnumerable<MethodBase> TargetMethods() {
+                var methods = new List<MethodBase>() {
+                    AccessTools.Method(typeof(WalkOfLife_Patches_Modern), nameof(Empty))
+                };
+                try {
+                    // patch out its custom mastery room message
+                    methods.AddRange(AppDomain.CurrentDomain.GetAssemblies()
+                        .SelectMany(a => a.GetTypes())
+                        .Where(t => t?.FullName?.Equals("DaLion.Professions.Framework.Patchers.GameLocationPerformActionPatcher") == true)
+                        .SelectMany(t => t.GetMethods(BindingFlags.NonPublic | BindingFlags.Static))
+                        .Where(m => m?.Name?.Equals("GameLocationPerformActionPrefix") == true)
+                        .Cast<MethodBase>());
+                } catch { }
+                return methods;
+            }
+
+            private static bool Empty() =>
+                // empty method to ensure TargetMethods() does not return empty and crash Harmony
+                false;
+
+            private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) => MasteryRoom_Transpiler(instructions);
         }
     }
 }

@@ -13,12 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.3.2" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>D:\games\Stardew Valley\smapi-internal\0Harmony.dll</HintPath>
+      <HintPath>E:\games\Stardew Valley\smapi-internal\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

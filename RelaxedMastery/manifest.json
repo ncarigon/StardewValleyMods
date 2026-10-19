@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Relaxed Mastery",
     "Author": "NCarigon",
-    "Version": "1.0.0",
+    "Version": "1.0.1",
     "MinimumApiVersion": "4.0.0",
     "Description": "Reworks mastery requirements.",
     "UniqueID": "NCarigon.RelaxedMastery",
