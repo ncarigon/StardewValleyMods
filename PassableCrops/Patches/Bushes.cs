@@ -1,6 +1,7 @@
 ﻿using System;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.TerrainFeatures;
@@ -20,7 +21,16 @@ namespace PassableCrops.Patches {
                 original: AccessTools.Method(typeof(Bush), nameof(Bush.getBoundingBox)),
                 postfix: new HarmonyMethod(typeof(Bushes), nameof(Postfix_Bush_getBoundingBox))
             );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Bush), nameof(Bush.draw), new Type[] { typeof(SpriteBatch) }),
+                prefix: new HarmonyMethod(typeof(Bushes), nameof(Prefix_Bush_draw)),
+                postfix: new HarmonyMethod(typeof(Bushes), nameof(Postfix_Bush_draw))
+            );
         }
+
+        private static bool IsDrawing = false;
+        private static void Prefix_Bush_draw() => IsDrawing = true;
+        private static void Postfix_Bush_draw() => IsDrawing = false;
 
         public static bool AnyPassable(Bush bush) {
             return Mod?.Config?.PassableTeaBushes == true && bush?.size?.Value == 3 && bush?.inPot?.Value != true;
@@ -52,7 +62,7 @@ namespace PassableCrops.Patches {
             Bush __instance,
             ref Rectangle __result
         ) {
-            if (AnyPassable(__instance)) {
+            if (IsDrawing && AnyPassable(__instance)) {
                 var skew = -46;
                 __result = new Rectangle(__result.X, __result.Y + skew, __result.Width, __result.Height);
             }

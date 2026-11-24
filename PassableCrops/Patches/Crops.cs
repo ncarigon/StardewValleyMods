@@ -57,7 +57,7 @@ namespace PassableCrops.Patches {
                 __instance.crop.currentPhase.Value = 0;
                 // dampen the shake a bit
                 ___maxShake *= 0.75f;
-                TerrainFeatures.TerrainFeature_doCollisionAction(__instance, who);
+                TerrainFeatures.Postfix_TerrainFeature_doCollisionAction(__instance, who);
             }
         }
     }

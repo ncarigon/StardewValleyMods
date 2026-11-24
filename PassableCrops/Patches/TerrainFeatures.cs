@@ -11,11 +11,11 @@ namespace PassableCrops.Patches {
             var harmony = new Harmony(Mod?.ModManifest?.UniqueID);
             harmony.Patch(
                 original: AccessTools.Method(typeof(TerrainFeature), nameof(TerrainFeature.doCollisionAction)),
-                postfix: new HarmonyMethod(typeof(TerrainFeatures), nameof(TerrainFeature_doCollisionAction))
+                postfix: new HarmonyMethod(typeof(TerrainFeatures), nameof(Postfix_TerrainFeature_doCollisionAction))
             );
         }
 
-        internal static void TerrainFeature_doCollisionAction(
+        internal static void Postfix_TerrainFeature_doCollisionAction(
             TerrainFeature __instance,
             Character who
         ) {

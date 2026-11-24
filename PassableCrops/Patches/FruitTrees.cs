@@ -1,10 +1,11 @@
-﻿using HarmonyLib;
+﻿using System;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.TerrainFeatures;
-using System;
 
 namespace PassableCrops.Patches {
     internal static class FruitTrees {
@@ -21,7 +22,16 @@ namespace PassableCrops.Patches {
                 original: AccessTools.Method(typeof(FruitTree), nameof(FruitTree.getBoundingBox)),
                 postfix: new HarmonyMethod(typeof(FruitTrees), nameof(Postfix_FruitTree_getBoundingBox))
             );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(FruitTree), nameof(FruitTree.draw), new Type[] { typeof(SpriteBatch) }),
+                prefix: new HarmonyMethod(typeof(FruitTrees), nameof(Prefix_FruitTree_draw)),
+                postfix: new HarmonyMethod(typeof(FruitTrees), nameof(Postfix_FruitTree_draw))
+            );
         }
+
+        private static bool IsDrawing = false;
+        private static void Prefix_FruitTree_draw() => IsDrawing = true;
+        private static void Postfix_FruitTree_draw() => IsDrawing = false;
 
         public static bool AnyPassable(FruitTree tree) {
             return Mod?.Config?.PassableFruitTreeGrowth >= (tree?.growthStage?.Value >= 5 ? 5 : tree?.growthStage?.Value);
@@ -48,7 +58,7 @@ namespace PassableCrops.Patches {
             FruitTree __instance,
             ref Rectangle __result
         ) {
-            if (AnyPassable(__instance)) {
+            if (IsDrawing && AnyPassable(__instance)) {
                 var skew = __instance.growthStage.Value switch {
                     0 => -46,
                     1 => -46,

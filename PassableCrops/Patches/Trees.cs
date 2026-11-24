@@ -1,10 +1,11 @@
 ﻿using System;
 using HarmonyLib;
-using StardewValley.TerrainFeatures;
-using StardewValley;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Netcode;
+using StardewValley;
 using StardewValley.Extensions;
+using StardewValley.TerrainFeatures;
 
 namespace PassableCrops.Patches {
     internal static class Trees {
@@ -21,7 +22,16 @@ namespace PassableCrops.Patches {
                 original: AccessTools.Method(typeof(Tree), nameof(Tree.getBoundingBox)),
                 postfix: new HarmonyMethod(typeof(Trees), nameof(Postfix_Tree_getBoundingBox))
             );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Tree), nameof(Tree.draw), new Type[] { typeof(SpriteBatch) }),
+                prefix: new HarmonyMethod(typeof(Trees), nameof(Prefix_Tree_draw)),
+                postfix: new HarmonyMethod(typeof(Trees), nameof(Postfix_Tree_draw))
+            );
         }
+
+        private static bool IsDrawing = false;
+        private static void Prefix_Tree_draw() => IsDrawing = true;
+        private static void Postfix_Tree_draw() => IsDrawing = false;
 
         private static int GetTreeGrowth(Tree tree) {
             return (tree?.treeType?.Value) switch {
@@ -56,7 +66,7 @@ namespace PassableCrops.Patches {
             Tree __instance,
             ref Rectangle __result
         ) {
-            if (AnyPassable(__instance)) {
+            if (IsDrawing && AnyPassable(__instance)) {
                 var skew = __instance.growthStage.Value switch {
                     0 => -46,
                     1 => -46,
